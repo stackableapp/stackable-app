@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Poll C — Segmented Bar</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:          #f0ebe3;
+    --card:        #f8f8f6;
+    --card-header: #ece6dc;
+    --card-body:   #ffffff;
+    --accent:      #e8440a;
+    --accent-soft: #fff5f0;
+    --text:        #1a1a1a;
+    --text-muted:  #5a5550;
+    --border:      #e2ddd4;
+    --muted-1:     #c4b396;
+    --muted-2:     #94a7a0;
+    --muted-3:     #ad9cac;
+  }
+
+  html, body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    font-size: 1rem;
+    line-height: 2;
+  }
+
+  body {
+    padding: 2rem 1rem 5rem;
+    display: flex;
+    justify-content: center;
+  }
+
+  .poll {
+    width: 100%;
+    max-width: 620px;
+  }
+
+  button:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+  }
+
+  /* ── Card (header + body + floating pill on bottom border) ── */
+  .poll-card {
+    position: relative;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    margin-bottom: 2.6rem;
+  }
+
+  /* Cross-fade */
+  .poll-phase {
+    opacity: 1;
+    transition: opacity 0.3s ease;
+  }
+  .poll-phase.is-fading { opacity: 0; }
+
+  /* ── Screen 1: question + options ──────────────── */
+  .poll-header {
+    background: var(--card-header);
+    border-radius: 15px 15px 0 0;
+    padding: 1.6rem 1.8rem 1.5rem;
+  }
+
+  .poll-eyebrow {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    line-height: 1.4;
+    margin-bottom: 0.4rem;
+  }
+
+  .poll-question {
+    font-family: Georgia, serif;
+    font-size: 1.3125rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: var(--text);
+  }
+
+  .poll-body {
+    background: var(--card-body);
+    border-radius: 0 0 15px 15px;
+    padding: 1.2rem 1.8rem 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+  }
+
+  .poll-option {
+    display: flex;
+    align-items: center;
+    gap: 0.95rem;
+    width: 100%;
+    padding: 1rem 1.2rem;
+    background: #fff;
+    color: var(--text);
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 1.4;
+    text-align: left;
+    cursor: pointer;
+    transition: border-color 0.15s ease;
+  }
+
+  .poll-option:hover:not(.is-selected):not([disabled]) {
+    border-color: #b0a99c;
+  }
+
+  .poll-option .poll-dot {
+    flex-shrink: 0;
+    width: 18px;
+    height: 18px;
+    border-radius: 999px;
+    border: 2px solid var(--border);
+    position: relative;
+  }
+
+  .poll-option.is-selected {
+    background: var(--accent-soft);
+    border-color: var(--accent);
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  .poll-option.is-selected .poll-dot {
+    border-color: var(--accent);
+    background: var(--accent);
+  }
+
+  .poll-option.is-selected .poll-dot::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 6px;
+    height: 6px;
+    border-radius: 999px;
+    background: #fff;
+    transform: translate(-50%, -50%);
+  }
+
+  /* Floating pill on bottom border */
+  .poll-pill {
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    transform: translate(-50%, 50%);
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 999px;
+    padding: 0.9rem 1.8rem;
+    font-family: inherit;
+    font-size: 0.9375rem;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+    cursor: pointer;
+  }
+
+  .poll-pill[disabled] {
+    background: #d8d2c8;
+    color: #8a857f;
+    cursor: not-allowed;
+  }
+
+  /* ── Screen 2: results ─────────────────────────── */
+  .poll-results-head {
+    background: var(--card-header);
+    border-radius: 15px 15px 0 0;
+    padding: 1.6rem 1.8rem 1.5rem;
+    text-align: center;
+  }
+
+  .poll-results-eyebrow {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 0.4rem;
+  }
+
+  .poll-results-question {
+    font-family: Georgia, serif;
+    font-size: 1.15rem;
+    line-height: 1.4;
+    color: var(--text);
+    margin-top: 0.3rem;
+  }
+
+  .poll-results-chose {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin-top: 0.35rem;
+  }
+
+  .poll-results-body {
+    background: var(--card-body);
+    border-radius: 0 0 15px 15px;
+    padding: 2rem 1.8rem 2.4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.8rem;
+  }
+
+  /* ── Segmented bar ──────────────────────────────────── */
+  .poll-bar-wrap {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding-top: 2rem; /* space for YOU marker */
+  }
+
+  .poll-bar {
+    position: relative;
+    display: flex;
+    width: 100%;
+    height: 52px;
+    border-radius: 999px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+
+  .poll-bar-seg {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--muted-1);
+    color: var(--text-muted);
+    font-size: 0.9375rem;
+    font-weight: 700;
+    line-height: 1;
+    min-width: 0;
+    overflow: hidden;
+  }
+  .poll-bar-seg.is-c2 { background: var(--muted-2); }
+  .poll-bar-seg.is-c3 { background: var(--muted-3); }
+  .poll-bar-seg.is-yours { background: var(--accent); color: #fff; }
+
+  .poll-bar-you {
+    position: absolute;
+    top: 0;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    pointer-events: none;
+  }
+
+  .poll-bar-you-label {
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  .poll-bar-you-tick {
+    width: 2px;
+    height: 10px;
+    background: var(--accent);
+  }
+
+  .poll-bar-labels {
+    display: flex;
+    width: 100%;
+  }
+
+  .poll-bar-label {
+    padding: 0 0.35rem;
+    font-size: 0.75rem;
+    line-height: 1.4;
+    color: var(--text-muted);
+    min-width: 0;
+    word-break: break-word;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .poll-bar-label.is-yours {
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  /* Insight line */
+  .poll-insight {
+    background: var(--card-header);
+    border-radius: 10px;
+    padding: 0.95rem 1.1rem;
+    display: flex;
+    gap: 0.7rem;
+    align-items: flex-start;
+    font-size: 0.9375rem;
+    line-height: 1.5;
+    color: var(--text);
+  }
+
+  .poll-insight-mark {
+    flex-shrink: 0;
+    font-family: Georgia, serif;
+    font-size: 1.1rem;
+    color: var(--accent);
+    line-height: 1.3;
+  }
+
+  .poll-hidden { display: none; }
+
+  /* Small screens */
+  @media (max-width: 480px) {
+    .poll-header, .poll-results-head { padding: 1.3rem 1.3rem 1.2rem; }
+    .poll-body { padding: 1rem 1.3rem 1.8rem; }
+    .poll-results-body { padding: 1.6rem 1.3rem 2rem; gap: 1.4rem; }
+    .poll-question { font-size: 1.125rem; }
+    .poll-pill { font-size: 0.875rem; padding: 0.8rem 1.4rem; }
+    .poll-bar { height: 44px; }
+    .poll-bar-seg { font-size: 0.8125rem; }
+    .poll-bar-label { font-size: 0.6875rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="poll" id="poll-root">
+
+  <!-- ── Screen 1: poll question ─────────────────── -->
+  <div class="poll-card" id="poll-q-card">
+    <div class="poll-phase" id="poll-q-phase">
+
+      <div class="poll-header">
+        <div class="poll-eyebrow">Quick poll</div>
+        <p class="poll-question"><!-- EDIT: poll question -->Poll question goes here</p>
+      </div>
+
+      <div class="poll-body" role="radiogroup" aria-label="Poll options">
+        <!-- Options are rendered from JS. See OPTIONS array below. -->
+      </div>
+    </div>
+
+    <button type="button" class="poll-pill poll-hidden" id="poll-vote" disabled aria-disabled="true">Vote →</button>
+  </div>
+
+  <!-- ── Screen 2: results (hidden until vote) ───── -->
+  <div class="poll-card poll-hidden" id="poll-r-card">
+    <div class="poll-phase" id="poll-r-phase">
+
+      <div class="poll-results-head">
+        <div class="poll-results-eyebrow" id="poll-n-label">How others answered</div>
+        <p class="poll-results-question" id="poll-r-question"></p>
+        <p class="poll-results-chose" id="poll-r-chose"></p>
+      </div>
+
+      <div class="poll-results-body">
+        <div class="poll-bar-wrap" id="poll-bar-wrap"></div>
+
+        <div class="poll-insight">
+          <span class="poll-insight-mark" aria-hidden="true">✦</span>
+          <div id="poll-insight-text"><!-- EDIT: insight text -->Most students chose Option A — explore why in the discussion below.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  // ===== EDIT: poll options & results ==================================
+  // Each option has a label and a percentage. Percentages should add up
+  // to 100 (or close). The learner's selection is highlighted in accent
+  // colour on results.
+  const OPTIONS = [
+    { id: 'a', label: 'Option A goes here', pct: 42 },
+    { id: 'b', label: 'Option B goes here', pct: 28 },
+    { id: 'c', label: 'Option C goes here', pct: 18 },
+    { id: 'd', label: 'Option D goes here', pct: 12 }
+  ];
+  // Total number of responses (shown in the header label).
+  const TOTAL_RESPONSES = 248;
+  // ======================================================================
+
+  const qCard    = document.getElementById('poll-q-card');
+  const qPhase   = document.getElementById('poll-q-phase');
+  const optsBox  = qCard.querySelector('.poll-body');
+  const voteBtn  = document.getElementById('poll-vote');
+  const rCard    = document.getElementById('poll-r-card');
+  const rPhase   = document.getElementById('poll-r-phase');
+  const nLabel   = document.getElementById('poll-n-label');
+  const barWrap  = document.getElementById('poll-bar-wrap');
+
+  let selectedId = null;
+
+  // ── Render option buttons ──────────────────────
+  OPTIONS.forEach(opt => {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'poll-option';
+    b.setAttribute('role', 'radio');
+    b.setAttribute('aria-checked', 'false');
+    b.dataset.id = opt.id;
+    b.innerHTML = '<span class="poll-dot" aria-hidden="true"></span><span>' + opt.label + '</span>';
+    b.addEventListener('click', () => selectOption(opt.id));
+    optsBox.appendChild(b);
+  });
+
+  function selectOption(id) {
+    selectedId = id;
+    optsBox.querySelectorAll('.poll-option').forEach(b => {
+      const on = b.dataset.id === id;
+      b.classList.toggle('is-selected', on);
+      b.setAttribute('aria-checked', on ? 'true' : 'false');
+    });
+    voteBtn.disabled = false;
+    voteBtn.setAttribute('aria-disabled', 'false');
+    voteBtn.classList.remove('poll-hidden');
+  }
+
+  // ── Vote → reveal results ──────────────────────
+  voteBtn.addEventListener('click', () => {
+    if (!selectedId) return;
+    // lock options
+    optsBox.querySelectorAll('.poll-option').forEach(b => {
+      b.disabled = true;
+    });
+    qCard.classList.add('poll-hidden');
+    rCard.classList.remove('poll-hidden');
+    nLabel.textContent = 'How ' + TOTAL_RESPONSES + ' others answered';
+    document.getElementById('poll-r-question').textContent = qCard.querySelector('.poll-question').textContent;
+    document.getElementById('poll-r-chose').textContent = 'You chose: ' + OPTIONS.find(o => o.id === selectedId).label;
+    buildBar();
+    rPhase.classList.add('is-fading');
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => rPhase.classList.remove('is-fading'));
+    });
+    rCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  });
+
+  // ── Helper: ordered options with assigned non-selected colour class ──
+  function orderedOptions() {
+    // Sort by pct desc; assign muted colour classes in that order, skipping
+    // the learner's option so its slot gets the accent.
+    const sorted = OPTIONS.slice().sort((a, b) => b.pct - a.pct);
+    const colourClasses = ['', 'is-c2', 'is-c3', 'is-c2']; // fallback pattern
+    let ci = 0;
+    return sorted.map(opt => {
+      if (opt.id === selectedId) {
+        return { ...opt, colourClass: 'is-yours' };
+      }
+      const cls = ['', 'is-c2', 'is-c3'][ci % 3];
+      ci += 1;
+      return { ...opt, colourClass: cls };
+    });
+  }
+
+  // ── Build the segmented bar ─────────────────────────
+  function buildBar() {
+    barWrap.innerHTML = '';
+
+    const sorted = orderedOptions();
+
+    // The bar itself
+    const bar = document.createElement('div');
+    bar.className = 'poll-bar';
+
+    sorted.forEach(opt => {
+      const seg = document.createElement('div');
+      seg.className = 'poll-bar-seg' + (opt.colourClass ? ' ' + opt.colourClass : '');
+      seg.style.width = opt.pct + '%';
+      // Only show the percent text inside if segment is wide enough
+      if (opt.pct >= 10) seg.textContent = opt.pct + '%';
+      bar.appendChild(seg);
+    });
+
+    // "YOU" marker — positioned over the centre of the user's segment
+    let acc = 0;
+    let youLeft = null;
+    sorted.forEach(opt => {
+      if (opt.id === selectedId) {
+        youLeft = acc + opt.pct / 2;
+      }
+      acc += opt.pct;
+    });
+    if (youLeft !== null) {
+      const marker = document.createElement('div');
+      marker.className = 'poll-bar-you';
+      marker.style.left = youLeft + '%';
+      marker.innerHTML = '<span class="poll-bar-you-label">You</span><span class="poll-bar-you-tick"></span>';
+      barWrap.appendChild(marker);
+    }
+
+    barWrap.appendChild(bar);
+
+    // Option labels below, each the width of its segment
+    const labels = document.createElement('div');
+    labels.className = 'poll-bar-labels';
+    sorted.forEach(opt => {
+      const isYours = opt.id === selectedId;
+      const l = document.createElement('div');
+      l.className = 'poll-bar-label' + (isYours ? ' is-yours' : '');
+      l.style.width = opt.pct + '%';
+      l.textContent = opt.label;
+      labels.appendChild(l);
+    });
+    barWrap.appendChild(labels);
+  }
+</script>
+
+</body>
+</html>
