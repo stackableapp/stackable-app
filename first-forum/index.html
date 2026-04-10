@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>First Forum Post</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  [hidden] { display: none !important; }
+
+  :root {
+    --bg: #F8F2ED;
+    --card: #FAFAF7;
+    --plum: #40062B;
+    --plum-soft: rgba(64, 6, 43, 0.08);
+    --pink-light: #F2BDD6;
+    --pink-mid: #8C5473;
+    --text: #1A1A1A;
+    --slate: #5A5550;
+    --border: #E8E2D9;
+    --muted: #D8D4CC;
+    --navy: #120DA6;
+  }
+
+  html, body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    padding: clamp(24px, 5vw, 56px) clamp(16px, 4vw, 40px);
+  }
+
+  .ffp {
+    max-width: 680px;
+    margin: 0 auto;
+    transition: max-width 300ms ease;
+  }
+  .ffp.is-wall { max-width: 1100px; }
+
+  /* ── Card ── */
+  .ffp-card {
+    background: var(--card);
+    border: 2px solid var(--plum);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+  .ffp-card-header {
+    background: var(--plum);
+    padding: 22px 28px;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+  .ffp-time-pill {
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 999px;
+    padding: 5px 12px;
+    font: 600 0.6875rem/1 "Inter", sans-serif;
+    color: rgba(255, 255, 255, 0.8);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .ffp-card-title {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.35;
+  }
+  .ffp-card-body {
+    padding: 24px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  @media (max-width: 540px) {
+    .ffp-card-header { padding: 20px 22px; }
+    .ffp-card-body { padding: 20px 22px; }
+  }
+
+  /* ── Form fields ── */
+  .ffp-field label {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--plum);
+    margin-bottom: 6px;
+  }
+  .ffp-field-hint {
+    font-size: 0.75rem;
+    color: var(--slate);
+    margin-top: 4px;
+  }
+  .ffp-field input,
+  .ffp-field textarea {
+    width: 100%;
+    background: #fff;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    padding: 11px 14px;
+    font: 400 0.9375rem/1.5 "Inter", sans-serif;
+    color: var(--text);
+    resize: vertical;
+  }
+  .ffp-field textarea { min-height: 72px; }
+  .ffp-field input::placeholder,
+  .ffp-field textarea::placeholder {
+    color: #B8B3AE;
+    font-style: italic;
+  }
+  .ffp-field input:focus,
+  .ffp-field textarea:focus {
+    outline: none;
+    border-color: var(--plum);
+    box-shadow: 0 0 0 3px var(--plum-soft);
+  }
+  .ffp-field.is-done input,
+  .ffp-field.is-done textarea {
+    border-color: var(--pink-mid);
+  }
+
+  /* ── Map ── */
+  .ffp-map-wrap {
+    margin-top: 4px;
+    background: #fff;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    padding: 16px 12px 10px;
+  }
+  .ffp-field.is-done .ffp-map-wrap {
+    border-color: var(--pink-mid);
+  }
+  .ffp-map-wrap svg {
+    width: 100%;
+    max-width: 260px;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+  }
+  .ffp-map-state {
+    fill: var(--plum-soft);
+    stroke: var(--card);
+    stroke-width: 2;
+    cursor: pointer;
+    transition: fill 150ms ease;
+  }
+  .ffp-map-state:hover {
+    fill: var(--pink-light);
+  }
+  .ffp-map-state.is-selected {
+    fill: var(--plum);
+  }
+  .ffp-map-label {
+    font: 700 11px/1 "Inter", sans-serif;
+    fill: var(--pink-mid);
+    text-anchor: middle;
+    pointer-events: none;
+    user-select: none;
+  }
+  .ffp-map-state.is-selected + .ffp-map-label,
+  .ffp-map-label.is-selected {
+    fill: #fff;
+  }
+  .ffp-map-hint {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--plum);
+    text-align: center;
+    margin-bottom: 6px;
+  }
+  .ffp-map-hint.has-selection {
+    font-weight: 400;
+    color: var(--slate);
+  }
+  /* ── Suggestion chips ── */
+  .ffp-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 8px;
+  }
+  .ffp-chip {
+    background: var(--plum-soft);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 6px 14px;
+    font: 500 0.75rem/1 "Inter", sans-serif;
+    color: var(--plum);
+    cursor: pointer;
+    transition: background 150ms ease, border-color 150ms ease;
+  }
+  .ffp-chip:hover {
+    background: var(--pink-light);
+    border-color: var(--pink-mid);
+  }
+  .ffp-chip.is-picked {
+    background: var(--plum);
+    color: #fff;
+    border-color: var(--plum);
+  }
+  .ffp-chip.is-picked:hover {
+    background: var(--plum);
+    border-color: var(--plum);
+  }
+
+  .ffp-type-toggle {
+    background: none;
+    border: none;
+    padding: 0;
+    font: 500 0.75rem/1 "Inter", sans-serif;
+    color: var(--navy);
+    text-decoration: underline;
+    cursor: pointer;
+    display: block;
+    margin: 10px auto 0;
+  }
+  .ffp-type-toggle:hover { color: var(--plum); }
+  .ffp-from-input-wrap { display: none; margin-top: 8px; }
+  .ffp-from-input-wrap.is-open { display: block; }
+
+  /* ── CTA ── */
+  .ffp-btn {
+    display: block;
+    width: 100%;
+    background: var(--plum);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    padding: 15px 24px;
+    font: 700 0.9375rem/1 "Inter", sans-serif;
+    cursor: pointer;
+    text-align: center;
+    min-height: 50px;
+    transition: background 150ms ease;
+  }
+  .ffp-btn:hover { background: #5a0d3d; }
+  .ffp-btn:focus-visible {
+    outline: 3px solid var(--plum);
+    outline-offset: 3px;
+  }
+  .ffp-btn[disabled] {
+    background: var(--muted);
+    color: #4A4644;
+    cursor: not-allowed;
+  }
+  .ffp-btn[disabled]:hover { background: var(--muted); }
+  .ffp-btn-note {
+    font-size: 0.75rem;
+    color: var(--slate);
+    text-align: center;
+    margin-top: 8px;
+  }
+  .ffp-cta-wrap { margin-top: 4px; }
+
+  /* ── Wall ── */
+  .ffp-wall {
+    border-radius: 14px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    background: var(--card);
+  }
+  .ffp-wall-top {
+    background: var(--plum);
+    padding: 20px 28px;
+  }
+  .ffp-wall-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.35;
+  }
+
+  /* Wall map section */
+  .ffp-wall-map {
+    padding: 20px 28px 0;
+    display: flex;
+    justify-content: center;
+  }
+  .ffp-wall-map svg {
+    width: 100%;
+    max-width: 440px;
+    height: auto;
+  }
+  .ffp-wall-map .ffp-map-state {
+    cursor: default;
+    fill: #EDE8E2;
+  }
+  .ffp-wall-map .ffp-map-state:hover { fill: #EDE8E2; }
+  .ffp-wall-map .ffp-map-state.has-people { fill: var(--border); }
+  .ffp-map-dot {
+    stroke: var(--card);
+    stroke-width: 2;
+    transition: r 150ms ease;
+  }
+  .ffp-map-dot.is-you { fill: var(--plum); }
+  .ffp-map-dot.is-peer { fill: var(--pink-mid); }
+  .ffp-map-dot-label {
+    font: 600 9px/1 "Inter", sans-serif;
+    fill: var(--slate);
+    text-anchor: middle;
+    pointer-events: none;
+  }
+
+  .ffp-wall-grid {
+    padding: 28px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+  }
+  .ffp-intro {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .ffp-intro.is-you { border: 2px solid var(--plum); }
+  .ffp-intro.is-you.is-new {
+    animation: cardPulse 1.2s ease;
+  }
+  @keyframes cardPulse {
+    0%   { box-shadow: 0 0 0 0 rgba(64, 6, 43, 0.4); }
+    50%  { box-shadow: 0 0 0 8px rgba(64, 6, 43, 0); }
+    100% { box-shadow: none; }
+  }
+  .ffp-intro-head {
+    background: #F8F2ED;
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .ffp-intro.is-you .ffp-intro-head { background: var(--pink-light); }
+  .ffp-intro-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid transparent;
+  }
+  .ffp-intro.is-you .ffp-intro-avatar {
+    border-color: var(--plum);
+    background: linear-gradient(135deg, var(--pink-light), var(--pink-mid));
+  }
+  .ffp-intro-avatar-letter {
+    font: 700 1.125rem/1 "Playfair Display", Georgia, serif;
+    color: #fff;
+  }
+  .ffp-intro-name {
+    font-size: 0.9375rem;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.2;
+  }
+  .ffp-intro.is-you .ffp-intro-name { color: var(--plum); }
+  .ffp-intro-loc {
+    font-size: 0.6875rem;
+    color: var(--slate);
+    margin-top: 2px;
+  }
+  .ffp-intro.is-you .ffp-intro-loc { color: var(--pink-mid); }
+  .ffp-intro-badge {
+    margin-left: auto;
+    background: var(--plum);
+    color: var(--pink-light);
+    border-radius: 999px;
+    padding: 3px 8px;
+    font: 700 0.625rem/1 "Inter", sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    flex-shrink: 0;
+  }
+  .ffp-intro-body { padding: 12px 16px 14px; }
+  .ffp-intro-snippet {
+    font-size: 0.8125rem;
+    color: var(--text);
+    line-height: 1.5;
+  }
+  .ffp-intro-edit {
+    background: none;
+    border: none;
+    padding: 0;
+    margin-top: 8px;
+    font: 600 0.75rem/1 "Inter", sans-serif;
+    color: var(--navy);
+    text-decoration: underline;
+    cursor: pointer;
+  }
+  .ffp-wall-more {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 0 28px 24px;
+  }
+  .ffp-wall-more::before,
+  .ffp-wall-more::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+  .ffp-wall-more-btn {
+    background: #F2F2F2;
+    border: 1px solid var(--border);
+    color: var(--navy);
+    border-radius: 999px;
+    padding: 9px 22px;
+    font: 600 0.8125rem/1 "Inter", sans-serif;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .ffp-wall-more-btn:hover { color: var(--plum); border-color: var(--plum); }
+
+  @media (max-width: 540px) {
+    .ffp-wall-top { padding: 18px 20px; }
+    .ffp-wall-grid { padding: 20px; gap: 16px; }
+    .ffp-wall-more { padding: 0 20px 20px; }
+    .ffp-wall-map { padding: 16px 20px; }
+  }
+
+  .sr-only {
+    position: absolute;
+    width: 1px; height: 1px;
+    padding: 0; margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+</style>
+</head>
+<body>
+
+<section class="ffp" aria-labelledby="ffp-title">
+
+  <!-- ══════ FORM ══════ -->
+  <div class="ffp-card" id="ffp-form-card">
+    <div class="ffp-card-header">
+      <h2 class="ffp-card-title" id="ffp-title">
+        <!-- EDIT: title -->Introduce yourself to the class.
+      </h2>
+      <span class="ffp-time-pill"><!-- EDIT: time -->~30 sec</span>
+    </div>
+
+    <form class="ffp-card-body" id="ffp-form" novalidate>
+
+      <div class="ffp-field">
+        <label for="ffp-name"><!-- EDIT: field 1 -->First name</label>
+        <input type="text" id="ffp-name" name="name" placeholder="Your first name…" required autocomplete="given-name">
+        <div class="ffp-field-hint">This is how you'll appear to classmates</div>
+      </div>
+
+      <div class="ffp-field">
+        <label><!-- EDIT: field 2 -->Where are you from?</label>
+        <div class="ffp-map-wrap">
+          <div class="ffp-map-hint" id="ffp-map-hint">Tap your state</div>
+          <!-- EDIT: Australia map — states/territories -->
+          <svg viewBox="0 0 500 470" aria-label="Map of Australia — tap your state">
+            <polygon class="ffp-map-state" data-state="WA" data-label="Western Australia"
+              points="202,79 180,64 158,70 126,97 81,145 48,170 37,183 26,214 37,252 51,295 59,326 81,332 125,320 169,302 202,289 202,220"/>
+            <text class="ffp-map-label" x="110" y="220">WA</text>
+
+            <polygon class="ffp-map-state" data-state="NT" data-label="Northern Territory"
+              points="202,79 218,51 235,35 257,45 285,48 290,70 285,95 301,95 301,220 202,220"/>
+            <text class="ffp-map-label" x="250" y="145">NT</text>
+
+            <polygon class="ffp-map-state" data-state="QLD" data-label="Queensland"
+              points="301,95 315,108 329,114 342,95 345,60 350,29 378,83 389,108 400,139 422,158 433,183 444,195 460,214 466,233 471,248 334,258 334,220 301,220"/>
+            <text class="ffp-map-label" x="395" y="170">QLD</text>
+
+            <polygon class="ffp-map-state" data-state="SA" data-label="South Australia"
+              points="202,220 301,220 334,220 334,371 323,358 312,345 301,326 290,302 274,326 257,308 235,289 202,289"/>
+            <text class="ffp-map-label" x="268" y="295">SA</text>
+
+            <polygon class="ffp-map-state" data-state="NSW" data-label="New South Wales"
+              points="334,258 471,248 467,274 453,306 444,320 438,339 432,364 399,346 360,340 334,320"/>
+            <text class="ffp-map-label" x="410" y="305">NSW</text>
+
+            <polygon class="ffp-map-state" data-state="VIC" data-label="Victoria"
+              points="334,320 360,340 399,346 432,364 411,368 393,384 377,371 351,375 334,371"/>
+            <text class="ffp-map-label" x="383" y="358" font-size="9">VIC</text>
+
+            <polygon class="ffp-map-state" data-state="TAS" data-label="Tasmania"
+              points="394,404 413,411 414,419 403,431 389,439 382,422 388,408"/>
+            <text class="ffp-map-label" x="397" y="422" font-size="9">TAS</text>
+
+            <circle class="ffp-map-state" data-state="ACT" data-label="ACT" cx="423" cy="336" r="8"/>
+            <text class="ffp-map-label" x="441" y="331" font-size="8">ACT</text>
+          </svg>
+          <button type="button" class="ffp-type-toggle" id="ffp-type-toggle">Not in Australia? Type instead</button>
+        </div>
+        <div class="ffp-from-input-wrap" id="ffp-from-wrap">
+          <input type="text" id="ffp-from" name="from" placeholder="Type your location…">
+        </div>
+        <input type="hidden" id="ffp-from-hidden" name="from-hidden">
+      </div>
+
+      <div class="ffp-field">
+        <label for="ffp-forward"><!-- EDIT: field 3 -->What are you most looking forward to?</label>
+        <!-- EDIT: suggestion chips -->
+        <div class="ffp-chips" id="ffp-chips">
+          <!-- EDIT: make these specific to your course -->
+          <button type="button" class="ffp-chip">Writing my first Social Story</button>
+          <button type="button" class="ffp-chip">Using stories with my clients</button>
+          <button type="button" class="ffp-chip">Getting feedback on my drafts</button>
+          <button type="button" class="ffp-chip">Learning from how others approach it</button>
+        </div>
+        <textarea id="ffp-forward" name="forward" placeholder="Or write your own…" required></textarea>
+      </div>
+
+      <div class="ffp-cta-wrap">
+        <button type="submit" class="ffp-btn" id="ffp-post" disabled>Post my introduction →</button>
+        <div class="ffp-btn-note" id="ffp-note">Fill in all fields to post</div>
+      </div>
+
+    </form>
+  </div>
+
+  <!-- ══════ WALL ══════ -->
+  <div id="ffp-wall-wrap" hidden>
+    <div class="ffp-wall">
+
+      <div class="ffp-wall-top">
+        <div class="ffp-wall-title"><!-- EDIT: wall title -->You're in. 23 others have posted too.</div>
+      </div>
+
+      <!-- Peer map -->
+      <div class="ffp-wall-map">
+        <svg viewBox="0 0 500 470" aria-label="Where your cohort is from">
+          <!-- States (muted) -->
+          <polygon class="ffp-map-state has-people" points="202,79 180,64 158,70 126,97 81,145 48,170 37,183 26,214 37,252 51,295 59,326 81,332 125,320 169,302 202,289 202,220"/>
+          <polygon class="ffp-map-state" points="202,79 218,51 235,35 257,45 285,48 290,70 285,95 301,95 301,220 202,220"/>
+          <polygon class="ffp-map-state has-people" points="301,95 315,108 329,114 342,95 345,60 350,29 378,83 389,108 400,139 422,158 433,183 444,195 460,214 466,233 471,248 334,258 334,220 301,220"/>
+          <polygon class="ffp-map-state" points="202,220 301,220 334,220 334,371 323,358 312,345 301,326 290,302 274,326 257,308 235,289 202,289"/>
+          <polygon class="ffp-map-state has-people" points="334,258 471,248 467,274 453,306 444,320 438,339 432,364 399,346 360,340 334,320"/>
+          <polygon class="ffp-map-state" points="334,320 360,340 399,346 432,364 411,368 393,384 377,371 351,375 334,371"/>
+          <polygon class="ffp-map-state" points="394,404 413,411 414,419 403,431 389,439 382,422 388,408"/>
+          <circle class="ffp-map-state" cx="423" cy="336" r="8"/>
+
+          <!-- EDIT: Peer dots — positioned at approximate city locations -->
+          <circle class="ffp-map-dot is-peer" cx="446" cy="319" r="7"/><!-- Jamie — Sydney -->
+          <text class="ffp-map-dot-label" x="446" y="307">Jamie</text>
+
+          <circle class="ffp-map-dot is-peer" cx="466" cy="239" r="7"/><!-- Morgan — Brisbane -->
+          <text class="ffp-map-dot-label" x="466" y="227">Morgan</text>
+
+          <circle class="ffp-map-dot is-peer" cx="58" cy="294" r="7"/><!-- Alex — Perth -->
+          <text class="ffp-map-dot-label" x="58" y="282">Alex</text>
+
+          <!-- Your dot — positioned by JS -->
+          <circle class="ffp-map-dot is-you" id="ffp-wall-dot" cx="0" cy="0" r="9" style="display:none"/>
+          <text class="ffp-map-dot-label" id="ffp-wall-dot-label" x="0" y="0" style="display:none; fill:var(--plum); font-weight:700;">You</text>
+        </svg>
+      </div>
+
+      <div class="ffp-wall-grid">
+        <!-- Your card -->
+        <article class="ffp-intro is-you">
+          <div class="ffp-intro-head">
+            <div class="ffp-intro-avatar">
+              <span class="ffp-intro-avatar-letter" id="ffp-wall-letter">?</span>
+            </div>
+            <div style="min-width:0;">
+              <div class="ffp-intro-name" id="ffp-wall-name">You</div>
+              <div class="ffp-intro-loc" id="ffp-wall-loc"></div>
+            </div>
+            <div class="ffp-intro-badge">You</div>
+          </div>
+          <div class="ffp-intro-body">
+            <div class="ffp-intro-snippet" id="ffp-wall-snippet"></div>
+            <button type="button" class="ffp-intro-edit" id="ffp-edit-btn">Edit</button>
+          </div>
+        </article>
+
+        <!-- EDIT: sample classmates -->
+        <article class="ffp-intro">
+          <div class="ffp-intro-head">
+            <div class="ffp-intro-avatar" style="background:var(--pink-mid);"><span class="ffp-intro-avatar-letter">J</span></div>
+            <div><div class="ffp-intro-name">Jamie</div><div class="ffp-intro-loc">Sydney, NSW</div></div>
+          </div>
+          <div class="ffp-intro-body"><div class="ffp-intro-snippet">Building real confidence in the supervisor role.</div></div>
+        </article>
+        <article class="ffp-intro">
+          <div class="ffp-intro-head">
+            <div class="ffp-intro-avatar" style="background:var(--slate);"><span class="ffp-intro-avatar-letter">M</span></div>
+            <div><div class="ffp-intro-name">Morgan</div><div class="ffp-intro-loc">Brisbane, QLD</div></div>
+          </div>
+          <div class="ffp-intro-body"><div class="ffp-intro-snippet">Seeing how the models we study map onto real clinical work.</div></div>
+        </article>
+        <article class="ffp-intro">
+          <div class="ffp-intro-head">
+            <div class="ffp-intro-avatar" style="background:var(--navy);"><span class="ffp-intro-avatar-letter">A</span></div>
+            <div><div class="ffp-intro-name">Alex</div><div class="ffp-intro-loc">Perth, WA</div></div>
+          </div>
+          <div class="ffp-intro-body"><div class="ffp-intro-snippet">Learning to give useful feedback — not just positive reinforcement.</div></div>
+        </article>
+      </div>
+
+      <div class="ffp-wall-more">
+        <button type="button" class="ffp-wall-more-btn">See all 23 introductions ↓</button>
+      </div>
+
+    </div>
+  </div>
+
+</section>
+
+<script>
+(function () {
+  var root = document.querySelector('.ffp');
+  var formCard = document.getElementById('ffp-form-card');
+  var wallWrap = document.getElementById('ffp-wall-wrap');
+  var form = document.getElementById('ffp-form');
+  var postBtn = document.getElementById('ffp-post');
+  var note = document.getElementById('ffp-note');
+  var nameField = document.getElementById('ffp-name');
+  var fromField = document.getElementById('ffp-from');
+  var fromHidden = document.getElementById('ffp-from-hidden');
+  var fromWrap = document.getElementById('ffp-from-wrap');
+  var typeToggle = document.getElementById('ffp-type-toggle');
+  var forwardField = document.getElementById('ffp-forward');
+  var mapHint = document.getElementById('ffp-map-hint');
+
+  // State → dot position on wall map (approximate city centers)
+  var stateDots = {
+    WA:  { x: 58,  y: 294 },
+    NT:  { x: 252, y: 145 },
+    QLD: { x: 440, y: 195 },
+    SA:  { x: 268, y: 280 },
+    NSW: { x: 446, y: 319 },
+    VIC: { x: 383, y: 358 },
+    TAS: { x: 397, y: 422 },
+    ACT: { x: 423, y: 336 }
+  };
+
+  var selectedState = null;
+
+  // ── Validation ──
+  function getLocation() {
+    return fromHidden.value.trim() || fromField.value.trim();
+  }
+  function markDone() {
+    nameField.closest('.ffp-field').classList.toggle('is-done', nameField.value.trim().length > 0);
+    fromField.closest('.ffp-field').classList.toggle('is-done', getLocation().length > 0);
+    forwardField.closest('.ffp-field').classList.toggle('is-done', forwardField.value.trim().length > 0);
+  }
+  function validate() {
+    var hasName = nameField.value.trim().length > 0;
+    var hasLoc = getLocation().length > 0;
+    var hasFwd = forwardField.value.trim().length > 0;
+    var ready = hasName && hasLoc && hasFwd;
+    postBtn.disabled = !ready;
+    if (ready) { note.textContent = 'Ready to post'; }
+    else if (!hasName) { note.textContent = 'Add your name to post'; }
+    else if (!hasLoc) { note.textContent = 'Add your location to post'; }
+    else { note.textContent = 'Add what you\'re looking forward to'; }
+    markDone();
+    return ready;
+  }
+  [nameField, fromField, forwardField].forEach(function (f) { f.addEventListener('input', validate); });
+
+  // ── Suggestion chips ──
+  var chips = document.getElementById('ffp-chips');
+  chips.addEventListener('click', function (e) {
+    var chip = e.target.closest('.ffp-chip');
+    if (!chip) return;
+    // Clear previous selection
+    chips.querySelectorAll('.ffp-chip').forEach(function (c) { c.classList.remove('is-picked'); });
+    chip.classList.add('is-picked');
+    forwardField.value = chip.textContent;
+    forwardField.focus();
+    validate();
+    saveDraft();
+  });
+  forwardField.addEventListener('input', function () {
+    // If the learner edits the text, clear chip highlight
+    var match = false;
+    chips.querySelectorAll('.ffp-chip').forEach(function (c) {
+      if (c.textContent === forwardField.value) { match = true; }
+      else { c.classList.remove('is-picked'); }
+    });
+    if (!match) chips.querySelectorAll('.ffp-chip').forEach(function (c) { c.classList.remove('is-picked'); });
+  });
+
+  // ── Type toggle ──
+  typeToggle.addEventListener('click', function () {
+    fromWrap.classList.toggle('is-open');
+    if (fromWrap.classList.contains('is-open')) {
+      // Clear map selection so typed value wins
+      fromHidden.value = '';
+      selectedState = null;
+      mapStates.forEach(function (s) { s.classList.remove('is-selected'); });
+      mapLabels.forEach(function (l) { l.classList.remove('is-selected'); });
+      mapHint.textContent = 'Tap your state';
+      mapHint.classList.remove('has-selection');
+      fromField.focus();
+      typeToggle.textContent = 'Use the map instead';
+      validate();
+    } else {
+      // Switching back to map — clear text field if map has a selection
+      if (fromField.value.trim()) {
+        fromField.value = '';
+      }
+      typeToggle.textContent = 'Not in Australia? Type instead';
+      validate();
+    }
+  });
+
+  // ── Map interaction ──
+  var mapStates = document.querySelectorAll('#ffp-form-card .ffp-map-state');
+  var mapLabels = document.querySelectorAll('#ffp-form-card .ffp-map-label');
+
+  mapStates.forEach(function (el) {
+    el.addEventListener('click', function () {
+      var state = el.dataset.state;
+      var label = el.dataset.label;
+      selectedState = state;
+
+      // Highlight
+      mapStates.forEach(function (s) { s.classList.remove('is-selected'); });
+      mapLabels.forEach(function (l) { l.classList.remove('is-selected'); });
+      el.classList.add('is-selected');
+      // Find matching label
+      mapLabels.forEach(function (l) {
+        if (l.textContent.trim() === state) l.classList.add('is-selected');
+      });
+
+      fromHidden.value = label;
+      mapHint.textContent = label;
+      mapHint.classList.add('has-selection');
+      validate();
+    });
+  });
+
+  // Typing clears map selection
+  fromField.addEventListener('input', function () {
+    fromHidden.value = '';
+    mapStates.forEach(function (s) { s.classList.remove('is-selected'); });
+    mapLabels.forEach(function (l) { l.classList.remove('is-selected'); });
+    mapHint.textContent = 'Tap your state';
+    mapHint.classList.remove('has-selection');
+    selectedState = null;
+  });
+
+  // ── Post → Wall ──
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    if (!validate()) return;
+
+    postBtn.textContent = 'Posted \u2713';
+    postBtn.disabled = true;
+    postBtn.style.background = '#2a7d4f';
+    postBtn.style.color = '#fff';
+
+    setTimeout(function () {
+      var name = nameField.value.trim();
+      document.getElementById('ffp-wall-name').textContent = name;
+      document.getElementById('ffp-wall-loc').textContent = getLocation();
+      document.getElementById('ffp-wall-snippet').textContent = forwardField.value.trim();
+      document.getElementById('ffp-wall-letter').textContent = (name[0] || '?').toUpperCase();
+
+      // Position your dot on the wall map
+      var dot = document.getElementById('ffp-wall-dot');
+      var dotLabel = document.getElementById('ffp-wall-dot-label');
+      if (selectedState && stateDots[selectedState]) {
+        var pos = stateDots[selectedState];
+        dot.setAttribute('cx', pos.x);
+        dot.setAttribute('cy', pos.y);
+        dot.style.display = '';
+        dotLabel.setAttribute('x', pos.x);
+        dotLabel.setAttribute('y', pos.y - 14);
+        dotLabel.style.display = '';
+      }
+
+      formCard.hidden = true;
+      wallWrap.hidden = false;
+      root.classList.add('is-wall');
+      try { sessionStorage.removeItem(DK); } catch (e) {}
+
+      // Scroll to and pulse the "You" card
+      var youCard = document.querySelector('.ffp-intro.is-you');
+      youCard.classList.add('is-new');
+      youCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      youCard.addEventListener('animationend', function () {
+        youCard.classList.remove('is-new');
+      }, { once: true });
+
+      postBtn.textContent = 'Post my introduction \u2192';
+      postBtn.disabled = false;
+      postBtn.style.background = '';
+      postBtn.style.color = '';
+    }, 1200);
+  });
+
+  // ── Restore map state ──
+  function restoreMapState() {
+    mapStates.forEach(function (s) { s.classList.remove('is-selected'); });
+    mapLabels.forEach(function (l) { l.classList.remove('is-selected'); });
+    if (selectedState) {
+      mapStates.forEach(function (el) {
+        if (el.dataset.state === selectedState) el.classList.add('is-selected');
+      });
+      mapLabels.forEach(function (l) {
+        if (l.textContent.trim() === selectedState) l.classList.add('is-selected');
+      });
+      if (fromHidden.value) {
+        mapHint.textContent = fromHidden.value;
+        mapHint.classList.add('has-selection');
+      }
+    } else {
+      mapHint.textContent = 'Tap your state';
+      mapHint.classList.remove('has-selection');
+    }
+    markDone();
+  }
+
+  // ── Edit from wall ──
+  document.getElementById('ffp-edit-btn').addEventListener('click', function () {
+    wallWrap.hidden = true;
+    formCard.hidden = false;
+    root.classList.remove('is-wall');
+    restoreMapState();
+    validate();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  // ── Draft persistence ──
+  var DK = 'ffp-draft';
+  function saveDraft() {
+    var pickedChip = chips.querySelector('.ffp-chip.is-picked');
+    try { sessionStorage.setItem(DK, JSON.stringify({ n: nameField.value, f: fromField.value, fh: fromHidden.value, fw: forwardField.value, s: selectedState, chip: pickedChip ? pickedChip.textContent : null })); } catch (e) {}
+  }
+  function loadDraft() {
+    try {
+      var d = JSON.parse(sessionStorage.getItem(DK));
+      if (!d) return;
+      if (d.n) nameField.value = d.n;
+      if (d.f) { fromField.value = d.f; fromWrap.classList.add('is-open'); typeToggle.textContent = 'Use the map instead'; }
+      if (d.fh) fromHidden.value = d.fh;
+      if (d.fw) forwardField.value = d.fw;
+      if (d.s) selectedState = d.s;
+      if (d.chip) {
+        chips.querySelectorAll('.ffp-chip').forEach(function (c) {
+          if (c.textContent === d.chip) c.classList.add('is-picked');
+        });
+      }
+      restoreMapState();
+    } catch (e) {}
+  }
+  [nameField, fromField, forwardField].forEach(function (f) { f.addEventListener('input', saveDraft); });
+  mapStates.forEach(function (el) { el.addEventListener('click', saveDraft); });
+  window.addEventListener('beforeunload', function (e) {
+    if (!wallWrap.hidden) return; // already posted — no warning
+    if (nameField.value.trim() || getLocation() || forwardField.value.trim()) e.preventDefault();
+  });
+
+  loadDraft();
+  validate();
+})();
+</script>
+</body>
+</html>
