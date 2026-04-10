@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reflection</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+
+    /* ══════════════════════════════════════
+       SHARED RESET & TOKENS
+       (warm brand system — see brand doc)
+    ══════════════════════════════════════ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --color-bg:       #F2F0EB;
+      --color-surface:  #FAFAF7;
+      --color-card:     #FFFFFF;
+      --color-cool:     #F2F8FD;
+      --color-text:     #1A1A1A;
+      --color-text-sec: #6B6568;
+      --color-navy:     #120DA6;
+      --color-sky:      #C4E5F2;
+      --color-border:   #E8E2D9;
+    }
+
+    html, body {
+      background: var(--color-bg);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      color: var(--color-text);
+      line-height: 1.65;
+    }
+
+    /* ══════════════════════════════════════
+       LAYOUT
+    ══════════════════════════════════════ */
+    .reflection {
+      padding: clamp(48px, 8vw, 100px) clamp(24px, 6vw, 80px);
+      max-width: 1280px;
+      margin: 0 auto;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+    .reflection.is-ready { opacity: 1; }
+
+    .reflection-inner {
+      max-width: 640px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ══════════════════════════════════════
+       STEP TRANSITIONS
+    ══════════════════════════════════════ */
+    .step {
+      display: none;
+      flex-direction: column;
+    }
+    .step.is-active {
+      display: flex;
+      animation: fadeIn 0.35s ease;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    /* ══════════════════════════════════════
+       STEP INDICATOR
+    ══════════════════════════════════════ */
+    .step-indicator {
+      font-size: 0.8125rem;
+      font-weight: 500;
+      color: var(--color-text-sec);
+      margin-bottom: 24px;
+    }
+
+    /* ══════════════════════════════════════
+       HEADING
+    ══════════════════════════════════════ */
+    .reflection-heading {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      font-weight: 700;
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      color: var(--color-text);
+    }
+    .reflection-sub {
+      font-size: clamp(1.1rem, 1.5vw, 1.25rem);
+      font-weight: 400;
+      color: var(--color-text-sec);
+      margin-top: 16px;
+      max-width: 540px;
+    }
+
+    /* ══════════════════════════════════════
+       GOAL BLOCK
+    ══════════════════════════════════════ */
+    .goal-block {
+      background: var(--color-cool);
+      border-radius: 16px;
+      padding: 24px;
+      margin-top: 32px;
+    }
+    @media (min-width: 768px) {
+      .goal-block { padding: 32px; }
+    }
+    .goal-label {
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: var(--color-text-sec);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 8px;
+    }
+    .goal-text {
+      font-size: clamp(1.1rem, 1.5vw, 1.25rem);
+      font-weight: 600;
+      color: var(--color-text);
+      line-height: 1.4;
+    }
+
+    /* ══════════════════════════════════════
+       OPTION CARDS (selectable)
+    ══════════════════════════════════════ */
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 32px;
+    }
+    .option {
+      background: var(--color-card);
+      border: 1px solid var(--color-border);
+      border-radius: 16px;
+      padding: 20px 24px;
+      cursor: pointer;
+      transition: border-color 0.15s ease, background 0.15s ease;
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+    }
+    .option:hover {
+      border-color: var(--color-navy);
+      background: var(--color-cool);
+    }
+    .option.is-selected {
+      border-color: var(--color-navy);
+      background: var(--color-cool);
+    }
+    .option-radio {
+      width: 20px;
+      height: 20px;
+      min-width: 20px;
+      border: 2px solid var(--color-border);
+      border-radius: 50%;
+      margin-top: 2px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: border-color 0.15s ease;
+    }
+    .option:hover .option-radio,
+    .option.is-selected .option-radio {
+      border-color: var(--color-navy);
+    }
+    .option.is-selected .option-radio::after {
+      content: '';
+      width: 10px;
+      height: 10px;
+      background: var(--color-navy);
+      border-radius: 50%;
+    }
+    .option-text {
+      font-size: 1rem;
+      font-weight: 500;
+      line-height: 1.5;
+      color: var(--color-text);
+    }
+
+    /* ══════════════════════════════════════
+       STEP 2: FORWARD LOOK
+    ══════════════════════════════════════ */
+    .response-block {
+      background: var(--color-card);
+      border: 1px solid var(--color-border);
+      border-radius: 16px;
+      padding: 24px;
+      margin-top: 32px;
+    }
+    @media (min-width: 768px) {
+      .response-block { padding: 32px; }
+    }
+    .response-label {
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: var(--color-text-sec);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 8px;
+    }
+    .response-text {
+      font-size: clamp(1.1rem, 1.5vw, 1.25rem);
+      font-weight: 400;
+      color: var(--color-text);
+      line-height: 1.5;
+    }
+
+    .next-lesson {
+      background: var(--color-cool);
+      border-radius: 16px;
+      padding: 24px;
+      margin-top: 32px;
+    }
+    @media (min-width: 768px) {
+      .next-lesson { padding: 32px; }
+    }
+    .next-label {
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: var(--color-text-sec);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 8px;
+    }
+    .next-text {
+      font-size: clamp(1.1rem, 1.5vw, 1.25rem);
+      font-weight: 600;
+      color: var(--color-text);
+      line-height: 1.4;
+    }
+
+    /* ══════════════════════════════════════
+       STEP 3: CURIOSITY
+    ══════════════════════════════════════ */
+    .curiosity-heading {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.5rem, 3vw, 2.25rem);
+      font-weight: 700;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      color: var(--color-text);
+    }
+    .curiosity-sub {
+      font-size: 1rem;
+      font-weight: 400;
+      color: var(--color-text-sec);
+      margin-top: 12px;
+    }
+
+    /* ══════════════════════════════════════
+       CLOSE / DONE STATE
+    ══════════════════════════════════════ */
+    .done-message {
+      text-align: center;
+      margin-top: 48px;
+    }
+    .done-text {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.5rem, 3vw, 2.25rem);
+      font-weight: 700;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      color: var(--color-text);
+    }
+    .done-sub {
+      font-size: 1rem;
+      color: var(--color-text-sec);
+      margin-top: 12px;
+    }
+
+    /* ══════════════════════════════════════
+       BUTTONS
+    ══════════════════════════════════════ */
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--color-navy);
+      color: #FFFFFF;
+      font-family: 'Inter', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      line-height: 1;
+      text-decoration: none;
+      border: none;
+      border-radius: 10px;
+      padding: 16px 32px;
+      cursor: pointer;
+      transition: opacity 0.15s ease;
+    }
+    .btn-primary:hover { opacity: 0.9; }
+    .btn-primary:disabled {
+      opacity: 0.4;
+      cursor: default;
+    }
+
+    .btn-row {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 32px;
+    }
+
+  </style>
+</head>
+<body>
+
+  <section class="reflection" id="reflection">
+    <div class="reflection-inner">
+
+      <!-- ════════════════════════════════
+           STEP 1: Goal recall + self-assessment
+      ════════════════════════════════ -->
+      <div class="step is-active" id="step-1">
+
+        <p class="step-indicator">1 of 3</p>
+        <!-- EDIT: Replace goal text below -->
+        <h2 class="reflection-heading">[The lesson goal — one line]</h2>
+
+
+        <div class="options" id="assess-options">
+          <!-- EDIT: Tailor these to match the lesson goal -->
+          <div class="option" data-value="learned">
+            <div class="option-radio"></div>
+            <span class="option-text">I picked up the key ideas and they make sense</span>
+          </div>
+          <div class="option" data-value="connect">
+            <div class="option-radio"></div>
+            <span class="option-text">I can connect this to my own practice</span>
+          </div>
+          <div class="option" data-value="apply">
+            <div class="option-radio"></div>
+            <span class="option-text">I could use this in my next lesson</span>
+          </div>
+          <div class="option" data-value="more-time">
+            <div class="option-radio"></div>
+            <span class="option-text">I need a bit more time with this</span>
+          </div>
+        </div>
+
+        <div class="btn-row">
+          <button class="btn-primary" id="btn-step-2" disabled>Continue</button>
+        </div>
+
+      </div>
+
+      <!-- ════════════════════════════════
+           STEP 2: Forward look
+      ════════════════════════════════ -->
+      <div class="step" id="step-2">
+
+        <p class="step-indicator">2 of 3</p>
+
+        <h2 class="reflection-heading">What's next</h2>
+
+        <!-- What's coming next -->
+        <div class="next-lesson">
+          <p class="next-label">In the next lesson</p>
+          <!-- EDIT: Replace with actual next-lesson preview -->
+          <p class="next-text">[Describe what the next lesson covers — one or two sentences that build anticipation]</p>
+        </div>
+
+        <div class="btn-row">
+          <button class="btn-primary" id="btn-step-3">Continue</button>
+        </div>
+
+      </div>
+
+      <!-- ════════════════════════════════
+           STEP 3: Curiosity prompt
+      ════════════════════════════════ -->
+      <div class="step" id="step-3">
+
+        <p class="step-indicator">3 of 3</p>
+        <p class="curiosity-heading">I wonder how...</p>
+        <p class="curiosity-sub">Pick one.</p>
+
+        <!-- EDIT: Tailor these to connect this lesson to what comes next -->
+        <div class="options" id="curiosity-options">
+          <div class="option" data-value="c1">
+            <div class="option-radio"></div>
+            <span class="option-text">[Curiosity option 1 — connects this lesson to a broader theme]</span>
+          </div>
+          <div class="option" data-value="c2">
+            <div class="option-radio"></div>
+            <span class="option-text">[Curiosity option 2 — connects to the next lesson]</span>
+          </div>
+          <div class="option" data-value="c3">
+            <div class="option-radio"></div>
+            <span class="option-text">[Curiosity option 3 — connects to the learner's real world]</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ════════════════════════════════
+           DONE
+      ════════════════════════════════ -->
+      <div class="step" id="step-done">
+        <div class="done-message">
+          <p class="done-text">You're all set.</p>
+          <p class="done-sub">That question will come up again — keep it in mind.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <script>
+    (function () {
+      var root = document.getElementById('reflection');
+      root.classList.add('is-ready');
+
+      var steps = {
+        1: document.getElementById('step-1'),
+        2: document.getElementById('step-2'),
+        3: document.getElementById('step-3'),
+        done: document.getElementById('step-done')
+      };
+
+      function showStep(id) {
+        Object.values(steps).forEach(function (s) { s.classList.remove('is-active'); });
+        steps[id].classList.add('is-active');
+        root.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+
+      // Step 1: enable Continue when an option is selected
+      var assessOptions = document.querySelectorAll('#assess-options .option');
+      var btnStep2 = document.getElementById('btn-step-2');
+      assessOptions.forEach(function (opt) {
+        opt.addEventListener('click', function () {
+          assessOptions.forEach(function (o) { o.classList.remove('is-selected'); });
+          opt.classList.add('is-selected');
+          btnStep2.disabled = false;
+        });
+      });
+      btnStep2.addEventListener('click', function () {
+        if (!btnStep2.disabled) showStep(2);
+      });
+
+      // Step 2 → Step 3: Continue button
+      document.getElementById('btn-step-3').addEventListener('click', function () {
+        showStep(3);
+      });
+
+      // Step 3 → Done: curiosity selection
+      var curiosityOptions = document.querySelectorAll('#curiosity-options .option');
+      curiosityOptions.forEach(function (opt) {
+        opt.addEventListener('click', function () {
+          curiosityOptions.forEach(function (o) { o.classList.remove('is-selected'); });
+          opt.classList.add('is-selected');
+          setTimeout(function () { showStep('done'); }, 400);
+        });
+      });
+
+    })();
+  </script>
+
+</body>
+</html>
