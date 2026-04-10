@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Stackable Levels</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #f4f5f7;
+      color: #1a1a2e;
+      padding: 40px 20px;
+    }
+
+    .page {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    header h1 {
+      font-size: 28px;
+      font-weight: 700;
+      color: #1a1a2e;
+      letter-spacing: -0.5px;
+    }
+
+    header p {
+      font-size: 14px;
+      color: #666;
+      margin-top: 6px;
+    }
+
+    .levels {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      position: relative;
+    }
+
+    .level-card {
+      display: grid;
+      grid-template-columns: 180px 1fr;
+      background: #fff;
+      border-radius: 0;
+      overflow: hidden;
+      border-left: 5px solid;
+      border-bottom: 1px solid #eee;
+      transition: box-shadow 0.2s;
+    }
+
+    .level-card:first-child { border-radius: 12px 12px 0 0; }
+    .level-card:last-child { border-radius: 0 0 12px 12px; border-bottom: none; }
+
+    .level-card:hover {
+      box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+      z-index: 1;
+      position: relative;
+    }
+
+    /* Level colours */
+    .level-card:nth-child(1) { border-color: #a8c5da; }
+    .level-card:nth-child(2) { border-color: #7fb3d3; }
+    .level-card:nth-child(3) { border-color: #5b9abf; }
+    .level-card:nth-child(4) { border-color: #3a7ca5; }
+    .level-card:nth-child(5) { border-color: #1f5f8b; }
+    .level-card:nth-child(6) { border-color: #0d3f6b; }
+
+    .level-label {
+      padding: 24px 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 4px;
+    }
+
+    .level-card:nth-child(1) .level-label { background: #f0f6fa; }
+    .level-card:nth-child(2) .level-label { background: #e8f2f8; }
+    .level-card:nth-child(3) .level-label { background: #ddedf5; }
+    .level-card:nth-child(4) .level-label { background: #cfe5f1; }
+    .level-card:nth-child(5) .level-label { background: #c0dbec; }
+    .level-card:nth-child(6) .level-label { background: #aecfe6; }
+
+    .level-number {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #888;
+    }
+
+    .level-title {
+      font-size: 17px;
+      font-weight: 700;
+      color: #1a1a2e;
+      line-height: 1.2;
+    }
+
+    .level-body {
+      padding: 24px 28px;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 16px;
+      align-items: start;
+    }
+
+    .level-section h4 {
+      display: none;
+    }
+
+    .level-section p {
+      font-size: 13.5px;
+      line-height: 1.55;
+      color: #333;
+    }
+
+    .arrow-row {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 0;
+      position: relative;
+      z-index: 2;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 32px;
+      font-size: 12px;
+      color: #aaa;
+    }
+
+    @media (max-width: 640px) {
+      .level-card { grid-template-columns: 1fr; }
+      .level-body { grid-template-columns: 1fr; }
+      .level-label { border-bottom: 1px solid #eee; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <h1>Stackable Levels</h1>
+    </header>
+
+    <div class="levels">
+
+      <div class="level-card">
+        <div class="level-label">
+          <span class="level-number">Level 1</span>
+          <span class="level-title">Coordinator</span>
+        </div>
+        <div class="level-body">
+          <div class="level-section">
+            <h4>Focus</h4>
+            <p>Learns the system and follows clear steps. Steady, accurate work that supports the weekly rhythm.</p>
+          </div>
+          <div class="level-section">
+            <h4>The Work</h4>
+            <p>Building confidence in core tools and contributing reliably to team tasks.</p>
+          </div>
+          <div class="level-section">
+            <h4>The Aim</h4>
+            <p>Become a dependable contributor who others can count on for consistent output.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="level-card">
+        <div class="level-label">
+          <span class="level-number">Level 2</span>
+          <span class="level-title">Associate</span>
+        </div>
+        <div class="level-body">
+          <div class="level-section">
+            <h4>Focus</h4>
+            <p>Manages a wider range of tasks with growing independence.</p>
+          </div>
+          <div class="level-section">
+            <h4>The Work</h4>
+            <p>Noticing what needs to be done and understanding how each task supports learners, SMEs and the team.</p>
+          </div>
+          <div class="level-section">
+            <h4>The Aim</h4>
+            <p>Show sound judgement in decisions and take ownership without needing to be directed.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="level-card">
+        <div class="level-label">
+          <span class="level-number">Level 3</span>
+          <span class="level-title">Senior Associate</span>
+        </div>
+        <div class="level-body">
+          <div class="level-section">
+            <h4>Focus</h4>
+            <p>Owns defined outputs and keeps projects moving forward.</p>
+          </div>
+          <div class="level-section">
+            <h4>The Work</h4>
+            <p>Solving problems quickly and producing accurate, organised assets.</p>
+          </div>
+          <div class="level-section">
+            <h4>The Aim</h4>
+            <p>Improve workflow quality and reduce rework for others across the team.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="level-card">
+        <div class="level-label">
+          <span class="level-number">Level 4</span>
+          <span class="level-title">Lead</span>
+        </div>
+        <div class="level-body">
+          <div class="level-section">
+            <h4>Focus</h4>
+            <p>Runs a defined area of work and makes independent decisions.</p>
+          </div>
+          <div class="level-section">
+            <h4>The Work</h4>
+            <p>Setting standards, guiding others, and maintaining consistent quality.</p>
+          </div>
+          <div class="level-section">
+            <h4>The Aim</h4>
+            <p>Deliver outcomes without supervision and actively support the weekly rhythm.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="level-card">
+        <div class="level-label">
+          <span class="level-number">Level 5</span>
+          <span class="level-title">Head</span>
+        </div>
+        <div class="level-body">
+          <div class="level-section">
+            <h4>Focus</h4>
+            <p>Leads an entire function with a long-term view.</p>
+          </div>
+          <div class="level-section">
+            <h4>The Work</h4>
+            <p>Planning, designing systems and building capability across the team.</p>
+          </div>
+          <div class="level-section">
+            <h4>The Aim</h4>
+            <p>Partner with the Founder on priorities and maintain clear direction for the function.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="level-card">
+        <div class="level-label">
+          <span class="level-number">Level 6</span>
+          <span class="level-title">Founder / C-Suite</span>
+        </div>
+        <div class="level-body">
+          <div class="level-section">
+            <h4>Focus</h4>
+            <p>Holds responsibility for mission, strategy and culture.</p>
+          </div>
+          <div class="level-section">
+            <h4>The Work</h4>
+            <p>Aligning the team to support effective decisions and ensuring progress toward long-term goals.</p>
+          </div>
+          <div class="level-section">
+            <h4>The Aim</h4>
+            <p>Serve the mission and the people it exists for — building something that lasts.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</body>
+</html>
