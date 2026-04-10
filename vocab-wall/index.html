@@ -1,0 +1,1241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vocab Wall</title>
+  <style>
+
+    /* ============================================================
+       APPLE DESIGN SYSTEM
+    ============================================================ */
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+
+      --color-bg-primary:      #f5f5f7;
+      --color-bg-secondary:    #ffffff;
+      --color-surface-subtle:  #fafafc;
+      --color-text-primary:    #1d1d1f;
+      --color-text-secondary:  #6e6e73;
+      --color-text-tertiary:   #86868b;
+      --color-link:            #0066cc;
+      --color-link-hover:      #0077ed;
+      --color-link-bg:         rgba(0, 102, 204, 0.08);
+      --color-link-bg-strong:  rgba(0, 102, 204, 0.14);
+      --color-border:          #d2d2d7;
+      --color-border-strong:   #b8b8bd;
+      --color-success:         #34c759;
+      --color-success-bg:      #f0fdf4;
+      --color-error:           #ff3b30;
+      --color-error-bg:        #fff5f5;
+
+      --space-1:  8px;
+      --space-2:  16px;
+      --space-3:  24px;
+      --space-4:  32px;
+      --space-6:  48px;
+      --space-8:  64px;
+      --space-12: 96px;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --color-bg-primary:     #000000;
+        --color-bg-secondary:   #1c1c1e;
+        --color-surface-subtle: #252528;
+        --color-text-primary:   #f5f5f7;
+        --color-text-secondary: #a1a1a6;
+        --color-text-tertiary:  #6e6e73;
+        --color-link:           #2997ff;
+        --color-link-hover:     #59b0ff;
+        --color-link-bg:        rgba(41, 151, 255, 0.14);
+        --color-link-bg-strong: rgba(41, 151, 255, 0.22);
+        --color-border:         #3a3a3c;
+        --color-border-strong:  #545458;
+        --color-success-bg:     #0d2b1c;
+        --color-error-bg:       #2b0d0d;
+      }
+    }
+
+    body {
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      background: var(--color-bg-primary);
+      color: var(--color-text-primary);
+      -webkit-font-smoothing: antialiased;
+      line-height: 1.5;
+    }
+
+    button {
+      font-family: inherit;
+      font-size: inherit;
+      color: inherit;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+    }
+    button:focus-visible {
+      outline: 3px solid var(--color-link);
+      outline-offset: 3px;
+      border-radius: 8px;
+    }
+
+    /* ── LAYOUT ── */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding-left:  clamp(var(--space-2), 5vw, var(--space-8));
+      padding-right: clamp(var(--space-2), 5vw, var(--space-8));
+    }
+
+    .vocab-section {
+      background: var(--color-bg-primary);
+      padding: clamp(var(--space-6), 8vw, var(--space-12)) 0;
+    }
+
+    .vocab-layout {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-4);
+      align-items: center;
+    }
+
+    /* ── SECTION HEADING (outside card) ── */
+    .section-head {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      text-align: center;
+      max-width: 640px;
+    }
+    .section-head h2 {
+      font-size: clamp(28px, 3.5vw, 44px);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+      color: var(--color-text-primary);
+    }
+    .section-head p {
+      font-size: 17px;
+      color: var(--color-text-secondary);
+      line-height: 1.5;
+    }
+
+    /* ============================================================
+       WALL VIEW
+    ============================================================ */
+    .wall-card {
+      width: 100%;
+      max-width: 1100px;
+      background: var(--color-bg-secondary);
+      border: 1px solid var(--color-border);
+      border-radius: 20px;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.06);
+      overflow: hidden;
+    }
+
+    .wall-head {
+      padding: clamp(20px, 3vw, 28px) clamp(20px, 3vw, 32px);
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: var(--space-3);
+      flex-wrap: wrap;
+      border-bottom: 1px solid var(--color-border);
+    }
+    .wall-head-titles {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .wall-head-title {
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: -0.015em;
+      color: var(--color-text-primary);
+      line-height: 1.25;
+    }
+    .wall-head-meta {
+      font-size: 13px;
+      color: var(--color-text-secondary);
+      line-height: 1.3;
+      font-weight: 500;
+    }
+    .wall-head-instruction {
+      font-size: 14px;
+      color: var(--color-text-secondary);
+      line-height: 1.4;
+    }
+
+    .filter-pills {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .filter-pill {
+      background: transparent;
+      border: 1px solid var(--color-border);
+      border-radius: 999px;
+      padding: 6px 14px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--color-text-secondary);
+      transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
+    }
+    .filter-pill:hover {
+      border-color: var(--color-border-strong);
+      color: var(--color-text-primary);
+    }
+    .filter-pill.active {
+      background: var(--color-link-bg);
+      border-color: var(--color-link);
+      color: var(--color-link);
+      font-weight: 600;
+    }
+
+    .progress-row {
+      padding: 14px clamp(20px, 3vw, 32px);
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      background: var(--color-surface-subtle);
+      border-bottom: 1px solid var(--color-border);
+    }
+    .progress-label {
+      font-size: 13px;
+      color: var(--color-text-secondary);
+      white-space: nowrap;
+    }
+    .progress-track {
+      flex: 1;
+      min-width: 80px;
+      height: 4px;
+      background: var(--color-border);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      background: var(--color-link);
+      border-radius: 999px;
+      transition: width 0.25s ease;
+    }
+    .quiz-me-btn {
+      display: inline-flex;
+      align-items: center;
+      height: 32px;
+      padding: 0 16px;
+      border-radius: 999px;
+      background: var(--color-link);
+      color: #ffffff;
+      font-size: 13px;
+      font-weight: 600;
+      transition: background 0.15s ease;
+      white-space: nowrap;
+    }
+    .quiz-me-btn:hover { background: var(--color-link-hover); }
+
+    .term-groups {
+      padding: clamp(20px, 3vw, 28px);
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+    }
+    .term-groups .term-grid {
+      padding: 0;
+    }
+    .term-group-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--color-text-secondary);
+      margin-bottom: 10px;
+      letter-spacing: -0.005em;
+    }
+    .term-grid {
+      padding: clamp(20px, 3vw, 28px);
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+    }
+    @media (max-width: 960px) { .term-grid { grid-template-columns: repeat(3, 1fr); } }
+    @media (max-width: 720px) { .term-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 460px) { .term-grid { grid-template-columns: 1fr; } }
+
+    .term-tile {
+      background: var(--color-bg-secondary);
+      border: 1px solid var(--color-border);
+      border-radius: 14px;
+      padding: 18px 20px;
+      text-align: left;
+      position: relative;
+      display: block;
+      min-height: 64px;
+      transition: border-color 0.15s ease, transform 0.15s ease, background 0.15s ease;
+    }
+    .term-tile:hover {
+      border-color: var(--color-link);
+      transform: translateY(-1px);
+    }
+    .term-tile.seen {
+      background: var(--color-link-bg);
+      border-color: var(--color-link-bg-strong);
+    }
+    .term-tile.seen:hover {
+      border-color: var(--color-link);
+    }
+    .term-tile-term {
+      font-size: 16px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      color: var(--color-text-primary);
+      line-height: 1.3;
+    }
+    .term-tile.seen .term-tile-term { color: var(--color-link); }
+    .term-tile-hint {
+      font-size: 12px;
+      color: var(--color-text-tertiary);
+      line-height: 1.4;
+    }
+    .term-grid-empty {
+      grid-column: 1 / -1;
+      padding: 32px;
+      text-align: center;
+      color: var(--color-text-tertiary);
+      font-size: 14px;
+    }
+
+    /* ============================================================
+       FLYOUT VIEW
+    ============================================================ */
+    .flyout-layout {
+      width: 100%;
+      max-width: 720px;
+    }
+
+    .flyout-card {
+      background: var(--color-bg-secondary);
+      border: 1px solid var(--color-border);
+      border-radius: 20px;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.06);
+      overflow: hidden;
+    }
+
+    .flyout-head {
+      padding: clamp(20px, 3vw, 28px) clamp(20px, 3vw, 32px);
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: var(--space-2);
+      border-bottom: 1px solid var(--color-border);
+    }
+    .flyout-counter {
+      font-size: 13px;
+      color: var(--color-text-tertiary);
+      font-weight: 500;
+      margin-bottom: 6px;
+    }
+    .flyout-term {
+      font-size: clamp(24px, 3vw, 32px);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--color-text-primary);
+      line-height: 1.15;
+    }
+    .flyout-close {
+      flex-shrink: 0;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--color-bg-primary);
+      color: var(--color-text-secondary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      transition: background 0.15s ease, color 0.15s ease;
+    }
+    .flyout-close:hover {
+      background: var(--color-border);
+      color: var(--color-text-primary);
+    }
+
+    .flyout-body {
+      padding: clamp(20px, 3vw, 28px) clamp(20px, 3vw, 32px);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-3);
+    }
+
+    .flyout-definition {
+      font-size: 17px;
+      color: var(--color-text-primary);
+      line-height: 1.55;
+    }
+
+    .flyout-bridge {
+      font-size: 15px;
+      color: var(--color-text-secondary);
+      line-height: 1.5;
+    }
+    .flyout-bridge-label {
+      font-weight: 600;
+      color: var(--color-text-primary);
+    }
+    .flyout-bridge-text {
+      font-style: italic;
+    }
+
+    .flyout-example {
+      background: var(--color-surface-subtle);
+      border: 1px solid var(--color-border);
+      border-radius: 12px;
+      padding: 16px 20px;
+    }
+    .flyout-example-text {
+      font-size: 15px;
+      color: var(--color-text-primary);
+      line-height: 1.6;
+      font-style: italic;
+    }
+    .flyout-example-text::before,
+    .flyout-example-text::after { content: '"'; }
+
+    .flyout-related {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+    }
+    .flyout-related-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--color-text-secondary);
+      margin-right: 2px;
+    }
+    .related-chip {
+      background: var(--color-link-bg);
+      border: 1px solid var(--color-link-bg-strong);
+      border-radius: 999px;
+      padding: 6px 14px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--color-link);
+      transition: background 0.15s ease, border-color 0.15s ease;
+    }
+    .related-chip:hover {
+      background: var(--color-link);
+      border-color: var(--color-link);
+      color: #ffffff;
+    }
+
+    .flyout-nav {
+      display: flex;
+      gap: 10px;
+      margin-top: 4px;
+    }
+    .flyout-nav-btn {
+      flex: 1;
+      height: 44px;
+      padding: 0 16px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 600;
+      line-height: 1;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: background 0.15s ease, border-color 0.15s ease;
+    }
+    .flyout-nav-btn.prev {
+      background: var(--color-bg-secondary);
+      border: 1px solid var(--color-border);
+      color: var(--color-text-primary);
+    }
+    .flyout-nav-btn.prev:hover:not(:disabled) { border-color: var(--color-link); color: var(--color-link); }
+    .flyout-nav-btn.prev:disabled {
+      color: var(--color-text-tertiary);
+      cursor: not-allowed;
+    }
+    .flyout-nav-btn.next {
+      background: var(--color-link);
+      border: none;
+      color: #ffffff;
+    }
+    .flyout-nav-btn.next:hover { background: var(--color-link-hover); }
+
+    /* ============================================================
+       QUIZ MODE
+    ============================================================ */
+    .quiz-card {
+      width: 100%;
+      max-width: 560px;
+      background: var(--color-bg-secondary);
+      border: 1px solid var(--color-border);
+      border-radius: 20px;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.06);
+      overflow: hidden;
+    }
+    .quiz-head {
+      padding: 18px clamp(20px, 3vw, 28px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      border-bottom: 1px solid var(--color-border);
+    }
+    .quiz-head-counter {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--color-text-tertiary);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+    .quiz-head-score {
+      font-size: 13px;
+      color: var(--color-text-secondary);
+      font-weight: 500;
+    }
+
+    .quiz-body {
+      padding: clamp(20px, 3vw, 28px);
+    }
+    .quiz-prompt {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--color-text-tertiary);
+      margin-bottom: 10px;
+    }
+    .quiz-definition {
+      background: var(--color-surface-subtle);
+      border: 1px solid var(--color-border);
+      border-radius: 12px;
+      padding: 16px 18px;
+      font-size: 16px;
+      color: var(--color-text-primary);
+      line-height: 1.55;
+      margin-bottom: 20px;
+    }
+    .quiz-choices {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    .quiz-choice {
+      background: var(--color-bg-secondary);
+      border: 1px solid var(--color-border);
+      border-radius: 12px;
+      padding: 14px 16px;
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--color-text-primary);
+      text-align: left;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      line-height: 1.3;
+      transition: border-color 0.15s ease, background 0.15s ease;
+    }
+    .quiz-choice:hover:not(:disabled) { border-color: var(--color-link); }
+    .quiz-choice:disabled { cursor: default; }
+    .quiz-choice.correct {
+      background: var(--color-link-bg);
+      border-color: var(--color-link);
+      color: var(--color-link);
+      font-weight: 600;
+    }
+    .quiz-choice.correct .mark { color: var(--color-link); }
+    .quiz-choice.wrong-chosen {
+      background: var(--color-bg-primary);
+      color: var(--color-text-tertiary);
+    }
+    .quiz-choice.wrong-chosen .mark { color: var(--color-text-tertiary); }
+    .quiz-choice.dim {
+      background: var(--color-bg-primary);
+      color: var(--color-text-tertiary);
+    }
+
+    .quiz-feedback {
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin-bottom: 14px;
+      border: 1px solid;
+    }
+    .quiz-feedback.correct {
+      background: var(--color-link-bg);
+      border-color: var(--color-link);
+    }
+    .quiz-feedback.incorrect {
+      background: var(--color-bg-primary);
+      border-color: var(--color-border);
+    }
+    .quiz-feedback-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 6px;
+    }
+    .quiz-feedback.correct .quiz-feedback-label { color: var(--color-link); }
+    .quiz-feedback.incorrect .quiz-feedback-label { color: var(--color-text-secondary); }
+    .quiz-feedback-text {
+      font-size: 14px;
+      color: var(--color-text-primary);
+      line-height: 1.55;
+    }
+    .quiz-feedback-nudge {
+      font-size: 13px;
+      color: var(--color-text-secondary);
+      line-height: 1.5;
+      margin-top: 8px;
+      font-weight: 600;
+    }
+
+    .quiz-actions {
+      display: flex;
+      gap: 10px;
+    }
+    .quiz-action {
+      flex: 1;
+      height: 44px;
+      padding: 0 16px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      line-height: 1;
+      transition: background 0.15s ease, border-color 0.15s ease;
+    }
+    .quiz-action.secondary {
+      background: var(--color-bg-secondary);
+      border: 1px solid var(--color-border);
+      color: var(--color-text-primary);
+    }
+    .quiz-action.secondary:hover { border-color: var(--color-link); color: var(--color-link); }
+    .quiz-action.primary {
+      background: var(--color-link);
+      border: none;
+      color: #ffffff;
+    }
+    .quiz-action.primary:hover { background: var(--color-link-hover); }
+
+    /* ============================================================
+       RESULT SCREEN
+    ============================================================ */
+    .result-card {
+      width: 100%;
+      max-width: 640px;
+      background: var(--color-bg-secondary);
+      border: 1px solid var(--color-border);
+      border-radius: 20px;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.06);
+      padding: clamp(28px, 5vw, 48px);
+    }
+    .result-head {
+      text-align: center;
+      margin-bottom: var(--space-4);
+    }
+    .result-eyebrow {
+      font-size: 11px;
+      color: var(--color-text-tertiary);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 12px;
+    }
+    .result-score {
+      font-size: clamp(48px, 8vw, 72px);
+      font-weight: 700;
+      color: var(--color-text-primary);
+      line-height: 1;
+      letter-spacing: -0.03em;
+      margin-bottom: 10px;
+    }
+    .result-sub {
+      font-size: 15px;
+      color: var(--color-text-secondary);
+    }
+    .result-review {
+      background: var(--color-surface-subtle);
+      border: 1px solid var(--color-border);
+      border-radius: 14px;
+      padding: 20px 22px;
+      margin-bottom: var(--space-3);
+    }
+    .result-review-label {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--color-text-tertiary);
+      margin-bottom: 12px;
+    }
+    .result-review-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .review-pill {
+      background: var(--color-bg-secondary);
+      border: 1px solid var(--color-border);
+      border-radius: 999px;
+      padding: 8px 16px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--color-link);
+      transition: border-color 0.15s ease, background 0.15s ease;
+    }
+    .review-pill:hover {
+      border-color: var(--color-link);
+      background: var(--color-link-bg);
+    }
+    .result-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .result-action {
+      flex: 1 1 180px;
+      height: 44px;
+      padding: 0 18px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: background 0.15s ease, border-color 0.15s ease;
+    }
+    .result-action.secondary {
+      background: var(--color-bg-secondary);
+      border: 1px solid var(--color-border);
+      color: var(--color-text-primary);
+    }
+    .result-action.secondary:hover { border-color: var(--color-link); color: var(--color-link); }
+    .result-action.primary {
+      background: var(--color-link);
+      border: none;
+      color: #ffffff;
+    }
+    .result-action.primary:hover { background: var(--color-link-hover); }
+
+  </style>
+</head>
+<body>
+  <section class="vocab-section">
+    <div class="container">
+      <div class="vocab-layout">
+        <div id="root"></div>
+      </div>
+    </div>
+  </section>
+
+<script>
+(function () {
+
+  /* =================================================================
+     EDIT: lesson vocabulary
+     Each term has:
+       id          — short unique string
+       term        — the word or phrase as it appears in the lesson
+       definition  — 1–2 plain-language sentences
+       example     — one sentence showing the term in context
+       familiarAs  — OPTIONAL. A plain-language label the learner already
+                     knows. Renders as "You might know this as: ..."
+                     in the flyout.
+       group       — OPTIONAL. A category label, e.g. "Story structure".
+                     If ANY term has a group, the wall renders as labelled
+                     groups. If no term has a group, the wall is a flat
+                     grid. All-or-nothing per lesson.
+       relatedTo   — OPTIONAL. Array of other term ids this term relates to.
+                     Renders as clickable chips at the bottom of the flyout.
+     Add or remove terms freely.
+  ================================================================= */
+  const terms = [
+    { id: 't1', term: 'Term one goes here',
+      group: 'First group label',
+      definition: 'Plain-language definition goes here. Two short sentences at most.',
+      example: 'Term one goes here is what shows up when the term is used naturally in context.',
+      familiarAs: 'a plain-language label the learner already knows',
+      relatedTo: ['t3'] }, // EDIT: term 1
+
+    { id: 't2', term: 'Term two goes here',
+      group: 'First group label',
+      definition: 'Plain-language definition goes here. Two short sentences at most.',
+      example: 'Example sentence goes here, showing the term used naturally in context.' }, // EDIT: term 2
+
+    { id: 't3', term: 'Term three goes here',
+      group: 'First group label',
+      definition: 'Plain-language definition goes here. Two short sentences at most.',
+      example: 'Example sentence goes here, showing the term used naturally in context.' }, // EDIT: term 3
+
+    { id: 't4', term: 'Term four goes here',
+      group: 'Second group label',
+      definition: 'Plain-language definition goes here. Two short sentences at most.',
+      example: 'Example sentence goes here, showing the term used naturally in context.' }, // EDIT: term 4
+
+    { id: 't5', term: 'Term five goes here',
+      group: 'Second group label',
+      definition: 'Plain-language definition goes here. Two short sentences at most.',
+      example: 'Example sentence goes here, showing the term used naturally in context.' }, // EDIT: term 5
+
+    { id: 't6', term: 'Term six goes here',
+      group: 'Third group label',
+      definition: 'Plain-language definition goes here. Two short sentences at most.',
+      example: 'Example sentence goes here, showing the term used naturally in context.' }, // EDIT: term 6
+
+    { id: 't7', term: 'Term seven goes here',
+      group: 'Third group label',
+      definition: 'Plain-language definition goes here. Two short sentences at most.',
+      example: 'Example sentence goes here, showing the term used naturally in context.' }, // EDIT: term 7
+
+    { id: 't8', term: 'Term eight goes here',
+      group: 'Third group label',
+      definition: 'Plain-language definition goes here. Two short sentences at most.',
+      example: 'Example sentence goes here, showing the term used naturally in context.' }  // EDIT: term 8
+  ];
+
+  // EDIT: header copy
+  const HEADER_TITLE              = 'Key terms for this lesson';
+  const EST_MINUTES               = 5; // EDIT: rough time-on-task estimate
+  const HEADER_INSTRUCTION        = 'Tap a term. Guess before you read. The quiz unlocks halfway.';
+  const HEADER_INSTRUCTION_DONE   = 'All terms opened. Try the quiz when you\u2019re ready.';
+
+  const state = {
+    view: 'wall',
+    filter: 'all',
+    seen: new Set(),
+    activeTermId: null,
+    flyoutFrom: null,
+    quiz: null
+  };
+
+  const root = document.getElementById('root');
+
+  function h(tag, attrs, kids) {
+    const n = document.createElement(tag);
+    if (attrs) for (const k in attrs) {
+      if (k === 'class') n.className = attrs[k];
+      else if (k === 'html') n.innerHTML = attrs[k];
+      else if (k.startsWith('on') && typeof attrs[k] === 'function') n.addEventListener(k.slice(2), attrs[k]);
+      else if (attrs[k] === true) n.setAttribute(k, '');
+      else if (attrs[k] !== false && attrs[k] != null) n.setAttribute(k, attrs[k]);
+    }
+    (kids || []).forEach(c => {
+      if (c == null || c === false) return;
+      n.appendChild(typeof c === 'string' || typeof c === 'number' ? document.createTextNode(String(c)) : c);
+    });
+    return n;
+  }
+
+  function termById(id) { return terms.find(t => t.id === id); }
+  function seenCount() { return state.seen.size; }
+
+  /* =================================================================
+     WALL VIEW
+  ================================================================= */
+  function renderWall() {
+    const filtered = terms.filter(t => {
+      if (state.filter === 'seen') return state.seen.has(t.id);
+      if (state.filter === 'unseen') return !state.seen.has(t.id);
+      return true;
+    });
+
+    const pct = terms.length ? Math.round((seenCount() / terms.length) * 100) : 0;
+    const anySeen     = seenCount() > 0;
+    const allSeen     = seenCount() === terms.length;
+    const showQuizBtn = seenCount() >= Math.ceil(terms.length / 2);
+    const instruction = allSeen ? HEADER_INSTRUCTION_DONE : HEADER_INSTRUCTION;
+
+    return h('div', { class: 'wall-card' }, [
+
+      h('div', { class: 'wall-head' }, [
+        h('div', { class: 'wall-head-titles' }, [
+          h('div', { class: 'wall-head-title' }, [HEADER_TITLE]),
+          h('div', { class: 'wall-head-instruction' }, [instruction]),
+          h('div', { class: 'wall-head-meta' }, [terms.length + ' terms \u00b7 about ' + EST_MINUTES + ' minutes'])
+        ]),
+        anySeen ? h('div', { class: 'filter-pills', role: 'group', 'aria-label': 'Filter terms' }, [
+          filterPill('all', 'All'),
+          filterPill('seen', 'Opened'),
+          filterPill('unseen', 'Not yet opened')
+        ]) : null
+      ]),
+
+      h('div', { class: 'progress-row' }, [
+        h('div', { class: 'progress-label' }, [seenCount() + ' of ' + terms.length + ' terms opened']),
+        h('div', { class: 'progress-track', 'aria-hidden': 'true' }, [
+          h('div', { class: 'progress-fill', style: 'width:' + pct + '%' })
+        ]),
+        showQuizBtn ? h('button', { class: 'quiz-me-btn', type: 'button', onclick: startQuiz }, ['Quiz me']) : null
+      ]),
+
+      renderTermArea(filtered)
+    ]);
+  }
+
+  function renderTermArea(filtered) {
+    if (!filtered.length) {
+      return h('div', { class: 'term-grid' }, [
+        h('div', { class: 'term-grid-empty' }, ['Nothing to show here.'])
+      ]);
+    }
+    const hasGroups = terms.some(t => t.group);
+    if (!hasGroups) {
+      return h('div', { class: 'term-grid' }, filtered.map(termTile));
+    }
+    // Group filtered terms, preserving first-encounter order from `terms`.
+    const order = [];
+    const buckets = {};
+    terms.forEach(t => {
+      const key = t.group || 'Other';
+      if (!buckets[key]) { buckets[key] = []; order.push(key); }
+      if (filtered.indexOf(t) !== -1) buckets[key].push(t);
+    });
+    return h('div', { class: 'term-groups' },
+      order
+        .filter(key => buckets[key].length)
+        .map(key => h('div', { class: 'term-group' }, [
+          h('div', { class: 'term-group-label' }, [key]),
+          h('div', { class: 'term-grid' }, buckets[key].map(termTile))
+        ]))
+    );
+  }
+
+  function filterPill(value, label) {
+    return h('button', {
+      class: 'filter-pill' + (state.filter === value ? ' active' : ''),
+      type: 'button',
+      'aria-pressed': state.filter === value ? 'true' : 'false',
+      onclick: function () { state.filter = value; render(); }
+    }, [label]);
+  }
+
+  function termTile(t) {
+    const isSeen = state.seen.has(t.id);
+    return h('button', {
+      class: 'term-tile' + (isSeen ? ' seen' : ''),
+      type: 'button',
+      'aria-label': t.term + (isSeen ? ' — already opened, click to review' : ' — click to see definition'),
+      onclick: function () { openFlyout(t.id); }
+    }, [
+      h('div', { class: 'term-tile-term' }, [t.term])
+    ]);
+  }
+
+  /* =================================================================
+     FLYOUT VIEW
+  ================================================================= */
+  function renderFlyout() {
+    const t = termById(state.activeTermId) || terms[0];
+    const idx = terms.findIndex(x => x.id === t.id);
+
+    return h('div', { class: 'flyout-layout' }, [
+
+      h('div', { class: 'flyout-card' }, [
+        h('div', { class: 'flyout-head' }, [
+          h('div', {}, [
+            h('div', { class: 'flyout-counter' }, ['Term ' + (idx + 1) + ' of ' + terms.length]),
+            h('div', { class: 'flyout-term' }, [t.term])
+          ]),
+          h('button', {
+            class: 'flyout-close',
+            type: 'button',
+            'aria-label': 'Close definition and return to wall',
+            onclick: closeFlyout
+          }, ['\u2715'])
+        ]),
+        h('div', { class: 'flyout-body' }, [
+
+          h('div', { class: 'flyout-definition' }, [t.definition]),
+
+          t.familiarAs ? h('div', { class: 'flyout-bridge' }, [
+            h('span', { class: 'flyout-bridge-label' }, ['You might know this as: ']),
+            h('span', { class: 'flyout-bridge-text' }, [t.familiarAs])
+          ]) : null,
+
+          h('div', { class: 'flyout-example' }, [
+            h('div', { class: 'flyout-example-text' }, [t.example])
+          ]),
+
+          (t.relatedTo && t.relatedTo.length) ? h('div', { class: 'flyout-related' }, [
+            h('span', { class: 'flyout-related-label' }, ['Related: '])
+          ].concat(
+            t.relatedTo
+              .map(rid => termById(rid))
+              .filter(Boolean)
+              .map(rt => h('button', {
+                class: 'related-chip',
+                type: 'button',
+                onclick: function () { openFlyout(rt.id); }
+              }, [rt.term]))
+          )) : null,
+
+          h('div', { class: 'flyout-nav' }, [
+            idx > 0 ? h('button', {
+              class: 'flyout-nav-btn prev',
+              type: 'button',
+              onclick: function () { openFlyout(terms[idx - 1].id); }
+            }, ['\u2190  Previous']) : null,
+            h('button', {
+              class: 'flyout-nav-btn next',
+              type: 'button',
+              onclick: function () {
+                if (idx < terms.length - 1) openFlyout(terms[idx + 1].id);
+                else closeFlyout();
+              }
+            }, [idx < terms.length - 1 ? 'Next  \u2192' : 'Back to terms'])
+          ])
+        ])
+      ])
+    ]);
+  }
+
+  function openFlyout(id) {
+    if (state.view !== 'flyout') state.flyoutFrom = state.view;
+    state.activeTermId = id;
+    state.seen.add(id);
+    state.view = 'flyout';
+    render();
+  }
+
+  function closeFlyout() {
+    state.view = state.flyoutFrom || 'wall';
+    state.flyoutFrom = null;
+    state.activeTermId = null;
+    render();
+  }
+
+  /* =================================================================
+     QUIZ MODE
+  ================================================================= */
+  function startQuiz() {
+    const order = shuffle(terms.map(t => t.id));
+    state.quiz = {
+      order: order,
+      index: 0,
+      score: 0,
+      answers: {},
+      wrongIds: []
+    };
+    state.view = 'quiz';
+    render();
+  }
+
+  function shuffle(arr) {
+    const a = arr.slice();
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  // Replace the term inside its example sentence with a blank.
+  // Returns { ok, text }. ok=false means the term wasn't found in the example
+  // (author error or unusual phrasing) — caller should fall back.
+  function clozeExample(term) {
+    if (!term.example || !term.term) return { ok: false };
+    const escaped = term.term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    // \b boundaries so "AI" doesn't match the "ai" in "main".
+    // Terms ending in punctuation (e.g. "C++") will fall back to definition mode.
+    const re = new RegExp('\\b' + escaped + '\\b', 'gi');
+    if (!re.test(term.example)) return { ok: false };
+    return { ok: true, text: term.example.replace(re, '_____') };
+  }
+
+  // Pick 3 wrong answers, preferring terms in the correct term's relatedTo
+  // array. Falls back to random other terms when there aren't enough related.
+  function pickDistractors(current) {
+    const others = terms.filter(t => t.id !== current.id);
+    const relatedIds = current.relatedTo || [];
+    const related = relatedIds
+      .map(id => termById(id))
+      .filter(t => t && t.id !== current.id);
+    const relatedPicked = shuffle(related).slice(0, 3);
+    const need = 3 - relatedPicked.length;
+    if (need <= 0) return relatedPicked.map(t => t.term);
+    const pool = others.filter(t => !relatedPicked.some(r => r.id === t.id));
+    const fill = shuffle(pool).slice(0, need);
+    return relatedPicked.concat(fill).map(t => t.term);
+  }
+
+  function renderQuiz() {
+    const q = state.quiz;
+    const current = termById(q.order[q.index]);
+    const answered = q.answers.hasOwnProperty(current.id);
+
+    if (!q.choicesByTerm) q.choicesByTerm = {};
+    if (!q.choicesByTerm[current.id]) {
+      const distractors = pickDistractors(current);
+      q.choicesByTerm[current.id] = shuffle([current.term].concat(distractors));
+    }
+    const choices = q.choicesByTerm[current.id];
+
+    const cloze = clozeExample(current);
+    const usedCloze = cloze.ok;
+
+    return h('div', { class: 'quiz-card' }, [
+      h('div', { class: 'quiz-head' }, [
+        h('div', { class: 'quiz-head-counter' }, ['Question ' + (q.index + 1) + ' of ' + q.order.length]),
+        h('div', { class: 'quiz-head-score' }, ['Score: ' + q.score + ' / ' + q.order.length])
+      ]),
+      h('div', { class: 'quiz-body' }, [
+        h('div', { class: 'quiz-prompt' }, [usedCloze ? 'Which term fills the gap?' : 'Which term matches this definition?']),
+        h('div', { class: 'quiz-definition' }, [usedCloze ? cloze.text : current.definition]),
+        h('div', { class: 'quiz-choices' }, choices.map(c => quizChoiceBtn(c, current, answered)))
+      ].concat(answered ? quizFeedback(current, usedCloze) : []))
+    ]);
+  }
+
+  function quizChoiceBtn(choice, current, answered) {
+    const chosen = state.quiz.answers[current.id];
+    let cls = 'quiz-choice';
+    if (answered) {
+      if (choice === current.term) cls += ' correct';
+      else if (choice === chosen) cls += ' wrong-chosen';
+      else cls += ' dim';
+    }
+    return h('button', {
+      class: cls,
+      type: 'button',
+      disabled: answered,
+      onclick: function () { answerQuiz(choice); }
+    }, [
+      h('span', {}, [choice]),
+      answered && choice === current.term ? h('span', { class: 'mark', 'aria-hidden': 'true' }, ['\u2713']) : null,
+      answered && choice === chosen && choice !== current.term ? h('span', { class: 'mark', 'aria-hidden': 'true' }, ['\u2715']) : null
+    ]);
+  }
+
+  function quizFeedback(current, usedCloze) {
+    const q = state.quiz;
+    const chosen = q.answers[current.id];
+    const correct = chosen === current.term;
+    const isLast = q.index === q.order.length - 1;
+
+    // In cloze mode the example was the prompt, so feedback shows the
+    // definition. In definition mode the definition was the prompt, so
+    // feedback shows the example.
+    const feedbackText = usedCloze ? current.definition : current.example;
+    const nudge = usedCloze ? null : 'Re-read the example to see how it fits.';
+
+    const nodes = [
+      h('div', { class: 'quiz-feedback ' + (correct ? 'correct' : 'incorrect') }, [
+        h('div', { class: 'quiz-feedback-label' },
+          [correct ? 'Correct' : 'The answer is ' + current.term]),
+        h('div', { class: 'quiz-feedback-text' }, [feedbackText]),
+        (correct || !nudge) ? null : h('div', { class: 'quiz-feedback-nudge' }, [nudge])
+      ])
+    ];
+
+    nodes.push(
+      h('div', { class: 'quiz-actions' }, [
+        h('button', {
+          class: 'quiz-action primary',
+          type: 'button',
+          onclick: isLast ? finishQuiz : nextQuiz
+        }, [isLast ? 'See my result  \u2192' : 'Next  \u2192'])
+      ])
+    );
+
+    return nodes;
+  }
+
+  function answerQuiz(choice) {
+    const q = state.quiz;
+    const current = termById(q.order[q.index]);
+    if (q.answers.hasOwnProperty(current.id)) return;
+    q.answers[current.id] = choice;
+    if (choice === current.term) q.score += 1;
+    else q.wrongIds.push(current.id);
+    render();
+  }
+
+  function nextQuiz() {
+    state.quiz.index += 1;
+    render();
+  }
+
+  function finishQuiz() {
+    state.view = 'result';
+    render();
+  }
+
+  /* =================================================================
+     RESULT SCREEN
+  ================================================================= */
+  function renderResult() {
+    const q = state.quiz;
+    const wrong = q.wrongIds.map(id => termById(id)).filter(Boolean);
+    const pct = q.score / q.order.length;
+    let message;
+    if (pct === 1)        message = 'Perfect \u2014 every term landed.';
+    else if (pct >= 0.75) message = 'Strong. Almost every term landed.';
+    else if (pct >= 0.5)  message = 'Solid start \u2014 worth another pass.';
+    else                  message = 'Worth another pass. Re-open the highlighted terms first.';
+
+    return h('div', { class: 'result-card' }, [
+      h('div', { class: 'result-head' }, [
+        h('div', { class: 'result-eyebrow' }, ['Vocab quiz complete']),
+        h('div', { class: 'result-score' }, [q.score + ' / ' + q.order.length]),
+        h('div', { class: 'result-sub' }, [message])
+      ]),
+
+      wrong.length ? h('div', { class: 'result-review' }, [
+        h('div', { class: 'result-review-label' }, ['Worth reviewing']),
+        h('div', { class: 'result-review-pills' },
+          wrong.map(t => h('button', {
+            class: 'review-pill',
+            type: 'button',
+            onclick: function () { openFlyout(t.id); }
+          }, [t.term]))
+        )
+      ]) : null,
+
+      h('div', { class: 'result-actions' }, [
+        h('button', {
+          class: 'result-action secondary',
+          type: 'button',
+          onclick: startQuiz
+        }, ['\u21BA  Quiz me again']),
+        h('button', {
+          class: 'result-action primary',
+          type: 'button',
+          onclick: function () { state.view = 'wall'; state.quiz = null; render(); }
+        }, ['Back to terms  \u2192'])
+      ])
+    ]);
+  }
+
+  /* =================================================================
+     Top-level render
+  ================================================================= */
+  function render() {
+    root.innerHTML = '';
+    let view;
+    if (state.view === 'wall')       view = renderWall();
+    else if (state.view === 'flyout') view = renderFlyout();
+    else if (state.view === 'quiz')   view = renderQuiz();
+    else if (state.view === 'result') view = renderResult();
+    root.appendChild(view);
+  }
+
+  render();
+})();
+</script>
+</body>
+</html>
