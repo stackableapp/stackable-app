@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pre-Module Diagnostic</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #f0ebe3;
+      --card:      #f8f8f6;
+      --accent:    #e8440a;
+      --text:      #1a1a1a;
+      --text-2:    #5a5550;
+      --rule:      #e4ded3;
+      --muted:     #d9d3c7;
+    }
+
+    html, body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-size: 1rem;
+      line-height: 2;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1rem;
+    }
+
+    h1, h2, h3 {
+      font-family: Georgia, serif;
+      font-weight: 700;
+      line-height: 1.25;
+      color: var(--text);
+    }
+
+    .diagnostic {
+      width: 100%;
+      max-width: 36rem;
+    }
+
+    /* ───── card ───── */
+    .card {
+      background: var(--card);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .card[hidden] { display: none; }
+
+    .card-body {
+      padding: 1.8rem 1.6rem;
+    }
+
+    /* ───── closed state ───── */
+    .open-btn {
+      width: 100%;
+      font: inherit;
+      font-weight: 700;
+      line-height: 1;
+      color: var(--text);
+      background: var(--card);
+      border: 1px solid var(--muted);
+      border-radius: 12px;
+      padding: 1.1rem 1.6rem;
+      cursor: pointer;
+      text-align: left;
+    }
+
+    .open-btn:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    .open-btn[hidden] { display: none; }
+
+    /* ───── choose screen ───── */
+    .prompt {
+      font-size: 0.875rem;
+      line-height: 1.5;
+      color: var(--text-2);
+      margin-bottom: 1.2rem;
+    }
+
+    .goals {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+
+    .goal-btn {
+      width: 100%;
+      text-align: left;
+      font: inherit;
+      line-height: 1.4;
+      color: var(--text);
+      background: #ffffff;
+      border: 1px solid var(--muted);
+      border-radius: 10px;
+      padding: 0.9rem 1.1rem;
+      cursor: pointer;
+    }
+
+    .goal-btn:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    .goal-btn[data-picked="true"] {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #ffffff;
+    }
+
+    /* ───── confirmation screen ───── */
+    .confirm-body {
+      padding: 2.4rem 1.6rem 2rem;
+    }
+
+    .confirm-eyebrow {
+      font-size: 0.75rem;
+      line-height: 1.4;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-2);
+      margin-bottom: 1rem;
+    }
+
+    .chosen-goal {
+      font-size: 1.375rem;
+      line-height: 1.35;
+      margin-bottom: 1.6rem;
+    }
+
+    .confirm-message {
+      font-size: 0.9375rem;
+      line-height: 1.7;
+      color: var(--text-2);
+    }
+
+    .gotit-btn {
+      display: block;
+      margin-top: 1.8rem;
+      font: inherit;
+      font-weight: 700;
+      line-height: 1;
+      color: #ffffff;
+      background: var(--accent);
+      border: none;
+      border-radius: 10px;
+      padding: 0.85rem 2rem;
+      cursor: pointer;
+    }
+
+    .gotit-btn:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
+    }
+
+    .change-link {
+      display: inline-block;
+      margin-top: 2rem;
+      font: inherit;
+      font-size: 0.75rem;
+      line-height: 1;
+      color: var(--text-2);
+      background: none;
+      border: none;
+      cursor: pointer;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    .change-link:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
+    }
+
+    /* ───── settled state ───── */
+    .settled {
+      background: var(--card);
+      border-radius: 12px;
+      padding: 1rem 1.6rem;
+      display: flex;
+      align-items: baseline;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .settled[hidden] { display: none; }
+
+    .settled-label {
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-2);
+      flex-shrink: 0;
+    }
+
+    .settled-goal {
+      font-family: Georgia, serif;
+      font-size: 1rem;
+      font-weight: 700;
+      line-height: 1.4;
+      color: var(--text);
+    }
+
+    .settled-change {
+      margin-left: auto;
+      font: inherit;
+      font-size: 0.75rem;
+      line-height: 1;
+      color: var(--text-2);
+      background: none;
+      border: none;
+      cursor: pointer;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      flex-shrink: 0;
+    }
+
+    .settled-change:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
+    }
+
+    /* ───── small screens ───── */
+    @media (max-width: 480px) {
+      body { padding: 1.5rem 0.75rem; align-items: flex-start; }
+      .card-body { padding: 1.4rem 1.2rem; }
+      .confirm-body { padding: 2rem 1.2rem 1.6rem; }
+      .heading { font-size: 1.2rem; }
+      .chosen-goal { font-size: 1.2rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <main class="diagnostic">
+
+    <!-- ════════════ CLOSED STATE ════════════ -->
+    <!-- EDIT: button label -->
+    <button class="open-btn" type="button" data-action="open">What do you want to focus on?</button>
+
+    <!-- ════════════ CHOOSE YOUR GOAL ════════════ -->
+    <article class="card" data-view="choose" hidden>
+      <div class="card-body">
+        <!-- EDIT: prompt text -->
+        <p class="prompt">For this lesson, I want to...</p>
+
+        <ol class="goals" data-goals>
+          <li><button class="goal-btn" type="button" data-goal="understand">I want to understand the key ideas</button></li>
+          <li><button class="goal-btn" type="button" data-goal="apply">I want to practise applying this</button></li>
+          <li><button class="goal-btn" type="button" data-goal="challenge">I want to test myself with complex or unfamiliar scenarios</button></li>
+        </ol>
+      </div>
+    </article>
+
+    <!-- ════════════ CONFIRMATION ════════════ -->
+    <article class="card" data-view="confirm" hidden>
+      <div class="confirm-body">
+        <p class="confirm-eyebrow">Your goal</p>
+
+        <h2 class="chosen-goal" data-chosen-goal></h2>
+
+        <!-- EDIT: lesson-specific message per goal -->
+        <p class="confirm-message" data-confirm-message></p>
+
+        <button class="gotit-btn" type="button" data-action="gotit">Got it</button>
+        <button class="change-link" type="button" data-action="change">Change goal</button>
+      </div>
+    </article>
+
+    <!-- ════════════ SETTLED STATE ════════════ -->
+    <div class="settled" data-view="settled" hidden>
+      <span class="settled-label">Your goal</span>
+      <span class="settled-goal" data-settled-goal></span>
+      <button class="settled-change" type="button" data-action="change-settled">Change</button>
+    </div>
+
+  </main>
+
+  <!-- ============================================================
+       EDIT CONTENT BELOW THIS LINE
+       ============================================================
+       Write one message per goal. This is the lesson-specific part
+       — tailor it to what the learner will actually encounter.
+       ============================================================ -->
+  <script id="goal-data" type="application/json">
+  {
+    "messages": {
+      "understand": "Focus on the main concepts. By the end you should be able to explain them in your own words.",
+      "apply":      "You will get a chance to try this with a realistic example. Look for how the ideas connect to practice.",
+      "challenge":  "Push beyond the basics. The later activities will ask you to make judgements and justify your thinking."
+    }
+  }
+  </script>
+
+  <script>
+  (function () {
+    'use strict';
+
+    var data = JSON.parse(document.getElementById('goal-data').textContent);
+
+    var openBtn      = document.querySelector('[data-action="open"]');
+    var chooseCard   = document.querySelector('[data-view="choose"]');
+    var confirmCard  = document.querySelector('[data-view="confirm"]');
+    var settledBar   = document.querySelector('[data-view="settled"]');
+    var elChosen     = document.querySelector('[data-chosen-goal]');
+    var elMessage    = document.querySelector('[data-confirm-message]');
+    var elSettledGoal = document.querySelector('[data-settled-goal]');
+    var goalBtns     = document.querySelectorAll('[data-goal]');
+
+    function hideAll() {
+      openBtn.hidden = true;
+      chooseCard.hidden = true;
+      confirmCard.hidden = true;
+      settledBar.hidden = true;
+    }
+
+    function choose(goalKey, label) {
+      var btn = document.querySelector('[data-goal="' + goalKey + '"]');
+      btn.setAttribute('data-picked', 'true');
+      for (var i = 0; i < goalBtns.length; i++) goalBtns[i].disabled = true;
+
+      setTimeout(function () {
+        elChosen.textContent = label;
+        elMessage.textContent = data.messages[goalKey] || '';
+        elSettledGoal.textContent = label;
+        hideAll();
+        confirmCard.hidden = false;
+      }, 400);
+    }
+
+    function settle() {
+      hideAll();
+      settledBar.hidden = false;
+    }
+
+    function open() {
+      hideAll();
+      chooseCard.hidden = false;
+    }
+
+    function resetToChoose() {
+      hideAll();
+      chooseCard.hidden = false;
+      for (var i = 0; i < goalBtns.length; i++) {
+        goalBtns[i].disabled = false;
+        goalBtns[i].removeAttribute('data-picked');
+      }
+    }
+
+    openBtn.addEventListener('click', open);
+
+    for (var i = 0; i < goalBtns.length; i++) {
+      (function (btn) {
+        btn.addEventListener('click', function () {
+          choose(btn.getAttribute('data-goal'), btn.textContent);
+        });
+      })(goalBtns[i]);
+    }
+
+    document.querySelector('[data-action="gotit"]').addEventListener('click', settle);
+    document.querySelector('[data-action="change"]').addEventListener('click', resetToChoose);
+    document.querySelector('[data-action="change-settled"]').addEventListener('click', resetToChoose);
+  })();
+  </script>
+
+</body>
+</html>
