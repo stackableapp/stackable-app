@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stackable Colour Palette</title>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Newsreader', Georgia, serif;
+    background: #F8F6F3;
+    color: #2D3142;
+    line-height: 1.85;
+    font-size: 17px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .page {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 60px 24px 120px;
+  }
+
+  h1 {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 32px;
+    font-weight: 600;
+    color: #1C2233;
+    margin-bottom: 8px;
+    letter-spacing: -0.5px;
+  }
+
+  .subtitle {
+    font-size: 14px;
+    font-family: 'DM Sans', sans-serif;
+    color: #9B9891;
+    margin-bottom: 48px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+  }
+
+  h2 {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: #9B9891;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-top: 56px;
+    margin-bottom: 28px;
+  }
+
+  p {
+    margin-bottom: 20px;
+  }
+
+  .colour-entry {
+    margin-bottom: 40px;
+    padding-left: 20px;
+    border-left: 3px solid #E8E4DF;
+  }
+
+  .colour-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 6px;
+  }
+
+  .swatch {
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    flex-shrink: 0;
+    border: 1px solid rgba(0,0,0,0.06);
+  }
+
+  .colour-name {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600;
+    font-size: 18px;
+    color: #1C2233;
+  }
+
+  .colour-hex {
+    font-family: 'DM Sans', monospace;
+    font-size: 14px;
+    color: #9B9891;
+    font-weight: 400;
+  }
+
+  .colour-role {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    color: #9B9891;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+  }
+
+  .divider {
+    border: none;
+    height: 1px;
+    background: #E8E4DF;
+    margin: 48px 0;
+  }
+
+  .rule-number {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600;
+    color: #0D7377;
+    font-size: 14px;
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  .rule-title {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600;
+    font-size: 18px;
+    color: #1C2233;
+    margin-bottom: 8px;
+  }
+
+  .rule-block {
+    margin-bottom: 36px;
+  }
+
+  [contenteditable]:focus {
+    outline: none;
+    background: rgba(13, 115, 119, 0.04);
+    border-radius: 4px;
+  }
+
+  [contenteditable] {
+    border-radius: 4px;
+    padding: 2px 4px;
+    margin: -2px -4px;
+    transition: background 0.15s ease;
+  }
+
+  .edit-hint {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    color: #9B9891;
+    background: #1C2233;
+    color: #F8F6F3;
+    padding: 8px 16px;
+    border-radius: 20px;
+    opacity: 0.8;
+    pointer-events: none;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <h1 contenteditable="true">Stackable Colour Palette</h1>
+  <div class="subtitle">Design System Reference</div>
+
+  <p contenteditable="true">Most edtech companies pick blue. It's the safe choice — the colour of trust, credibility, LinkedIn. The problem is that when everyone picks the safe choice, it stops being a choice at all. Go look at Coursera, Udemy, Skillshare, EdX. It's a wall of blue and purple. They all signal "we're a serious learning platform" and none of them signal anything beyond that.</p>
+
+  <p contenteditable="true">Stackable's palette is built on a different bet: that you can look credible and distinctive at the same time, if you're willing to be deliberate about it.</p>
+
+  <hr class="divider">
+
+  <h2>Brand Colours</h2>
+
+  <div class="colour-entry" style="border-left-color: #0D7377;">
+    <div class="colour-header">
+      <div class="swatch" style="background: #0D7377;"></div>
+      <span class="colour-name">Stackable Teal</span>
+      <span class="colour-hex">#0D7377</span>
+    </div>
+    <div class="colour-role">Primary brand colour</div>
+    <p contenteditable="true">This is the primary. A deep, saturated teal that lives precisely between blue and green. It borrows enough from blue to feel serious without actually being blue. It's not corporate like navy. It's not clinical like cyan. It's not trying to be fun like turquoise. It just sits there, quietly confident, which is more or less the energy you want from a platform that helps people build skills.</p>
+    <p contenteditable="true">Use it everywhere Stackable needs to be recognisably itself: navigation, headings, links, buttons, primary UI elements.</p>
+  </div>
+
+  <div class="colour-entry" style="border-left-color: #E8A838;">
+    <div class="colour-header">
+      <div class="swatch" style="background: #E8A838;"></div>
+      <span class="colour-name">Stackable Amber</span>
+      <span class="colour-hex">#E8A838</span>
+    </div>
+    <div class="colour-role">Secondary colour</div>
+    <p contenteditable="true">The secondary. A warm golden amber — not yellow, not orange, but the space between them where things start to feel expensive. Construction yellow would be too literal. Pure gold would be too much. This amber has energy without shouting.</p>
+    <p contenteditable="true">Its job is to mark the moments where something is happening. Progress. Achievement. Interaction. Anywhere the interface is saying "pay attention here," amber does the work.</p>
+  </div>
+
+  <div class="colour-entry" style="border-left-color: #C4705A;">
+    <div class="colour-header">
+      <div class="swatch" style="background: #C4705A;"></div>
+      <span class="colour-name">Stackable Brick</span>
+      <span class="colour-hex">#C4705A</span>
+    </div>
+    <div class="colour-role">Accent colour</div>
+    <p contenteditable="true">The accent. This one earns its place by doing double duty. It's a good colour — a warm terracotta that feels grounded and mature — but it also directly references Stackable's core metaphor. A Brick is the smallest unit of learning in the system. So when you see this colour, you're seeing the brand's architecture made literal.</p>
+    <p contenteditable="true">It's not orange. It's not red. It's the colour of fired clay, which is exactly what you get when raw material meets heat and pressure and comes out stronger. That's not a bad metaphor for learning either.</p>
+  </div>
+
+  <hr class="divider">
+
+  <h2>Neutral System</h2>
+
+  <p contenteditable="true">Here's where most palettes fall apart. People spend all their energy on the hero colours and then grab some generic greys off a defaults panel. Stackable doesn't do that. Every neutral is named after a building material, because the metaphor only works if you commit to it all the way through.</p>
+
+  <div class="colour-entry" style="border-left-color: #1C2233;">
+    <div class="colour-header">
+      <div class="swatch" style="background: #1C2233;"></div>
+      <span class="colour-name">Blueprint</span>
+      <span class="colour-hex">#1C2233</span>
+    </div>
+    <div class="colour-role">Dark foundation</div>
+    <p contenteditable="true">The darkest colour in the system. A charcoal with just enough navy in it to feel intentional. Dark backgrounds, hero sections, dark mode canvas.</p>
+  </div>
+
+  <div class="colour-entry" style="border-left-color: #2D3142;">
+    <div class="colour-header">
+      <div class="swatch" style="background: #2D3142;"></div>
+      <span class="colour-name">Steel</span>
+      <span class="colour-hex">#2D3142</span>
+    </div>
+    <div class="colour-role">Body text</div>
+    <p contenteditable="true">Softer than pure black, which matters more than people think. Pure black on white creates harsh contrast that tires readers out over long sessions. Steel carries the same authority at lower cost.</p>
+  </div>
+
+  <div class="colour-entry" style="border-left-color: #9B9891;">
+    <div class="colour-header">
+      <div class="swatch" style="background: #9B9891;"></div>
+      <span class="colour-name">Concrete</span>
+      <span class="colour-hex">#9B9891</span>
+    </div>
+    <div class="colour-role">Mid neutral</div>
+    <p contenteditable="true">Handles the quiet structural work: borders, dividers, secondary text, disabled states. Nobody notices good concrete in a building. Same principle here.</p>
+  </div>
+
+  <div class="colour-entry" style="border-left-color: #E8E4DF;">
+    <div class="colour-header">
+      <div class="swatch" style="background: #E8E4DF;"></div>
+      <span class="colour-name">Mortar</span>
+      <span class="colour-hex">#E8E4DF</span>
+    </div>
+    <div class="colour-role">Light neutral</div>
+    <p contenteditable="true">The light neutral for section backgrounds, cards, and containers. It's a warm grey — warm enough to avoid the clinical feel of pure white, subtle enough that you'd never consciously notice it. Mortar holds things together without drawing attention to itself.</p>
+  </div>
+
+  <div class="colour-entry" style="border-left-color: #F8F6F3;">
+    <div class="colour-header">
+      <div class="swatch" style="background: #F8F6F3; border: 1px solid #E8E4DF;"></div>
+      <span class="colour-name">Whitespace</span>
+      <span class="colour-hex">#F8F6F3</span>
+    </div>
+    <div class="colour-role">Canvas</div>
+    <p contenteditable="true">Barely warm, barely off-white, but enough to feel intentional rather than default. In dark mode, it flips to become the text colour.</p>
+  </div>
+
+  <hr class="divider">
+
+  <h2>How It Works Together</h2>
+
+  <p contenteditable="true">The palette is hierarchical, and the hierarchy matters.</p>
+
+  <p contenteditable="true">Blueprint and Steel are the structural foundation — dark, authoritative, architectural. Teal is the brand signal. Amber marks progress and interaction. Brick shows up at branded touchpoints and content markers. The neutrals do what neutrals should do: get out of the way and let everything else breathe.</p>
+
+  <p contenteditable="true">Dark mode inverts cleanly. Blueprint becomes the canvas, Whitespace becomes the text, and Teal and Amber keep their jobs with slightly bumped brightness to hold contrast ratios. You shouldn't have to redesign your palette for dark mode. If you do, the palette wasn't right to begin with.</p>
+
+  <hr class="divider">
+
+  <h2>Three Rules for Using It</h2>
+
+  <div class="rule-block">
+    <span class="rule-number">01</span>
+    <div class="rule-title" contenteditable="true">The 60-30-10 rule</div>
+    <p contenteditable="true">60% neutrals. 30% teal. 10% amber and brick. This isn't arbitrary — it's the ratio that creates enough breathing room to look like a product that knows what it's doing. Crowded colour usage is the visual equivalent of a run-on sentence. It makes people trust you less without knowing why.</p>
+  </div>
+
+  <div class="rule-block">
+    <span class="rule-number">02</span>
+    <div class="rule-title" contenteditable="true">Colour-code the learning hierarchy</div>
+    <p contenteditable="true">Brick-level content gets a terracotta marker. Block-level gets teal. Stack-level gets amber. This isn't just aesthetic consistency — colour-coded structural cues measurably help learners organise and retain information. When the system's architecture is visible in the colour, people navigate it faster.</p>
+  </div>
+
+  <div class="rule-block">
+    <span class="rule-number">03</span>
+    <div class="rule-title" contenteditable="true">Use the names</div>
+    <p contenteditable="true">In design files, in code variables, in conversations. Say "Blueprint" not "dark charcoal." Say "Mortar" not "light grey." The metaphor stays alive exactly as long as people keep using the language. The moment someone opens a Figma file and sees grey-200 instead of mortar, the brand starts to dissolve. Names are cheap insurance against that.</p>
+  </div>
+
+</div>
+
+<div class="edit-hint">Click any text to edit</div>
+
+</body>
+</html>
