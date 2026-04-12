@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quidditch Hoops</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: #F2F0EB;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(16px, 4vw, 40px);
+}
+
+.game-card {
+  background: #FAFAF7;
+  border: 1px solid #E8E2D9;
+  border-radius: 24px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  padding: clamp(20px, 4vw, 40px);
+  width: 100%;
+  max-width: 520px;
+  position: relative;
+  overflow: hidden;
+}
+
+.game-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.game-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.4rem, 4vw, 2rem);
+  font-weight: 700;
+  color: #120DA6;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+}
+
+.scoreboard {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.score-label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #6B6568;
+}
+
+.score-value {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  height: 44px;
+  background: #120DA6;
+  color: #fff;
+  font-weight: 700;
+  font-size: 1.25rem;
+  border-radius: 999px;
+  padding: 0 14px;
+  transition: transform 0.2s ease;
+}
+
+.score-value.pop {
+  transform: scale(1.25);
+}
+
+.court-wrap {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  border-radius: 16px;
+  overflow: hidden;
+  cursor: pointer;
+  touch-action: none;
+  position: relative;
+}
+
+.court-wrap canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.game-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.game-hint {
+  font-size: clamp(0.8rem, 2.5vw, 0.9rem);
+  color: #6B6568;
+  line-height: 1.4;
+  flex: 1;
+}
+
+.btn-shoot {
+  font-family: 'Inter', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #fff;
+  background: #120DA6;
+  border: none;
+  border-radius: 10px;
+  padding: 14px 28px;
+  cursor: pointer;
+  min-height: 52px;
+  white-space: nowrap;
+  transition: opacity 0.15s ease, background 0.15s ease;
+  flex-shrink: 0;
+}
+
+.btn-shoot:hover { background: #0E0A85; }
+.btn-shoot:disabled { opacity: 0.4; cursor: not-allowed; }
+
+.celebration {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(250,250,247,0.88);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  z-index: 10;
+  border-radius: 24px;
+}
+
+.celebration.is-active { opacity: 1; }
+
+.celebration-emoji {
+  font-size: 3rem;
+  margin-bottom: 8px;
+}
+
+.celebration-text {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.5rem, 5vw, 2.2rem);
+  font-weight: 700;
+  color: #120DA6;
+  text-align: center;
+  letter-spacing: -0.03em;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (max-width: 400px) {
+  .game-controls { flex-direction: column; }
+  .btn-shoot { width: 100%; }
+}
+</style>
+</head>
+<body>
+
+<div class="game-card">
+  <div class="game-header">
+    <h1 class="game-title">Quidditch Hoops</h1>
+    <div class="scoreboard">
+      <span class="score-label">Score</span>
+      <span class="score-value" id="score">0</span>
+    </div>
+  </div>
+
+  <div class="court-wrap" id="courtWrap">
+    <canvas id="court" role="img" aria-label="Basketball court game"></canvas>
+  </div>
+
+  <div class="game-controls">
+    <p class="game-hint" id="hint">Tap the court to move Harry, then shoot!</p>
+    <button class="btn-shoot" id="shootBtn">Shoot!</button>
+  </div>
+
+  <div class="celebration" id="celebration">
+    <span class="celebration-emoji" id="celebEmoji"></span>
+    <span class="celebration-text" id="celebText"></span>
+  </div>
+
+  <span aria-live="polite" class="sr-only" id="liveRegion"></span>
+</div>
+
+<script>
+(function() {
+  // ── Elements ──
+  const canvas = document.getElementById('court');
+  const ctx = canvas.getContext('2d');
+  const courtWrap = document.getElementById('courtWrap');
+  const scoreEl = document.getElementById('score');
+  const hintEl = document.getElementById('hint');
+  const shootBtn = document.getElementById('shootBtn');
+  const celebEl = document.getElementById('celebration');
+  const celebEmoji = document.getElementById('celebEmoji');
+  const celebText = document.getElementById('celebText');
+  const liveRegion = document.getElementById('liveRegion');
+
+  // ── Config ──
+  const COURT_COLOR = '#D4A56A';
+  const COURT_DARK = '#C49A5A';
+  const LINE_COLOR = '#FFFFFF';
+  const HOOP_COLOR = '#FF6B35';
+  const BALL_COLOR = '#FF6B35';
+  const BALL_SEAM = '#333333';
+  const ROBE_COLOR = '#120DA6';
+  const SCARF_RED = '#AE0001';
+  const SCARF_GOLD = '#D4A56A';
+  const SKIN = '#FDBCB4';
+  const HAIR = '#1A1A1A';
+  const SCAR_COLOR = '#FFD700';
+
+  const SCORE_MSGS = [
+    'SWISH!', 'MAGICAL!', '10 POINTS!', 'BRILLIANT!',
+    'EXPECTO SCOREUM!', 'WIZARD SHOT!', 'GRYFFINDOR!'
+  ];
+  const MISS_MSGS = [
+    'So close!', 'Almost, wizard!', 'Try again!',
+    'Nearly there!', 'Next one!', 'Keep going!'
+  ];
+  const CELEB_EMOJIS = ['⚡🏀', '🧙‍♂️🏀', '⚡✨', '🏀🎉'];
+
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // ── State ──
+  let W, H, dpr;
+  let state = {
+    phase: 'positioning', // positioning | moving | shooting | celebrating
+    harry: { x: 0.5, y: 0.75 }, // ratio coords
+    harryStart: { x: 0.5, y: 0.75 },
+    harryTarget: { x: 0.5, y: 0.75 },
+    harryMoveStart: 0,
+    ball: { x: 0, y: 0, visible: false, t: 0, willScore: false },
+    shotStart: 0,
+    shotFrom: { x: 0, y: 0 },
+    score: 0,
+    streak: 0,
+    particles: [],
+    rimBounce: { active: false, x: 0, y: 0, vx: 0, vy: 0, t: 0 }
+  };
+
+  // ── Hoop position (ratio) ──
+  const HOOP = { x: 0.5, y: 0.1 };
+
+  // ── Audio ──
+  let audioCtx = null;
+  function ensureAudio() {
+    if (!audioCtx) {
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    }
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+  }
+
+  function playSwish() {
+    if (!audioCtx) return;
+    const now = audioCtx.currentTime;
+    // noise burst
+    const buf = audioCtx.createBuffer(1, audioCtx.sampleRate * 0.06, audioCtx.sampleRate);
+    const data = buf.getChannelData(0);
+    for (let i = 0; i < data.length; i++) data[i] = (Math.random() * 2 - 1) * 0.3;
+    const noise = audioCtx.createBufferSource();
+    noise.buffer = buf;
+    const bp = audioCtx.createBiquadFilter();
+    bp.type = 'bandpass'; bp.frequency.value = 3000; bp.Q.value = 1;
+    const gain = audioCtx.createGain();
+    gain.gain.setValueAtTime(0.4, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.06);
+    noise.connect(bp).connect(gain).connect(audioCtx.destination);
+    noise.start(now); noise.stop(now + 0.06);
+
+    // ascending chime
+    [523, 659, 784].forEach((freq, i) => {
+      const osc = audioCtx.createOscillator();
+      osc.type = 'triangle'; osc.frequency.value = freq;
+      const g = audioCtx.createGain();
+      g.gain.setValueAtTime(0.15, now + i * 0.08);
+      g.gain.exponentialRampToValueAtTime(0.001, now + i * 0.08 + 0.15);
+      osc.connect(g).connect(audioCtx.destination);
+      osc.start(now + i * 0.08); osc.stop(now + i * 0.08 + 0.15);
+    });
+  }
+
+  function playBonk() {
+    if (!audioCtx) return;
+    const now = audioCtx.currentTime;
+    const osc = audioCtx.createOscillator();
+    osc.type = 'sine'; osc.frequency.value = 180;
+    const g = audioCtx.createGain();
+    g.gain.setValueAtTime(0.3, now);
+    g.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
+    osc.connect(g).connect(audioCtx.destination);
+    osc.start(now); osc.stop(now + 0.12);
+  }
+
+  // ── Canvas sizing ──
+  function resize() {
+    const rect = courtWrap.getBoundingClientRect();
+    dpr = window.devicePixelRatio || 1;
+    W = rect.width;
+    H = rect.height;
+    canvas.width = W * dpr;
+    canvas.height = H * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  // ── Drawing helpers ──
+  function px(ratioX) { return ratioX * W; }
+  function py(ratioY) { return ratioY * H; }
+
+  function drawCourt() {
+    // floor
+    ctx.fillStyle = COURT_COLOR;
+    ctx.fillRect(0, 0, W, H);
+    // planks
+    ctx.strokeStyle = COURT_DARK;
+    ctx.lineWidth = 1;
+    const plankH = 20;
+    for (let y = 0; y < H; y += plankH) {
+      ctx.beginPath();
+      ctx.moveTo(0, y);
+      ctx.lineTo(W, y);
+      ctx.stroke();
+    }
+
+    ctx.strokeStyle = LINE_COLOR;
+    ctx.lineWidth = 2;
+
+    // boundary
+    const m = W * 0.06;
+    ctx.strokeRect(m, m, W - m * 2, H - m * 2);
+
+    // half-court line (bottom)
+    ctx.beginPath();
+    ctx.moveTo(m, H - m);
+    ctx.lineTo(W - m, H - m);
+    ctx.stroke();
+
+    // three-point arc
+    ctx.beginPath();
+    const arcR = W * 0.38;
+    ctx.arc(W / 2, m, arcR, 0, Math.PI);
+    ctx.stroke();
+
+    // free-throw lane
+    const laneW = W * 0.3;
+    const laneH = H * 0.25;
+    ctx.strokeRect((W - laneW) / 2, m, laneW, laneH);
+
+    // free-throw circle
+    ctx.beginPath();
+    ctx.arc(W / 2, m + laneH, laneW / 2, 0, Math.PI);
+    ctx.stroke();
+  }
+
+  function drawHoop() {
+    const hx = px(HOOP.x);
+    const hy = py(HOOP.y);
+
+    // backboard
+    ctx.fillStyle = '#444';
+    ctx.fillRect(hx - 30, hy - 6, 60, 8);
+
+    // rim
+    ctx.beginPath();
+    ctx.arc(hx, hy + 8, 14, 0, Math.PI * 2);
+    ctx.strokeStyle = HOOP_COLOR;
+    ctx.lineWidth = 3;
+    ctx.stroke();
+
+    // net lines
+    ctx.strokeStyle = 'rgba(255,255,255,0.6)';
+    ctx.lineWidth = 1;
+    for (let i = -2; i <= 2; i++) {
+      ctx.beginPath();
+      ctx.moveTo(hx + i * 6, hy + 14);
+      ctx.lineTo(hx + i * 4, hy + 28);
+      ctx.stroke();
+    }
+  }
+
+  function drawHarry(x, y) {
+    const s = Math.min(W, H) * 0.05; // base scale unit
+
+    // shadow
+    ctx.fillStyle = 'rgba(0,0,0,0.12)';
+    ctx.beginPath();
+    ctx.ellipse(x, y + s * 2.2, s * 1.1, s * 0.35, 0, 0, Math.PI * 2);
+    ctx.fill();
+
+    // robe (body)
+    ctx.fillStyle = ROBE_COLOR;
+    ctx.beginPath();
+    ctx.moveTo(x - s * 0.8, y - s * 0.2);
+    ctx.lineTo(x - s * 1, y + s * 2);
+    ctx.lineTo(x + s * 1, y + s * 2);
+    ctx.lineTo(x + s * 0.8, y - s * 0.2);
+    ctx.closePath();
+    ctx.fill();
+
+    // scarf
+    ctx.fillStyle = SCARF_RED;
+    ctx.fillRect(x - s * 0.55, y - s * 0.3, s * 1.1, s * 0.25);
+    ctx.fillStyle = SCARF_GOLD;
+    ctx.fillRect(x - s * 0.55, y - s * 0.15, s * 1.1, s * 0.12);
+
+    // head
+    ctx.fillStyle = SKIN;
+    ctx.beginPath();
+    ctx.arc(x, y - s * 0.8, s * 0.65, 0, Math.PI * 2);
+    ctx.fill();
+
+    // hair
+    ctx.fillStyle = HAIR;
+    ctx.beginPath();
+    ctx.arc(x, y - s * 1.1, s * 0.6, Math.PI, Math.PI * 2);
+    ctx.fill();
+    // messy hair bits
+    ctx.beginPath();
+    ctx.arc(x - s * 0.4, y - s * 0.95, s * 0.25, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.beginPath();
+    ctx.arc(x + s * 0.4, y - s * 0.95, s * 0.22, 0, Math.PI * 2);
+    ctx.fill();
+
+    // glasses
+    ctx.strokeStyle = HAIR;
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.arc(x - s * 0.25, y - s * 0.75, s * 0.18, 0, Math.PI * 2);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.arc(x + s * 0.25, y - s * 0.75, s * 0.18, 0, Math.PI * 2);
+    ctx.stroke();
+    // bridge
+    ctx.beginPath();
+    ctx.moveTo(x - s * 0.07, y - s * 0.75);
+    ctx.lineTo(x + s * 0.07, y - s * 0.75);
+    ctx.stroke();
+
+    // eyes
+    ctx.fillStyle = HAIR;
+    ctx.beginPath();
+    ctx.arc(x - s * 0.25, y - s * 0.73, s * 0.06, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.beginPath();
+    ctx.arc(x + s * 0.25, y - s * 0.73, s * 0.06, 0, Math.PI * 2);
+    ctx.fill();
+
+    // lightning scar
+    ctx.strokeStyle = SCAR_COLOR;
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(x + s * 0.05, y - s * 1.2);
+    ctx.lineTo(x - s * 0.05, y - s * 1.05);
+    ctx.lineTo(x + s * 0.1, y - s * 0.95);
+    ctx.lineTo(x, y - s * 0.85);
+    ctx.stroke();
+  }
+
+  function drawBall(bx, by, scale) {
+    const r = 8 * (scale || 1);
+    // shadow on court
+    ctx.fillStyle = 'rgba(0,0,0,0.1)';
+    ctx.beginPath();
+    ctx.ellipse(bx, py(state.shotFrom.y) + 10, r * 0.8, r * 0.25, 0, 0, Math.PI * 2);
+    ctx.fill();
+
+    // ball
+    ctx.fillStyle = BALL_COLOR;
+    ctx.beginPath();
+    ctx.arc(bx, by, r, 0, Math.PI * 2);
+    ctx.fill();
+
+    // seams
+    ctx.strokeStyle = BALL_SEAM;
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(bx - r, by);
+    ctx.lineTo(bx + r, by);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(bx, by - r);
+    ctx.lineTo(bx, by + r);
+    ctx.stroke();
+  }
+
+  function drawParticles() {
+    state.particles.forEach(p => {
+      ctx.fillStyle = p.color;
+      ctx.globalAlpha = p.alpha;
+      ctx.fillRect(p.x - p.size / 2, p.y - p.size / 2, p.size, p.size);
+    });
+    ctx.globalAlpha = 1;
+  }
+
+  function drawRimBounce() {
+    if (!state.rimBounce.active) return;
+    const rb = state.rimBounce;
+    drawBall(rb.x, rb.y, 1);
+  }
+
+  // ── Particles ──
+  const CONFETTI_COLORS = ['#120DA6', '#C4E5F2', '#FFD700', '#AE0001', '#F24405', '#F2BDD6'];
+  function spawnConfetti(cx, cy, count) {
+    if (reducedMotion) return;
+    for (let i = 0; i < count; i++) {
+      state.particles.push({
+        x: cx, y: cy,
+        vx: (Math.random() - 0.5) * 6,
+        vy: -Math.random() * 5 - 2,
+        size: Math.random() * 6 + 3,
+        color: CONFETTI_COLORS[Math.floor(Math.random() * CONFETTI_COLORS.length)],
+        alpha: 1
+      });
+    }
+  }
+
+  function updateParticles(dt) {
+    for (let i = state.particles.length - 1; i >= 0; i--) {
+      const p = state.particles[i];
+      p.x += p.vx;
+      p.y += p.vy;
+      p.vy += 0.15; // gravity
+      p.alpha -= 0.012;
+      if (p.alpha <= 0 || p.y > H + 20) {
+        state.particles.splice(i, 1);
+      }
+    }
+  }
+
+  // ── Game logic ──
+  function lerp(a, b, t) { return a + (b - a) * t; }
+
+  function distRatio(ax, ay, bx, by) {
+    return Math.sqrt((ax - bx) ** 2 + (ay - by) ** 2);
+  }
+
+  function calcMakeChance() {
+    const d = distRatio(state.harry.x, state.harry.y, HOOP.x, HOOP.y);
+    // closer = higher chance, max 0.85, min 0.5
+    const base = Math.max(0.5, Math.min(0.85, 1 - d * 0.6));
+    const streakBonus = Math.min(state.streak * 0.05, 0.1);
+    return Math.min(0.9, base + streakBonus);
+  }
+
+  function handleTap(e) {
+    if (state.phase !== 'positioning') return;
+    ensureAudio();
+
+    const rect = canvas.getBoundingClientRect();
+    const cx = (e.clientX - rect.left) / rect.width;
+    const cy = (e.clientY - rect.top) / rect.height;
+
+    // only allow movement in the lower 2/3
+    if (cy < 0.3) return;
+    const clamped = Math.max(0.1, Math.min(0.9, cx));
+    const clampedY = Math.max(0.3, Math.min(0.88, cy));
+
+    state.harryStart = { x: state.harry.x, y: state.harry.y };
+    state.harryTarget = { x: clamped, y: clampedY };
+    state.harryMoveStart = performance.now();
+    state.phase = 'moving';
+    shootBtn.disabled = true;
+  }
+
+  function handleShoot() {
+    if (state.phase !== 'positioning') return;
+    ensureAudio();
+
+    const chance = calcMakeChance();
+    state.ball.willScore = Math.random() < chance;
+    state.ball.visible = true;
+    state.ball.t = 0;
+    state.shotStart = performance.now();
+    state.shotFrom = { x: state.harry.x, y: state.harry.y };
+    state.phase = 'shooting';
+    shootBtn.disabled = true;
+    hintEl.textContent = '...';
+  }
+
+  function handleKeydown(e) {
+    if (state.phase !== 'positioning') return;
+    const step = 0.05;
+    let moved = false;
+    if (e.key === 'ArrowLeft')  { state.harry.x = Math.max(0.1, state.harry.x - step); moved = true; }
+    if (e.key === 'ArrowRight') { state.harry.x = Math.min(0.9, state.harry.x + step); moved = true; }
+    if (e.key === 'ArrowUp')    { state.harry.y = Math.max(0.3, state.harry.y - step); moved = true; }
+    if (e.key === 'ArrowDown')  { state.harry.y = Math.min(0.88, state.harry.y + step); moved = true; }
+    if (moved) { state.harryTarget = { ...state.harry }; e.preventDefault(); }
+    if (e.key === ' ' || e.key === 'Enter') { handleShoot(); e.preventDefault(); }
+  }
+
+  canvas.addEventListener('pointerdown', handleTap);
+  shootBtn.addEventListener('click', handleShoot);
+  document.addEventListener('keydown', handleKeydown);
+
+  // ── Score / celebrate ──
+  function triggerScore() {
+    state.score++;
+    state.streak++;
+    scoreEl.textContent = state.score;
+    scoreEl.classList.add('pop');
+    setTimeout(() => scoreEl.classList.remove('pop'), 200);
+
+    const msg = SCORE_MSGS[Math.floor(Math.random() * SCORE_MSGS.length)];
+    const emoji = CELEB_EMOJIS[Math.floor(Math.random() * CELEB_EMOJIS.length)];
+    celebEmoji.textContent = emoji;
+    celebText.textContent = msg;
+    celebEl.classList.add('is-active');
+
+    liveRegion.textContent = 'Score! ' + state.score + ' points. ' + msg;
+
+    spawnConfetti(px(HOOP.x), py(HOOP.y), 25);
+    playSwish();
+
+    state.phase = 'celebrating';
+    setTimeout(() => {
+      celebEl.classList.remove('is-active');
+      state.phase = 'positioning';
+      shootBtn.disabled = false;
+      hintEl.textContent = 'Tap to move, then shoot!';
+    }, 1500);
+  }
+
+  function triggerMiss() {
+    state.phase = 'miss_anim';
+    state.streak = 0;
+    const msg = MISS_MSGS[Math.floor(Math.random() * MISS_MSGS.length)];
+    hintEl.textContent = msg;
+    liveRegion.textContent = 'Missed. ' + msg;
+    playBonk();
+
+    // rim bounce animation
+    const hx = px(HOOP.x);
+    const hy = py(HOOP.y) + 8;
+    const side = Math.random() < 0.5 ? -1 : 1;
+    state.rimBounce = { active: true, x: hx, y: hy, vx: side * 2.5, vy: -3, t: 0 };
+
+    setTimeout(() => {
+      state.rimBounce.active = false;
+      state.ball.visible = false;
+      state.phase = 'positioning';
+      shootBtn.disabled = false;
+    }, 700);
+  }
+
+  // ── Game loop (setTimeout for universal compat) ──
+  let lastTime = performance.now();
+  function gameLoop() {
+    const now = performance.now();
+    const dt = Math.min(now - lastTime, 50);
+    lastTime = now;
+
+    ctx.clearRect(0, 0, W, H);
+    drawCourt();
+    drawHoop();
+
+    // Harry movement
+    if (state.phase === 'moving') {
+      const elapsed = now - state.harryMoveStart;
+      const dur = reducedMotion ? 0 : 250;
+      const t = dur === 0 ? 1 : Math.min(1, elapsed / dur);
+      const ease = t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+      state.harry.x = lerp(state.harryStart.x, state.harryTarget.x, ease);
+      state.harry.y = lerp(state.harryStart.y, state.harryTarget.y, ease);
+      if (t >= 1) {
+        state.harry.x = state.harryTarget.x;
+        state.harry.y = state.harryTarget.y;
+        state.phase = 'positioning';
+        shootBtn.disabled = false;
+        hintEl.textContent = 'Ready! Tap Shoot!';
+      }
+    }
+
+    drawHarry(px(state.harry.x), py(state.harry.y));
+
+    // Ball flight
+    if (state.phase === 'shooting') {
+      const elapsed = now - state.shotStart;
+      const dur = 800;
+      const t = Math.min(1, elapsed / dur);
+
+      const fromX = px(state.shotFrom.x);
+      const fromY = py(state.shotFrom.y) - 10;
+      const toX = px(HOOP.x);
+      const toY = py(HOOP.y) + 8;
+
+      const dist = Math.sqrt((toX - fromX) ** 2 + (toY - fromY) ** 2);
+      const arcH = Math.max(80, dist * 0.45);
+
+      state.ball.x = lerp(fromX, toX, t);
+      state.ball.y = lerp(fromY, toY, t) - arcH * Math.sin(Math.PI * t);
+
+      // scale: smaller at peak
+      const scale = 1 - 0.2 * Math.sin(Math.PI * t);
+      drawBall(state.ball.x, state.ball.y, scale);
+
+      if (t >= 1) {
+        if (state.ball.willScore) {
+          triggerScore();
+        } else {
+          triggerMiss();
+        }
+      }
+    }
+
+    // Rim bounce
+    if (state.rimBounce.active) {
+      state.rimBounce.x += state.rimBounce.vx;
+      state.rimBounce.y += state.rimBounce.vy;
+      state.rimBounce.vy += 0.25;
+      state.rimBounce.t += dt;
+      drawRimBounce();
+    }
+
+    updateParticles(dt);
+    drawParticles();
+
+    setTimeout(gameLoop, 16);
+  }
+
+  gameLoop();
+})();
+</script>
+</body>
+</html>
