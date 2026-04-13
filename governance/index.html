@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Equity Vesting Policy — Stackable</title>
+<title>Governance — Stackable</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
     --bg: #F2F0EB;
@@ -33,49 +33,42 @@
     padding: clamp(32px, 6vw, 80px) clamp(20px, 4vw, 40px);
   }
 
-  /* Header block */
-  .doc-header {
-    margin-bottom: 3rem;
+  /* Pill nav */
+  .pill-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 2.5rem;
   }
 
-  .doc-header .brand {
-    font-size: 0.8125rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--slate);
-    margin-bottom: 0.5rem;
-  }
-
-  .doc-header h1 {
-    font-size: clamp(1.75rem, 4vw, 2.5rem);
-    font-weight: 700;
-    line-height: 1.15;
-    letter-spacing: -0.02em;
-    margin-bottom: 1.5rem;
-  }
-
-  /* Metadata table at top */
-  .meta-table {
-    width: 100%;
-    border-collapse: collapse;
+  .pill-btn {
+    display: inline-block;
+    padding: 8px 20px;
+    font-family: 'Inter', sans-serif;
     font-size: 0.875rem;
-  }
-
-  .meta-table td {
-    padding: 8px 12px;
-    border: 1px solid var(--border);
-    vertical-align: top;
-  }
-
-  .meta-table td:first-child {
     font-weight: 600;
-    width: 200px;
-    white-space: nowrap;
-    background: #FAFAF7;
+    color: var(--ink);
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    cursor: default;
+    user-select: none;
   }
 
-  /* Sections */
+  .pill-btn.active {
+    background: var(--ink);
+    color: #fff;
+    border-color: var(--ink);
+  }
+
+  /* Content */
+  .page-intro {
+    font-size: 1rem;
+    color: var(--slate);
+    margin-bottom: 2.5rem;
+    max-width: 65ch;
+  }
+
   h2 {
     font-size: 1.35rem;
     font-weight: 700;
@@ -85,12 +78,16 @@
     margin-bottom: 0.75rem;
   }
 
+  h2:first-of-type {
+    margin-top: 0;
+  }
+
   h3 {
-    font-size: 1.1rem;
+    font-size: 1.05rem;
     font-weight: 600;
     line-height: 1.3;
-    margin-top: 2rem;
-    margin-bottom: 0.5rem;
+    margin-top: 1.75rem;
+    margin-bottom: 0.4rem;
   }
 
   p {
@@ -98,583 +95,129 @@
     max-width: 65ch;
   }
 
-  /* Content tables */
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 1.25rem 0 1.5rem;
-    font-size: 0.9rem;
-  }
-
-  th, td {
-    padding: 10px 14px;
-    border: 1px solid var(--border);
-    text-align: left;
-    vertical-align: top;
-  }
-
-  th {
-    background: #FAFAF7;
-    font-weight: 600;
-    font-size: 0.8125rem;
-    text-transform: uppercase;
-    letter-spacing: 0.03em;
-    color: var(--slate);
-  }
-
-  /* Lists */
-  ul, ol {
-    margin: 0.75rem 0 1.25rem 1.25rem;
+  ul {
+    margin: 0.5rem 0 1.25rem 1.25rem;
     max-width: 65ch;
   }
 
   li {
-    margin-bottom: 0.4rem;
-  }
-
-  /* Responsive */
-  @media (max-width: 600px) {
-    table {
-      font-size: 0.8rem;
-    }
-
-    th, td {
-      padding: 8px 10px;
-    }
-
-    .meta-table td:first-child {
-      width: auto;
-    }
-  }
-
-  /* Overflow tables on small screens */
-  .table-wrap {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    margin: 1.25rem 0 1.5rem;
-  }
-
-  .table-wrap table {
-    margin: 0;
-    min-width: 500px;
-  }
-
-  /* Data Room */
-  .data-room {
-    margin-top: 3rem;
-    padding-top: 2.5rem;
-    border-top: 2px solid var(--border);
-  }
-
-  .data-room h2 {
-    margin-top: 0;
-  }
-
-  .doc-item {
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    background: var(--card);
-    margin-bottom: 10px;
-    overflow: hidden;
-  }
-
-  .doc-item summary {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 16px 20px;
-    font-family: 'Inter', sans-serif;
-    font-size: 1rem;
-    font-weight: 600;
-    color: var(--ink);
-    cursor: pointer;
-    list-style: none;
-    user-select: none;
-    transition: background 0.15s ease;
-  }
-
-  .doc-item summary::-webkit-details-marker { display: none; }
-
-  .doc-item summary::after {
-    content: '+';
-    font-size: 1.25rem;
-    font-weight: 400;
-    color: var(--slate);
-    transition: transform 0.2s ease;
-  }
-
-  .doc-item[open] summary::after {
-    content: '−';
-  }
-
-  .doc-item summary:hover {
-    background: #FAFAF7;
-  }
-
-  .doc-item .doc-body {
-    padding: 0 20px 20px;
-    font-size: 0.9rem;
-    color: var(--slate);
-    line-height: 1.6;
-  }
-
-  .doc-item .doc-body p {
-    margin-bottom: 0;
-  }
-
-  /* Constitution section */
-  .constitution {
-    margin-top: 3rem;
-    padding-top: 2.5rem;
-    border-top: 2px solid var(--border);
-  }
-
-  .constitution h2 {
-    margin-top: 0;
-  }
-
-  .constitution .intro-box {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 16px 20px;
-    margin-bottom: 1.5rem;
-    font-size: 0.9rem;
-    line-height: 1.65;
-    color: var(--slate);
-  }
-
-  .constitution .intro-box strong { color: var(--ink); }
-
-  .const-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-    margin-bottom: 1.5rem;
-  }
-
-  .const-card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 16px 20px;
-  }
-
-  .const-card h3 {
-    font-size: 1rem;
-    font-weight: 700;
-    margin-top: 0;
-    margin-bottom: 0.4rem;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-
-  .const-card h3 .num {
-    background: var(--ink);
-    color: #fff;
-    width: 22px;
-    height: 22px;
-    border-radius: 50%;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.7rem;
-    font-weight: 700;
-    flex-shrink: 0;
-  }
-
-  .const-card p {
-    font-size: 0.85rem;
-    line-height: 1.6;
-    color: var(--ink);
-    margin-bottom: 0;
-    max-width: none;
-  }
-
-  .const-full {
-    grid-column: 1 / -1;
-  }
-
-  .callout-box {
-    background: #FAFAF7;
-    border: 1px solid var(--border);
-    border-left: 3px solid var(--ink);
-    border-radius: 8px;
-    padding: 14px 18px;
-    margin-bottom: 1rem;
-  }
-
-  .callout-box p {
-    font-size: 0.85rem;
-    line-height: 1.6;
-    margin-bottom: 0;
-  }
-
-  .callout-box strong { color: var(--ink); }
-
-  .constitution footer {
-    text-align: center;
-    font-size: 0.75rem;
-    color: var(--slate);
-    padding-top: 12px;
-    border-top: 1px solid var(--border);
-    line-height: 1.5;
-  }
-
-  @media (max-width: 600px) {
-    .const-grid { grid-template-columns: 1fr; }
+    margin-bottom: 0.35rem;
   }
 </style>
 </head>
 <body>
 
-<div class="doc-header">
-  <div class="brand">Stackable</div>
-  <h1>Equity Vesting Policy</h1>
-  <table class="meta-table">
-    <tr><td>Document Type</td><td>Board, Key Hires &amp; Investor Due Diligence</td></tr>
-    <tr><td>Entity</td><td>Stackable Group Pty Ltd</td></tr>
-    <tr><td>Date</td><td>April 2026</td></tr>
-    <tr><td>Classification</td><td>Confidential</td></tr>
-  </table>
+<div class="pill-nav">
+  <span class="pill-btn active">Shareholders Deed</span>
 </div>
 
-<h2>1. Purpose</h2>
-<p>This document explains how equity vesting works at Stackable. It's intended for board members, key hires, advisers, and investors. The terms here are already reflected in our shareholders' agreement and option grant documentation.</p>
+<p class="page-intro">A simple guide to the Shareholders' Deed.</p>
 
-<h2>2. Why this policy exists</h2>
-<p>When someone joins a company early, they're often given ownership, which is a percentage of the company, expressed as shares. This is how startups attract good people when they can't yet compete on salary.</p>
-<p>The problem is timing. Ownership given upfront, all at once, creates a perverse situation: someone can receive their full stake in the company, then leave the next month, and still own it. They've contributed almost nothing, but they hold equity as if they built the place. The people who stay are left building value for someone who already walked away.</p>
-<p>Vesting solves this by making ownership something you earn over time rather than receive all at once. Leave after six months, and you own very little. Stay for four years, and you've earned the lot. The equity tracks the work.</p>
-<p>This policy applies to everyone at Stackable (including founder(s), key hires, board members).</p>
-
-<h2>3. Two types of equity at Stackable</h2>
-<p>There are two ways people receive equity here. Founders receive shares directly. Key hires and advisers receive options (i.e., the right to buy shares at a fixed price in the future). Both vest on the same schedule. But the legal structure, mechanics, and tax treatment are different.</p>
-
-<div class="table-wrap">
-<table>
-  <tr>
-    <th></th>
-    <th>Founder Shares</th>
-    <th>Key Hire / Advisor Options</th>
-  </tr>
-  <tr>
-    <td><strong>Instrument</strong></td>
-    <td>Ordinary shares issued upfront.</td>
-    <td>Options (right to buy shares at a set price).</td>
-  </tr>
-  <tr>
-    <td><strong>Vesting schedule</strong></td>
-    <td>4 years, 1-year cliff</td>
-    <td>4 years, 1-year cliff</td>
-  </tr>
-  <tr>
-    <td><strong>Legal structure</strong></td>
-    <td>Reverse vesting. Company holds repurchase right.</td>
-    <td>ESOP. Options granted, exercised after vesting.</td>
-  </tr>
-  <tr>
-    <td><strong>Tax framework</strong></td>
-    <td>Not ESS. No tax until disposal.</td>
-    <td>ESS rules apply. Startup concession typically available.</td>
-  </tr>
-  <tr>
-    <td><strong>To receive shares</strong></td>
-    <td>Already own from inception.</td>
-    <td>Must exercise options. Pay exercise price.</td>
-  </tr>
-</table>
-</div>
-
-<h2>4. Founder Equity</h2>
-
-<h3>4.1 The Vesting Schedule</h3>
-<p>The shares don't arrive all at once. They accumulate over four years.</p>
-<p>The first twelve months is a probationary period of sorts, nothing is earned during this time. It exists because both sides need to find out if this is actually going to work. If it isn't, a clean separation is easier when no equity has changed hands yet. This period is called the cliff.</p>
-<p>At the twelve-month mark, a quarter of the total shares vest at once. After that, the remaining shares arrive in small amounts each month over the following four years. By year four, the schedule is complete.</p>
-
-<div class="table-wrap">
-<table>
-  <tr>
-    <th>Milestone</th>
-    <th>Vesting Event</th>
-    <th>Cumulative Vested</th>
-  </tr>
-  <tr>
-    <td>Month 0–11</td>
-    <td>Nothing vests (cliff period)</td>
-    <td>0%</td>
-  </tr>
-  <tr>
-    <td>Month 12</td>
-    <td>25% vests in one tranche</td>
-    <td>25%</td>
-  </tr>
-  <tr>
-    <td>Months 13–48</td>
-    <td>1/48th vests each month</td>
-    <td>25% → 100%</td>
-  </tr>
-  <tr>
-    <td>Month 48</td>
-    <td>Final tranche vests</td>
-    <td>100%</td>
-  </tr>
-</table>
-</div>
-
-<h3>4.2 The Australian Structure: Reverse Vesting</h3>
-<p>Founder shares are issued upfront, with the company holding a contractual right to repurchase the unvested portion. As milestones are achieved, this right expires for each tranche. If a founder departs before the schedule ends, the company repurchases the unvested shares at their original issue price. This process, known as reverse vesting, is common in Australia and achieves similar results to the US model through a different legal framework.</p>
-<p>This repurchase right is outlined in the shareholders' agreement. Board members should ensure that this agreement is current and updated after each investment round.</p>
-
-<h3>4.3 Credit for Work Before the Investment</h3>
-<p>If the founder has been working on the company for a meaningful period before the raise, up to 25% of their shares may be exempt from the vesting schedule. This recognises that the clock didn't start on the day the cheque arrived. Any such credit is disclosed to all shareholders and documented in the shareholders' agreement. The board should review and sign off on this before it is agreed.</p>
-
-<h2>5. Key Hire &amp; Advisor Options</h2>
-
-<h3>5.1 Understanding what an option is</h3>
-<p>When a startup is young, it has very little cash but — if things go well — significant future value. Options are a way of sharing that future value with the people who help create it.</p>
-<p>You are not given any shares when you join. Instead you are given a right — the right to purchase shares at whatever they are worth on the day you joined. That price is locked in from day one.</p>
-<p>If you stay, and the company grows, you can exercise that right at a future point — typically any time within ten years. When you do, you buy shares at the old join-day price. What you actually receive is the difference between that price and what the shares are worth now. If shares were worth $1 when you joined and are worth $20 when you exercise, you pay $1 and receive something worth $20. That $19 gap is yours.</p>
-<p>If the company doesn't grow — if shares are still worth $1, or worth less — you simply don't buy. The option expires unused. You've lost nothing except the time you invested.</p>
-<p>This is what makes options work as an incentive. They have no value unless the company becomes more valuable. Which means the person holding them has a direct personal interest in making that happen.</p>
-
-<h3>5.2 Vesting Schedule</h3>
-<p>4 years, 1-year cliff. Nothing vests in the first 12 months. At month 12, 25% vests. The rest comes through monthly over the following three years. Options that are not yet vested lapse on departure.</p>
-
-<h3>5.3 Exercise and Expiry</h3>
-<p>Vested options don't last forever. Key terms:</p>
+<h2>The Board</h2>
+<h3>Who runs the company?</h3>
 <ul>
-  <li>Options expire 10 years from the date of grant if not exercised.</li>
-  <li>Good leavers typically have up to 12 months after departure to exercise vested options before they lapse.</li>
-  <li>Bad leavers typically have 90 days. After that, unexercised options lapse regardless of vesting status.</li>
-  <li>On acquisition or IPO, vested options are typically exercised as part of the transaction. The board should ensure option agreements address this explicitly.</li>
+  <li>Each founder appoints 1 board member</li>
+  <li>One independent director</li>
 </ul>
 
-<h3>5.4 Employee Share Scheme Rules</h3>
-<p>Employee Share Scheme (ESS) rules under Division 83A of the ITAA 1997 apply to options granted to employees and advisers.</p>
-<p>The good news: most early-stage Australian startups qualify for the startup concession, which makes the tax treatment much more favourable:</p>
+<h3>Removing an Independent Director</h3>
 <ul>
-  <li>No tax when options are granted.</li>
-  <li>No tax when options vest.</li>
-  <li>No tax when options are exercised (this is the big one, in the standard ESS regime, there can be tax at exercise even before you've sold any shares).</li>
-  <li>Tax only applies when you sell the resulting shares. If held for more than 12 months from the date of exercise, the 50% CGT discount applies.</li>
-</ul>
-<p>To qualify for the startup concession, the company must be unlisted, less than 10 years old, have annual turnover under $50 million, and the options must be granted at or above fair market value. Stackable Group currently meets these criteria. This should be confirmed at each grant date.</p>
-<p>Independent tax advice is recommended for all option holders. This document is not tax advice.</p>
-
-<h2>6. What happens when someone leaves</h2>
-<p>The leaver provisions apply to both founders and option holders, though the mechanics differ slightly. For the board: classifying a departure as good leaver or bad leaver is a governance decision with financial consequences.</p>
-
-<div class="table-wrap">
-<table>
-  <tr>
-    <th>Category</th>
-    <th>Trigger Events</th>
-    <th>Founder Shares</th>
-    <th>Options</th>
-  </tr>
-  <tr>
-    <td><strong>Good Leaver</strong></td>
-    <td>Serious illness, permanent injury, death, or other agreed exceptional circumstances</td>
-    <td>Retains vested shares. Unvested bought back at issue price.</td>
-    <td>Up to 12 months to exercise vested options. Unvested lapse.</td>
-  </tr>
-  <tr>
-    <td><strong>Bad Leaver</strong></td>
-    <td>Fraud, criminal offence, material breach of duties, or voluntary resignation without cause</td>
-    <td>Vested shares repurchased at up to 50% discount to FMV (Square Peg standard — often negotiated lower). Unvested bought back at issue price.</td>
-    <td>90 days to exercise vested options. Unvested lapse. Unexercised options lapse after 90 days.</td>
-  </tr>
-  <tr>
-    <td><strong>Exit / Acquisition</strong></td>
-    <td>Trade sale, merger, acquisition, or other liquidity event</td>
-    <td>All unvested shares accelerate and vest immediately.</td>
-    <td>All unvested options accelerate. Typically exercised as part of the transaction.</td>
-  </tr>
-</table>
-</div>
-
-<p>All founder and key-hire agreements include non-compete and non-solicitation clauses that apply for a reasonable period after departure. The board should satisfy itself that these are appropriately scoped and enforceable under Australian law.</p>
-
-<h2>7. How this maps to investor expectations</h2>
-<p>This is what a venture capital will check. Here's how we stack up.</p>
-
-<div class="table-wrap">
-<table>
-  <tr>
-    <th>Requirement</th>
-    <th>Market Standard</th>
-    <th>Stackable Position</th>
-  </tr>
-  <tr>
-    <td>Founder vesting schedule</td>
-    <td>4 years, 1-year cliff</td>
-    <td>Adopted</td>
-  </tr>
-  <tr>
-    <td>Founder equity structure</td>
-    <td>Reverse vesting (Australian)</td>
-    <td>Adopted</td>
-  </tr>
-  <tr>
-    <td>Key hire option plan (ESOP)</td>
-    <td>4 years, 1-year cliff, startup concession</td>
-    <td>Adopted</td>
-  </tr>
-  <tr>
-    <td>Good leaver / bad leaver</td>
-    <td>Required for both founders and option holders</td>
-    <td>Adopted</td>
-  </tr>
-  <tr>
-    <td>Accelerated vesting on exit</td>
-    <td>Single or double trigger</td>
-    <td>Adopted</td>
-  </tr>
-  <tr>
-    <td>Pre-investment credit (founder)</td>
-    <td>Up to 25% at seed stage</td>
-    <td>To be negotiated and disclosed</td>
-  </tr>
-  <tr>
-    <td>Cliff reset at seed</td>
-    <td>Full reset within 12–18 months of inception (Blackbird)</td>
-    <td>To be applied as required</td>
-  </tr>
-</table>
-</div>
-
-<h2>8. What the Board needs to own</h2>
-<p>Four things the board should have visibility on and take responsibility for.</p>
-
-<p><strong>Documentation.</strong><br>
-The shareholders' agreement and option plan documentation need to be current, correctly drafted, and updated after each investment round. If you're joining the board and haven't reviewed these, please ask.</p>
-
-<p><strong>Leaver decisions.</strong><br>
-When a founder or key hire leaves, the board will be involved in classifying the departure and deciding whether to exercise repurchase rights. The better the definitions are in the underlying documents, the cleaner that process will be.</p>
-
-<p><strong>Option grants.</strong><br>
-Every new option grant needs board approval. That includes the number of options, the exercise price (which must reflect fair market value for the startup concession to apply), and the vesting terms. Getting it wrong has tax consequences for the recipient.</p>
-
-<p><strong>ESS compliance.</strong><br>
-If the company no longer qualifies for the startup concession, because it's been listed, exceeded the age or turnover thresholds, or options are being granted below fair market value, the board needs to know, because the tax consequences for option holders change materially.</p>
-
-<h2>9. Sources</h2>
-<p>The following primary sources were used in preparing this document. Each is publicly available and can be reviewed independently.</p>
-<ul>
-  <li>Blackbird Ventures — Thoughts on Founder Vesting (Samantha Wong, Blackbird Ventures)</li>
-  <li>Square Peg Capital — Demystifying Terms Part 2: Founder Vesting and Share Repurchase</li>
-  <li>AirTree Ventures — Crafting your ESOP: Key Terms and Best Practice</li>
+  <li>Founders remove their own appointee by writing to the company</li>
+  <li>A director must be removed if their founder no longer qualifies, becomes medically incapacitated, or is legally banned from managing a company</li>
+  <li>The independent director can only be removed with agreement from both the founder-appointed board member and 75% of shareholders, with 14 days notice</li>
 </ul>
 
-<div class="data-room">
-  <h2>Document Room</h2>
-  <p>Key governance and investment documents. Click each section to view.</p>
+<h2>Your Shares</h2>
+<h3>Ordinary shares (this raise)</h3>
+<p>You receive ordinary shares, straightforward ownership in Stackable with no special conditions attached.</p>
 
-  <details class="doc-item">
-    <summary>1. Term Sheet</summary>
-    <div class="doc-body">
-      <p>No document uploaded yet.</p>
-    </div>
-  </details>
+<h3>Preference shares</h3>
+<p>Reserved for future seed round investors. Not part of this raise.</p>
 
-  <details class="doc-item">
-    <summary>2. Shareholders Agreement</summary>
-    <div class="doc-body">
-      <p>No document uploaded yet.</p>
-    </div>
-  </details>
+<h2>Security Interests</h2>
+<p>You cannot pledge or encumber your Stackable shares without board approval. You can't use them as collateral for a personal loan, place them in a trust, or create any similar arrangement unilaterally. This protects all shareholders from one person quietly burdening their shares in ways that could harm others.</p>
 
-  <details class="doc-item">
-    <summary>3. Subscription Agreement</summary>
-    <div class="doc-body">
-      <p>No document uploaded yet.</p>
-    </div>
-  </details>
+<h2>Annual Statements</h2>
+<p>Every year, all shareholders will receive:</p>
+<ul>
+  <li>Annual accounts by 20 September, covering the financial year ending 30 June</li>
+  <li>A clear summary of the company's asset position and financial health</li>
+  <li>Audited accounts once an auditor is appointed</li>
+</ul>
+<p>You will know where your investment stands every year.</p>
 
-  <details class="doc-item">
-    <summary>4. Employment Contracts</summary>
-    <div class="doc-body">
-      <p>No document uploaded yet.</p>
-    </div>
-  </details>
+<h2>Founder Lock-Up</h2>
+<p>Founders cannot sell or transfer their shares for 4 years. They can't cash out and walk away while your money is at work. Their financial interests are locked in right alongside yours.</p>
 
-  <details class="doc-item">
-    <summary>5. Intellectual Property Assignment Agreement</summary>
-    <div class="doc-body">
-      <p>No document uploaded yet.</p>
-    </div>
-  </details>
+<h2>Founder Vesting</h2>
+<p>Founder shares are earned over time, not handed over on day one.</p>
+<ul>
+  <li>Founders pass the cliff after 12 months (post-raise)</li>
+  <li>The remaining 75% vest monthly over the following 3 years</li>
+  <li>Full vesting takes 4 years total</li>
+  <li>If a founder leaves early, unvested shares cannot be sold or transferred</li>
+</ul>
+<p>If a founder leaves early, they leave behind a meaningful chunk of their equity. It keeps them committed to building the business for the long haul.</p>
+<p>Vesting resets with each new raise. This means founders recommit to a fresh vesting schedule keeping them accountable to new investors too. However, founders may retain credit for work already done prior to the new round, so the reset is not always from zero. The exact terms are negotiated at the time of each raise.</p>
 
-  <details class="doc-item">
-    <summary>6. Option or Equity Incentive Plan</summary>
-    <div class="doc-body">
-      <p>No document uploaded yet.</p>
-    </div>
-  </details>
-</div>
+<h2>Bad Leaver Arrangements</h2>
+<p>If a founder acts badly or walks away early, the company can claw back their equity. Your investment is protected from a founder who takes the money and runs.</p>
+<p>The company can buy back or forcibly transfer a Bad Leaver's vested shares — typically for a nominal amount. Unvested shares are handled separately and returned to the company for $1.00 total.</p>
 
-<div class="constitution">
-  <h2>Your Company Constitution in Plain English</h2>
-  <p style="color: var(--slate); margin-bottom: 1rem; font-size: 0.9rem;">What the AIC Open Source Constitution actually means for you as a founder</p>
+<h3>What makes someone a Bad Leaver?</h3>
+<ul>
+  <li>Voluntary resignation within the first 12 months — after 12 months, resignation is treated as Good Leaver</li>
+  <li>Fraud, as determined by an independent expert</li>
+  <li>Serious criminal conviction — indictable offence heard in the County Court or higher</li>
+  <li>Breaching a non-compete or non-solicitation agreement</li>
+  <li>Material breach of their employment contract not fixed within 30 days (poor performance alone does not count)</li>
+</ul>
 
-  <div class="intro-box">
-    A <strong>constitution</strong> is the rulebook for how your company operates. It replaces the default "replaceable rules" in the Corporations Act. You need one because the defaults can't handle investor shares, and investors like Blackbird won't invest without one. This is the industry-standard template that Blackbird co-created. Here's what each part actually does.
-  </div>
+<h3>How the buyback works</h3>
+<ul>
+  <li>The company has 10 business days to complete the buyback</li>
+  <li>The departing founder's board appointee cannot vote on the decision</li>
+  <li>Normal shareholder pre-emption rights don't apply — it can't be blocked or delayed</li>
+  <li>The buyback must comply with the Corporations Act and cannot harm the company's ability to pay creditors</li>
+</ul>
 
-  <div class="const-grid">
-    <div class="const-card">
-      <h3><span class="num">1</span> Share classes</h3>
-      <p>Your company can issue different types of shares. <strong>Ordinary shares</strong> are yours as founder — they give you voting rights, dividends, and a share of proceeds if the company is sold. <strong>Seed Preference Shares</strong> are what investors get. They come with extra protections (detailed in Schedule 1). Directors can create and issue shares without a full shareholder vote each time.</p>
-    </div>
+<h2>Tag Along Rights</h2>
+<p>If a founder or any shareholder receives an offer to sell 25% or more of total shares, you have the right to join the sale on the exact same terms and price.</p>
+<ul>
+  <li>You must be notified of the buyer's name, number of shares, price, and terms</li>
+  <li>You have at least 10 business days to decide</li>
+  <li>If you opt in, the buyer must purchase your shares too — the seller cannot proceed otherwise</li>
+</ul>
+<p>You can never be left behind if a founder sells a large stake. Same exit, same price.</p>
 
-    <div class="const-card">
-      <h3><span class="num">2</span> Investor protections (Schedule 1)</h3>
-      <p>Investor shares convert into ordinary shares (initially 1:1). They vote alongside you on an as-converted basis — so 1 preference share = 1 vote. They get dividends equal to what they'd receive if they'd already converted. The key protections are the liquidation preference and anti-dilution (see boxes 3 and 4).</p>
-    </div>
+<h2>Drag Along Rights</h2>
+<p>If 75% of shareholders agree to sell the whole company, remaining shareholders can be required to sell too, but always at the same price and on the same terms as everyone else. No one gets a worse deal.</p>
 
-    <div class="const-card">
-      <h3><span class="num">3</span> Liquidation preference</h3>
-      <p>If the company is sold, wound up, or distributes its assets, investors get paid first. They receive the <strong>greater of</strong>: (a) their original investment back, or (b) what they'd get if they converted to ordinary shares. This is called <strong>1x non-participating</strong> — they pick the better option but can't take both. This is the founder-friendliest standard.</p>
-    </div>
+<h2>Restraints on Founders</h2>
+<p>While at Stackable and for a period after leaving, founders cannot:</p>
+<ul>
+  <li>Start, join, or assist any competing business — directly or indirectly</li>
+  <li>Poach staff, consultants, customers, or suppliers (including those connected to Stackable in the 12 months before leaving)</li>
+  <li>Help anyone else do either of the above</li>
+</ul>
 
-    <div class="const-card">
-      <h3><span class="num">4</span> Anti-dilution</h3>
-      <p>If you later raise money at a <strong>lower price</strong> than what investors paid (a "down round"), their conversion ratio adjusts so they get more ordinary shares on conversion. It uses a <strong>broad-based weighted average</strong> formula — the industry standard. It does <em>not</em> apply to employee option grants, bonus issues, or acquisition-related share issues.</p>
-    </div>
+<h3>Exceptions</h3>
+<ul>
+  <li>Continuing to work for Stackable</li>
+  <li>Holding up to 5% of a publicly listed competitor as a passive investment</li>
+  <li>Holding their own Stackable shares</li>
+</ul>
+<p>A departing founder can't walk out the door and immediately set up a competing business or strip Stackable of its key people and clients.</p>
 
-    <div class="const-card">
-      <h3><span class="num">5</span> Share transfers &amp; restrictions</h3>
-      <p>You can't freely sell your shares. Directors can refuse to register any transfer. If there's a Shareholders Deed (there will be), its transfer rules override the constitution. This keeps control over who becomes a shareholder — critical for a small company with investors on the cap table.</p>
-    </div>
-
-    <div class="const-card">
-      <h3><span class="num">6</span> Directors &amp; decision-making</h3>
-      <p>Directors manage the company's business. The board can appoint new directors, delegate to committees, and borrow money. Directors must disclose personal interests in transactions. Meetings can be held virtually or in person. The chair does <strong>not</strong> get a casting vote — deadlocks must be resolved, not overruled.</p>
-    </div>
-
-    <div class="const-card">
-      <h3><span class="num">7</span> Shareholders Deed trumps</h3>
-      <p>Where the Shareholders Deed and constitution conflict, the <strong>Shareholders Deed wins</strong> — except for the preference share terms in Schedule 1, which override everything. The Shareholders Deed is a separate document covering things like drag-along, tag-along, founder vesting, board seats, and reserved matters.</p>
-    </div>
-
-    <div class="const-card">
-      <h3><span class="num">8</span> Dividends, indemnity &amp; winding up</h3>
-      <p>Directors decide if and when to pay dividends. On winding up, the liquidator can distribute assets in kind (not just cash). Officers (including you as director) are indemnified against liability incurred in their role, and the company can pay for D&amp;O insurance — as long as there's no wilful breach of duty.</p>
-    </div>
-  </div>
-
-  <div class="callout-box">
-    <p><strong>What this constitution does NOT cover</strong> — and what you'll need separately: founder vesting schedules, drag-along and tag-along rights, board composition and investor director seats, reserved matters requiring investor approval, ESOP/option pool terms, and non-compete obligations. These all live in the <strong>Shareholders Deed</strong>, which you'll negotiate alongside this constitution when you raise.</p>
-  </div>
-
-  <footer>
-    Based on the AIC Open Source Seed Financing Constitution (2023 update), co-created by Blackbird Ventures, AirTree, and contributing law firms.<br>
-    This is a plain-language summary only — not legal advice. Have a startup lawyer review before adopting.
-  </footer>
-</div>
+<h2>Confidentiality</h2>
+<p>Investment terms, governance mechanics, and deed provisions are confidential. You can share with your own professional advisers but not publicly.</p>
+<p>General operational information</p>
+<ul>
+  <li>revenue, salaries,</li>
+  <li>culture,</li>
+  <li>product strategy</li>
+</ul>
+<p>is not automatically confidential unless the board specifically designates it. Founders and the team can talk openly about the business without anyone accidentally breaching the deed.</p>
 
 </body>
 </html>
