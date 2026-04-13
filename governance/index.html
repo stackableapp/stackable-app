@@ -14,6 +14,7 @@
     --slate: #6B6568;
     --border: #E8E2D9;
     --card: #FFFFFF;
+    --card-alt: #FAFAF7;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -21,6 +22,7 @@
   html {
     background: var(--bg);
     color: var(--ink);
+    scroll-behavior: smooth;
   }
 
   body {
@@ -38,7 +40,7 @@
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
-    margin-bottom: 2.5rem;
+    margin-bottom: 2rem;
   }
 
   .pill-btn {
@@ -61,47 +63,141 @@
     border-color: var(--ink);
   }
 
-  /* Content */
+  /* Page intro */
   .page-intro {
     font-size: 1rem;
     color: var(--slate);
-    margin-bottom: 2.5rem;
+    margin-bottom: 2rem;
     max-width: 65ch;
   }
 
-  h2 {
-    font-size: 1.35rem;
+  /* Table of contents */
+  .toc {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-bottom: 2rem;
+  }
+
+  .toc-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--slate);
+    margin-bottom: 10px;
+  }
+
+  .toc-list {
+    list-style: none;
+    margin: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4px 24px;
+  }
+
+  .toc-list li {
+    margin: 0;
+  }
+
+  .toc-list a {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--ink);
+    text-decoration: none;
+    padding: 5px 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: color 0.15s;
+  }
+
+  .toc-list a:hover {
+    color: var(--slate);
+  }
+
+  .toc-num {
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--slate);
+    background: var(--bg);
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  @media (max-width: 500px) {
+    .toc-list { grid-template-columns: 1fr; }
+  }
+
+  /* Section cards */
+  .section-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: clamp(20px, 4vw, 32px);
+    margin-bottom: 12px;
+  }
+
+  .section-card h2 {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 1.25rem;
     font-weight: 700;
     line-height: 1.3;
     letter-spacing: -0.01em;
-    margin-top: 2.5rem;
-    margin-bottom: 0.75rem;
+    margin: 0 0 0.75rem 0;
   }
 
-  h2:first-of-type {
-    margin-top: 0;
+  .section-num {
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: #fff;
+    background: var(--ink);
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
   }
 
   h3 {
-    font-size: 1.05rem;
+    font-size: 1rem;
     font-weight: 600;
     line-height: 1.3;
-    margin-top: 1.75rem;
+    margin-top: 1.5rem;
     margin-bottom: 0.4rem;
   }
 
+  .section-card h3:first-of-type {
+    margin-top: 0.5rem;
+  }
+
   p {
-    margin-bottom: 1rem;
+    margin-bottom: 0.85rem;
     max-width: 65ch;
   }
 
   ul {
-    margin: 0.5rem 0 1.25rem 1.25rem;
+    margin: 0.4rem 0 1rem 1.25rem;
     max-width: 65ch;
   }
 
   li {
-    margin-bottom: 0.35rem;
+    margin-bottom: 0.3rem;
+  }
+
+  /* Key figures */
+  .kf {
+    font-weight: 600;
   }
 </style>
 </head>
@@ -113,111 +209,145 @@
 
 <p class="page-intro">A simple guide to the Shareholders' Deed.</p>
 
-<h2>The Board</h2>
-<h3>Who runs the company?</h3>
-<ul>
-  <li>Each founder appoints 1 board member</li>
-  <li>One independent director</li>
-</ul>
+<nav class="toc">
+  <div class="toc-label">In this document</div>
+  <ol class="toc-list">
+    <li><a href="#board"><span class="toc-num">1</span>The Board</a></li>
+    <li><a href="#shares"><span class="toc-num">2</span>Your Shares</a></li>
+    <li><a href="#security"><span class="toc-num">3</span>Security Interests</a></li>
+    <li><a href="#statements"><span class="toc-num">4</span>Annual Statements</a></li>
+    <li><a href="#lockup"><span class="toc-num">5</span>Founder Lock-Up</a></li>
+    <li><a href="#vesting"><span class="toc-num">6</span>Founder Vesting</a></li>
+    <li><a href="#badleaver"><span class="toc-num">7</span>Bad Leaver Arrangements</a></li>
+    <li><a href="#tagalong"><span class="toc-num">8</span>Tag Along Rights</a></li>
+    <li><a href="#dragalong"><span class="toc-num">9</span>Drag Along Rights</a></li>
+    <li><a href="#restraints"><span class="toc-num">10</span>Restraints on Founders</a></li>
+    <li><a href="#confidentiality"><span class="toc-num">11</span>Confidentiality</a></li>
+  </ol>
+</nav>
 
-<h3>Removing an Independent Director</h3>
-<ul>
-  <li>Founders remove their own appointee by writing to the company</li>
-  <li>A director must be removed if their founder no longer qualifies, becomes medically incapacitated, or is legally banned from managing a company</li>
-  <li>The independent director can only be removed with agreement from both the founder-appointed board member and 75% of shareholders, with 14 days notice</li>
-</ul>
+<div class="section-card" id="board">
+  <h2><span class="section-num">1</span>The Board</h2>
+  <h3>Who runs the company?</h3>
+  <ul>
+    <li>Each founder appoints <span class="kf">1</span> board member</li>
+    <li>One independent director</li>
+  </ul>
+  <h3>Removing an Independent Director</h3>
+  <ul>
+    <li>Founders remove their own appointee by writing to the company</li>
+    <li>A director must be removed if their founder no longer qualifies, becomes medically incapacitated, or is legally banned from managing a company</li>
+    <li>The independent director can only be removed with agreement from both the founder-appointed board member and <span class="kf">75%</span> of shareholders, with <span class="kf">14 days</span> notice</li>
+  </ul>
+</div>
 
-<h2>Your Shares</h2>
-<h3>Ordinary shares (this raise)</h3>
-<p>You receive ordinary shares, straightforward ownership in Stackable with no special conditions attached.</p>
+<div class="section-card" id="shares">
+  <h2><span class="section-num">2</span>Your Shares</h2>
+  <h3>Ordinary shares (this raise)</h3>
+  <p>You receive ordinary shares, straightforward ownership in Stackable with no special conditions attached.</p>
+  <h3>Preference shares</h3>
+  <p>Reserved for future seed round investors. Not part of this raise.</p>
+</div>
 
-<h3>Preference shares</h3>
-<p>Reserved for future seed round investors. Not part of this raise.</p>
+<div class="section-card" id="security">
+  <h2><span class="section-num">3</span>Security Interests</h2>
+  <p>You cannot pledge or encumber your Stackable shares without board approval. You can't use them as collateral for a personal loan, place them in a trust, or create any similar arrangement unilaterally. This protects all shareholders from one person quietly burdening their shares in ways that could harm others.</p>
+</div>
 
-<h2>Security Interests</h2>
-<p>You cannot pledge or encumber your Stackable shares without board approval. You can't use them as collateral for a personal loan, place them in a trust, or create any similar arrangement unilaterally. This protects all shareholders from one person quietly burdening their shares in ways that could harm others.</p>
+<div class="section-card" id="statements">
+  <h2><span class="section-num">4</span>Annual Statements</h2>
+  <p>Every year, all shareholders will receive:</p>
+  <ul>
+    <li>Annual accounts by <span class="kf">20 September</span>, covering the financial year ending <span class="kf">30 June</span></li>
+    <li>A clear summary of the company's asset position and financial health</li>
+    <li>Audited accounts once an auditor is appointed</li>
+  </ul>
+  <p>You will know where your investment stands every year.</p>
+</div>
 
-<h2>Annual Statements</h2>
-<p>Every year, all shareholders will receive:</p>
-<ul>
-  <li>Annual accounts by 20 September, covering the financial year ending 30 June</li>
-  <li>A clear summary of the company's asset position and financial health</li>
-  <li>Audited accounts once an auditor is appointed</li>
-</ul>
-<p>You will know where your investment stands every year.</p>
+<div class="section-card" id="lockup">
+  <h2><span class="section-num">5</span>Founder Lock-Up</h2>
+  <p>Founders cannot sell or transfer their shares for <span class="kf">4 years</span>. They can't cash out and walk away while your money is at work. Their financial interests are locked in right alongside yours.</p>
+</div>
 
-<h2>Founder Lock-Up</h2>
-<p>Founders cannot sell or transfer their shares for 4 years. They can't cash out and walk away while your money is at work. Their financial interests are locked in right alongside yours.</p>
+<div class="section-card" id="vesting">
+  <h2><span class="section-num">6</span>Founder Vesting</h2>
+  <p>Founder shares are earned over time, not handed over on day one.</p>
+  <ul>
+    <li>Founders pass the cliff after <span class="kf">12 months</span> (post-raise)</li>
+    <li>The remaining <span class="kf">75%</span> vest monthly over the following <span class="kf">3 years</span></li>
+    <li>Full vesting takes <span class="kf">4 years</span> total</li>
+    <li>If a founder leaves early, unvested shares cannot be sold or transferred</li>
+  </ul>
+  <p>If a founder leaves early, they leave behind a meaningful chunk of their equity. It keeps them committed to building the business for the long haul.</p>
+  <p>Vesting resets with each new raise. This means founders recommit to a fresh vesting schedule keeping them accountable to new investors too. However, founders may retain credit for work already done prior to the new round, so the reset is not always from zero. The exact terms are negotiated at the time of each raise.</p>
+</div>
 
-<h2>Founder Vesting</h2>
-<p>Founder shares are earned over time, not handed over on day one.</p>
-<ul>
-  <li>Founders pass the cliff after 12 months (post-raise)</li>
-  <li>The remaining 75% vest monthly over the following 3 years</li>
-  <li>Full vesting takes 4 years total</li>
-  <li>If a founder leaves early, unvested shares cannot be sold or transferred</li>
-</ul>
-<p>If a founder leaves early, they leave behind a meaningful chunk of their equity. It keeps them committed to building the business for the long haul.</p>
-<p>Vesting resets with each new raise. This means founders recommit to a fresh vesting schedule keeping them accountable to new investors too. However, founders may retain credit for work already done prior to the new round, so the reset is not always from zero. The exact terms are negotiated at the time of each raise.</p>
+<div class="section-card" id="badleaver">
+  <h2><span class="section-num">7</span>Bad Leaver Arrangements</h2>
+  <p>If a founder acts badly or walks away early, the company can claw back their equity. Your investment is protected from a founder who takes the money and runs.</p>
+  <p>The company can buy back or forcibly transfer a Bad Leaver's vested shares — typically for a nominal amount. Unvested shares are handled separately and returned to the company for <span class="kf">$1.00</span> total.</p>
+  <h3>What makes someone a Bad Leaver?</h3>
+  <ul>
+    <li>Voluntary resignation within the first <span class="kf">12 months</span> — after 12 months, resignation is treated as Good Leaver</li>
+    <li>Fraud, as determined by an independent expert</li>
+    <li>Serious criminal conviction — indictable offence heard in the County Court or higher</li>
+    <li>Breaching a non-compete or non-solicitation agreement</li>
+    <li>Material breach of their employment contract not fixed within <span class="kf">30 days</span> (poor performance alone does not count)</li>
+  </ul>
+  <h3>How the buyback works</h3>
+  <ul>
+    <li>The company has <span class="kf">10 business days</span> to complete the buyback</li>
+    <li>The departing founder's board appointee cannot vote on the decision</li>
+    <li>Normal shareholder pre-emption rights don't apply — it can't be blocked or delayed</li>
+    <li>The buyback must comply with the Corporations Act and cannot harm the company's ability to pay creditors</li>
+  </ul>
+</div>
 
-<h2>Bad Leaver Arrangements</h2>
-<p>If a founder acts badly or walks away early, the company can claw back their equity. Your investment is protected from a founder who takes the money and runs.</p>
-<p>The company can buy back or forcibly transfer a Bad Leaver's vested shares — typically for a nominal amount. Unvested shares are handled separately and returned to the company for $1.00 total.</p>
+<div class="section-card" id="tagalong">
+  <h2><span class="section-num">8</span>Tag Along Rights</h2>
+  <p>If a founder or any shareholder receives an offer to sell <span class="kf">25%</span> or more of total shares, you have the right to join the sale on the exact same terms and price.</p>
+  <ul>
+    <li>You must be notified of the buyer's name, number of shares, price, and terms</li>
+    <li>You have at least <span class="kf">10 business days</span> to decide</li>
+    <li>If you opt in, the buyer must purchase your shares too — the seller cannot proceed otherwise</li>
+  </ul>
+  <p>You can never be left behind if a founder sells a large stake. Same exit, same price.</p>
+</div>
 
-<h3>What makes someone a Bad Leaver?</h3>
-<ul>
-  <li>Voluntary resignation within the first 12 months — after 12 months, resignation is treated as Good Leaver</li>
-  <li>Fraud, as determined by an independent expert</li>
-  <li>Serious criminal conviction — indictable offence heard in the County Court or higher</li>
-  <li>Breaching a non-compete or non-solicitation agreement</li>
-  <li>Material breach of their employment contract not fixed within 30 days (poor performance alone does not count)</li>
-</ul>
+<div class="section-card" id="dragalong">
+  <h2><span class="section-num">9</span>Drag Along Rights</h2>
+  <p>If <span class="kf">75%</span> of shareholders agree to sell the whole company, remaining shareholders can be required to sell too, but always at the same price and on the same terms as everyone else. No one gets a worse deal.</p>
+</div>
 
-<h3>How the buyback works</h3>
-<ul>
-  <li>The company has 10 business days to complete the buyback</li>
-  <li>The departing founder's board appointee cannot vote on the decision</li>
-  <li>Normal shareholder pre-emption rights don't apply — it can't be blocked or delayed</li>
-  <li>The buyback must comply with the Corporations Act and cannot harm the company's ability to pay creditors</li>
-</ul>
+<div class="section-card" id="restraints">
+  <h2><span class="section-num">10</span>Restraints on Founders</h2>
+  <p>While at Stackable and for a period after leaving, founders cannot:</p>
+  <ul>
+    <li>Start, join, or assist any competing business — directly or indirectly</li>
+    <li>Poach staff, consultants, customers, or suppliers (including those connected to Stackable in the <span class="kf">12 months</span> before leaving)</li>
+    <li>Help anyone else do either of the above</li>
+  </ul>
+  <h3>Exceptions</h3>
+  <ul>
+    <li>Continuing to work for Stackable</li>
+    <li>Holding up to <span class="kf">5%</span> of a publicly listed competitor as a passive investment</li>
+    <li>Holding their own Stackable shares</li>
+  </ul>
+  <p>A departing founder can't walk out the door and immediately set up a competing business or strip Stackable of its key people and clients.</p>
+</div>
 
-<h2>Tag Along Rights</h2>
-<p>If a founder or any shareholder receives an offer to sell 25% or more of total shares, you have the right to join the sale on the exact same terms and price.</p>
-<ul>
-  <li>You must be notified of the buyer's name, number of shares, price, and terms</li>
-  <li>You have at least 10 business days to decide</li>
-  <li>If you opt in, the buyer must purchase your shares too — the seller cannot proceed otherwise</li>
-</ul>
-<p>You can never be left behind if a founder sells a large stake. Same exit, same price.</p>
-
-<h2>Drag Along Rights</h2>
-<p>If 75% of shareholders agree to sell the whole company, remaining shareholders can be required to sell too, but always at the same price and on the same terms as everyone else. No one gets a worse deal.</p>
-
-<h2>Restraints on Founders</h2>
-<p>While at Stackable and for a period after leaving, founders cannot:</p>
-<ul>
-  <li>Start, join, or assist any competing business — directly or indirectly</li>
-  <li>Poach staff, consultants, customers, or suppliers (including those connected to Stackable in the 12 months before leaving)</li>
-  <li>Help anyone else do either of the above</li>
-</ul>
-
-<h3>Exceptions</h3>
-<ul>
-  <li>Continuing to work for Stackable</li>
-  <li>Holding up to 5% of a publicly listed competitor as a passive investment</li>
-  <li>Holding their own Stackable shares</li>
-</ul>
-<p>A departing founder can't walk out the door and immediately set up a competing business or strip Stackable of its key people and clients.</p>
-
-<h2>Confidentiality</h2>
-<p>Investment terms, governance mechanics, and deed provisions are confidential. You can share with your own professional advisers but not publicly.</p>
-<p>General operational information</p>
-<ul>
-  <li>revenue, salaries,</li>
-  <li>culture,</li>
-  <li>product strategy</li>
-</ul>
-<p>is not automatically confidential unless the board specifically designates it. Founders and the team can talk openly about the business without anyone accidentally breaching the deed.</p>
+<div class="section-card" id="confidentiality">
+  <h2><span class="section-num">11</span>Confidentiality</h2>
+  <p>Investment terms, governance mechanics, and deed provisions are confidential. You can share with your own professional advisers but not publicly.</p>
+  <p>General operational information</p>
+  <ul>
+    <li>revenue, salaries,</li>
+    <li>culture,</li>
+    <li>product strategy</li>
+  </ul>
+  <p>is not automatically confidential unless the board specifically designates it. Founders and the team can talk openly about the business without anyone accidentally breaching the deed.</p>
+</div>
 
 </body>
 </html>
