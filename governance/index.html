@@ -250,6 +250,21 @@
     font-weight: 600;
   }
 
+  /* Sub-group labels within cards */
+  .sub-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--slate);
+    margin-top: 1.25rem;
+    margin-bottom: 0.3rem;
+  }
+
+  .sub-label:first-of-type {
+    margin-top: 0.5rem;
+  }
+
   /* Back to top */
   .back-top {
     display: block;
@@ -301,6 +316,7 @@
       <ul class="toc-group-list">
         <li><a href="#lockup">Founder Lock-Up</a></li>
         <li><a href="#vesting">Founder Vesting</a></li>
+        <li><a href="#vesting-reset">Vesting Reset</a></li>
         <li><a href="#badleaver">Bad Leaver</a></li>
         <li><a href="#buyback">How the Buyback Works</a></li>
         <li><a href="#restraints">Restraints on Founders</a></li>
@@ -366,7 +382,6 @@
     <li>A clear summary of the company's asset position and financial health</li>
     <li>Audited accounts once an auditor is appointed</li>
   </ul>
-  <p>You will know where your investment stands every year.</p>
   <a href="#top" class="back-top">Back to top</a>
 </div>
 
@@ -383,7 +398,6 @@
 <div class="section-card" id="vesting">
   <h2><span class="section-num">6</span>Founder Vesting</h2>
   <div class="highlight">Founder shares are earned over time, not handed over on day one.</div>
-  <p>Founder shares are earned over time, not handed over on day one.</p>
   <ul>
     <li>Founders pass the cliff after <span class="kf">12 months</span> (post-raise)</li>
     <li>The remaining <span class="kf">75%</span> vest monthly over the following <span class="kf">3 years</span></li>
@@ -391,18 +405,28 @@
     <li>If a founder leaves early, unvested shares cannot be sold or transferred</li>
   </ul>
   <p>If a founder leaves early, they leave behind a meaningful chunk of their equity. It keeps them committed to building the business for the long haul.</p>
+  <a href="#top" class="back-top">Back to top</a>
+</div>
+
+<div class="section-card" id="vesting-reset">
+  <h2><span class="section-num">7</span>Vesting Reset</h2>
+  <div class="highlight">Vesting resets with each new raise, keeping founders accountable to new investors.</div>
   <p>Vesting resets with each new raise. This means founders recommit to a fresh vesting schedule keeping them accountable to new investors too. However, founders may retain credit for work already done prior to the new round, so the reset is not always from zero. The exact terms are negotiated at the time of each raise.</p>
   <a href="#top" class="back-top">Back to top</a>
 </div>
 
 <div class="section-card" id="badleaver">
-  <h2><span class="section-num">7</span>Bad Leaver</h2>
+  <h2><span class="section-num">8</span>Bad Leaver</h2>
   <div class="highlight">If a founder acts badly or walks away early, the company can claw back their equity.</div>
   <p>If a founder acts badly or walks away early, the company can claw back their equity. Your investment is protected from a founder who takes the money and runs.</p>
   <p>The company can buy back or forcibly transfer a Bad Leaver's vested shares, typically for a nominal amount. Unvested shares are handled separately and returned to the company for <span class="kf">$1.00</span> total.</p>
   <h3>What makes someone a Bad Leaver?</h3>
+  <div class="sub-label">Voluntary departure</div>
   <ul>
     <li>Voluntary resignation within the first <span class="kf">12 months</span>. After 12 months, resignation is treated as Good Leaver</li>
+  </ul>
+  <div class="sub-label">Misconduct or breach</div>
+  <ul>
     <li>Fraud, as determined by an independent expert</li>
     <li>Serious criminal conviction. Indictable offence heard in the County Court or higher</li>
     <li>Breaching a non-compete or non-solicitation agreement</li>
@@ -412,7 +436,7 @@
 </div>
 
 <div class="section-card" id="buyback">
-  <h2><span class="section-num">8</span>How the Buyback Works</h2>
+  <h2><span class="section-num">9</span>How the Buyback Works</h2>
   <div class="highlight">The company has 10 business days to complete a buyback. It can't be blocked.</div>
   <ul>
     <li>The company has <span class="kf">10 business days</span> to complete the buyback</li>
@@ -424,7 +448,7 @@
 </div>
 
 <div class="section-card" id="restraints">
-  <h2><span class="section-num">9</span>Restraints on Founders</h2>
+  <h2><span class="section-num">10</span>Restraints on Founders</h2>
   <div class="highlight">Founders cannot compete with or poach from Stackable during or after their time here.</div>
   <p>While at Stackable and for a period after leaving, founders cannot:</p>
   <ul>
@@ -443,16 +467,10 @@
 </div>
 
 <div class="section-card" id="confidentiality">
-  <h2><span class="section-num">10</span>Confidentiality</h2>
+  <h2><span class="section-num">11</span>Confidentiality</h2>
   <div class="highlight">Investment terms are confidential. General business operations are not.</div>
   <p>Investment terms, governance mechanics, and deed provisions are confidential. You can share with your own professional advisers but not publicly.</p>
-  <p>General operational information</p>
-  <ul>
-    <li>revenue, salaries,</li>
-    <li>culture,</li>
-    <li>product strategy</li>
-  </ul>
-  <p>is not automatically confidential unless the board specifically designates it. Founders and the team can talk openly about the business without anyone accidentally breaching the deed.</p>
+  <p>General operational information (revenue, salaries, culture, product strategy) is not automatically confidential unless the board specifically designates it. Founders and the team can talk openly about the business without anyone accidentally breaching the deed.</p>
   <a href="#top" class="back-top">Back to top</a>
 </div>
 
@@ -460,7 +478,7 @@
 <div class="group-label">Exit &amp; Transfer</div>
 
 <div class="section-card" id="tagalong">
-  <h2><span class="section-num">11</span>Tag Along Rights</h2>
+  <h2><span class="section-num">12</span>Tag Along Rights</h2>
   <div class="highlight">If a founder sells a large stake, you can join on the same terms and price.</div>
   <p>If a founder or any shareholder receives an offer to sell <span class="kf">25%</span> or more of total shares, you have the right to join the sale on the exact same terms and price.</p>
   <ul>
@@ -473,7 +491,7 @@
 </div>
 
 <div class="section-card" id="dragalong">
-  <h2><span class="section-num">12</span>Drag Along Rights</h2>
+  <h2><span class="section-num">13</span>Drag Along Rights</h2>
   <div class="highlight">If 75% agree to sell the company, everyone sells at the same price.</div>
   <p>If <span class="kf">75%</span> of shareholders agree to sell the whole company, remaining shareholders can be required to sell too, but always at the same price and on the same terms as everyone else. No one gets a worse deal.</p>
   <a href="#top" class="back-top">Back to top</a>
