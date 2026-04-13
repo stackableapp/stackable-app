@@ -1,820 +1,292 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Brand Voice — Stackable</title>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brand Voice — Stackable</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F2F0EB;
+    --ink: #1A1A1A;
+    --slate: #6B6568;
+    --border: #E8E2D9;
+    --card: #FFFFFF;
+  }
 
-    :root {
-      --color-bg:         #F2F0EB;
-      --color-bg-neutral: #F2F2F2;
-      --color-surface:    #FAFAF7;
-      --color-navy:       #120DA6;
-      --color-sky:        #C4E5F2;
-      --color-forest:     #032626;
-      --color-plum:       #40062B;
-      --color-text:       #1A1A1A;
-      --color-slate:      #6B6568;
-      --color-border:     #E8E2D9;
-      --color-pink-light: #F2BDD6;
-      --color-card:       #FFFFFF;
-    }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
 
-    html, body {
-      background: var(--color-bg);
-      color: var(--color-text);
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
-      -webkit-font-smoothing: antialiased;
-      min-height: 100vh;
-      line-height: 1.65;
-    }
+  html {
+    background: var(--bg);
+    color: var(--ink);
+  }
 
-    /* ============ TYPOGRAPHY ============ */
-    h1 {
-      font-family: 'Playfair Display', Georgia, serif;
-      font-weight: 700;
-      font-size: clamp(2rem, 6vw, 5rem);
-      line-height: 1.05;
-      letter-spacing: -0.03em;
-      color: var(--color-text);
-    }
-    h2 {
-      font-family: 'Playfair Display', Georgia, serif;
-      font-weight: 700;
-      font-size: clamp(2rem, 4vw, 3.5rem);
-      line-height: 1.05;
-      letter-spacing: -0.03em;
-      color: var(--color-text);
-    }
-    h3 {
-      font-family: 'Inter', sans-serif;
-      font-weight: 700;
-      font-size: clamp(1.25rem, 2vw, 1.5rem);
-      line-height: 1.3;
-      letter-spacing: -0.01em;
-      color: var(--color-text);
-    }
-    p, li {
-      max-width: 65ch;
-      font-size: clamp(1rem, 1.2vw, 1.25rem);
-      line-height: 1.65;
-    }
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.65;
+    max-width: 720px;
+    margin: 0 auto;
+    padding: clamp(32px, 6vw, 80px) clamp(20px, 4vw, 40px);
+  }
 
-    /* ============ SECTION WRAPPER ============ */
-    .section {
-      padding: clamp(48px, 8vw, 100px) clamp(24px, 6vw, 80px);
-    }
-    .section-inner {
-      max-width: 1280px;
-      margin: 0 auto;
-    }
-    .section--neutral { background: var(--color-bg-neutral); }
-    .section--warm    { background: var(--color-bg); }
-    .section--dark    { background: var(--color-forest); }
+  /* Header */
+  .doc-header {
+    margin-bottom: 3rem;
+  }
 
-    /* ============ HERO ============ */
-    #hero {
-      text-align: center;
-      padding-bottom: 0;
-    }
-    #hero .eyebrow {
-      display: inline-block;
-      font-size: 0.75rem;
-      font-weight: 600;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--color-navy);
-      margin-bottom: 16px;
-    }
-    #hero h1 {
-      margin: 0 auto 32px;
-    }
-    #hero .subtitle {
-      max-width: 56ch;
-      margin: 0 auto;
-      font-size: clamp(1.1rem, 1.5vw, 1.25rem);
-      color: var(--color-slate);
-      line-height: 1.6;
-    }
+  .doc-header .brand {
+    font-size: 0.8125rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--slate);
+    margin-bottom: 0.5rem;
+  }
 
-    /* ============ TAB BAR ============ */
-    .tab-bar {
-      display: flex;
-      justify-content: center;
-      gap: 8px;
-      padding: clamp(32px, 5vw, 48px) clamp(24px, 6vw, 80px) 0;
-      background: var(--color-bg);
-      position: sticky;
-      top: 0;
-      z-index: 10;
-    }
-    .tab-bar::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height: 1px;
-      background: var(--color-border);
-    }
-    .tab-pill {
-      padding: 12px 28px;
-      border-radius: 999px;
-      font-family: 'Inter', sans-serif;
-      font-size: 1rem;
-      font-weight: 700;
-      line-height: 1;
-      cursor: pointer;
-      border: 1px solid var(--color-navy);
-      background: transparent;
-      color: var(--color-navy);
-      transition: background 0.25s ease, color 0.25s ease;
-    }
-    .tab-pill:hover {
-      background: var(--color-sky);
-    }
-    .tab-pill.active {
-      background: var(--color-navy);
-      color: #FFFFFF;
-      border-color: var(--color-navy);
-    }
-    .tab-pill.active:hover {
-      background: var(--color-navy);
-    }
+  .doc-header h1 {
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    margin-bottom: 1rem;
+  }
 
-    /* ============ TAB CONTENT ============ */
-    .tab-content {
-      display: none;
-      opacity: 0;
-      transition: opacity 0.3s ease;
-    }
-    .tab-content.active {
-      display: block;
-      opacity: 1;
-    }
+  .doc-header .lead {
+    font-size: 1rem;
+    line-height: 1.65;
+    color: var(--slate);
+    max-width: 65ch;
+    font-style: italic;
+  }
 
-    /* ============ PERSONALITY CARD (hero area) ============ */
-    .personality-card {
-      max-width: 640px;
-      margin: clamp(32px, 5vw, 48px) auto 0;
-      background: var(--color-card);
-      border: 1px solid var(--color-border);
-      border-radius: 16px;
-      padding: 40px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-      font-size: clamp(1.1rem, 1.5vw, 1.25rem);
-      line-height: 1.6;
-      color: var(--color-text);
-      text-align: center;
-      font-style: italic;
-    }
-    .voice-analogy {
-      max-width: 48ch;
-      margin: 24px auto 0;
-      font-size: clamp(1rem, 1.2vw, 1.15rem);
-      color: var(--color-slate);
-      text-align: center;
-      line-height: 1.6;
-    }
+  /* Sections */
+  h2 {
+    font-size: 1.35rem;
+    font-weight: 700;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+  }
 
-    /* ============ VOICE ATTRIBUTES GRID ============ */
-    .attr-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 24px;
-      margin-top: clamp(32px, 4vw, 48px);
-    }
-    .attr-card {
-      background: var(--color-card);
-      border: 1px solid var(--color-border);
-      border-left: 4px solid var(--color-sky);
-      border-radius: 16px;
-      padding: 40px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-    }
-    .attr-card .positive {
-      font-size: clamp(1.15rem, 1.5vw, 1.35rem);
-      font-weight: 700;
-      color: var(--color-navy);
-      margin-bottom: 6px;
-    }
-    .attr-card .negative {
-      font-size: clamp(0.95rem, 1.1vw, 1.05rem);
-      color: var(--color-slate);
-    }
+  h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    line-height: 1.3;
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+  }
 
-    /* ============ COMPARISON GRID ============ */
-    .comparison-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 24px;
-      margin-top: clamp(32px, 4vw, 48px);
-    }
-    .compare-card {
-      background: var(--color-card);
-      border: 1px solid var(--color-border);
-      border-radius: 16px;
-      padding: 40px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
-    .compare-card--good {
-      border-left: 4px solid var(--color-navy);
-    }
-    .compare-card--verbose {
-      border-left: 4px solid var(--color-border);
-      opacity: 0.75;
-    }
-    .compare-label {
-      display: inline-block;
-      padding: 5px 14px;
-      border-radius: 999px;
-      font-size: 0.8125rem;
-      font-weight: 600;
-      width: fit-content;
-    }
-    .compare-label--good {
-      background: var(--color-navy);
-      color: #FFFFFF;
-    }
-    .compare-label--verbose {
-      background: var(--color-bg-neutral);
-      color: var(--color-slate);
-    }
-    .compare-card blockquote {
-      font-size: clamp(1.05rem, 1.3vw, 1.2rem);
-      line-height: 1.6;
-      color: var(--color-text);
-      max-width: none;
-    }
-    .word-count {
-      font-size: 0.8125rem;
-      font-weight: 600;
-      color: var(--color-slate);
-      margin-top: auto;
-    }
-    .comparison-commentary {
-      text-align: center;
-      color: var(--color-slate);
-      font-style: italic;
-      margin-top: clamp(24px, 3vw, 40px);
-      font-size: clamp(1.05rem, 1.3vw, 1.2rem);
-    }
+  p {
+    margin-bottom: 1rem;
+    max-width: 65ch;
+  }
 
-    /* ============ TONE SPECTRUM ============ */
-    .tone-lead {
-      max-width: 56ch;
-      color: var(--color-slate);
-      font-size: clamp(1.05rem, 1.3vw, 1.2rem);
-      line-height: 1.6;
-      margin-top: 16px;
-    }
-    .tone-stack {
-      display: flex;
-      flex-direction: column;
-      gap: 24px;
-      max-width: 720px;
-      margin-top: clamp(32px, 4vw, 48px);
-    }
-    .tone-card {
-      background: var(--color-card);
-      border: 1px solid var(--color-border);
-      border-radius: 16px;
-      padding: 40px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-    }
-    .tone-card .quote {
-      font-size: clamp(1.1rem, 1.4vw, 1.3rem);
-      font-weight: 600;
-      line-height: 1.45;
-      color: var(--color-text);
-      margin-bottom: 16px;
-      max-width: none;
-    }
-    .tone-pills {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-    .tone-pill {
-      display: inline-block;
-      padding: 5px 14px;
-      border-radius: 999px;
-      font-size: 0.8125rem;
-      font-weight: 600;
-    }
-    .tone-pill--tone {
-      background: var(--color-sky);
-      color: var(--color-navy);
-    }
-    .tone-pill--where {
-      background: transparent;
-      border: 1px solid var(--color-border);
-      color: var(--color-slate);
-    }
+  /* Tables */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.25rem 0 1.5rem;
+    font-size: 0.9rem;
+  }
 
-    /* Spectrum left-border colours */
-    .tone-card:nth-child(1) { border-left: 4px solid var(--color-pink-light); }
-    .tone-card:nth-child(2) { border-left: 4px solid var(--color-sky); }
-    .tone-card:nth-child(3) { border-left: 4px solid var(--color-slate); }
-    .tone-card:nth-child(4) { border-left: 4px solid var(--color-navy); }
-    .tone-card:nth-child(5) { border-left: 4px solid var(--color-plum); }
-    .tone-card:nth-child(6) { border-left: 4px solid var(--color-forest); }
+  th, td {
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    text-align: left;
+    vertical-align: top;
+  }
 
-    /* ============ DARK CLOSING ============ */
-    .closing-inner {
-      max-width: 640px;
-      margin: 0 auto;
-      text-align: center;
-    }
-    .closing-inner h2 {
-      color: #FFFFFF;
-      font-size: clamp(1.6rem, 3.5vw, 2.5rem);
-      margin-bottom: 24px;
-    }
-    .closing-inner .line-primary {
-      color: #FFFFFF;
-      font-size: clamp(1.05rem, 1.4vw, 1.25rem);
-      line-height: 1.6;
-      max-width: 48ch;
-      margin: 0 auto 16px;
-    }
-    .closing-inner .line-secondary {
-      color: rgba(255,255,255,0.62);
-      font-size: clamp(1rem, 1.2vw, 1.15rem);
-      line-height: 1.6;
-      max-width: 48ch;
-      margin: 0 auto;
-    }
+  th {
+    background: #FAFAF7;
+    font-weight: 600;
+    font-size: 0.8125rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: var(--slate);
+  }
 
-    /* ============ TAB 2: WRITING GUIDE ============ */
-    .prose {
-      max-width: 65ch;
-    }
-    .prose p {
-      margin-bottom: 20px;
-    }
-    .prose p:last-child {
-      margin-bottom: 0;
-    }
+  .table-wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin: 1.25rem 0 1.5rem;
+  }
 
-    /* Example cards for active voice */
-    .example-card {
-      background: var(--color-card);
-      border: 1px solid var(--color-border);
-      border-radius: 16px;
-      padding: 32px 40px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-      margin: 24px 0;
-    }
-    .example-card--good {
-      border-left: 4px solid var(--color-navy);
-    }
-    .example-card--bad {
-      border-left: 4px solid var(--color-border);
-      opacity: 0.75;
-    }
-    .example-card blockquote {
-      font-size: clamp(1.15rem, 1.5vw, 1.35rem);
-      font-weight: 600;
-      line-height: 1.45;
-      color: var(--color-text);
-      max-width: none;
-    }
-    .example-card .label {
-      display: inline-block;
-      padding: 4px 12px;
-      border-radius: 999px;
-      font-size: 0.75rem;
-      font-weight: 600;
-      margin-bottom: 12px;
-    }
-    .example-card .label--good {
-      background: var(--color-navy);
-      color: #FFFFFF;
-    }
-    .example-card .label--bad {
-      background: var(--color-bg-neutral);
-      color: var(--color-slate);
-    }
+  .table-wrap table {
+    margin: 0;
+    min-width: 500px;
+  }
 
-    /* Pattern steps */
-    .pattern-list {
-      list-style: none;
-      counter-reset: step;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      margin: clamp(24px, 3vw, 40px) 0;
-    }
-    .pattern-list li {
-      counter-increment: step;
-      display: flex;
-      align-items: baseline;
-      gap: 16px;
-      font-size: clamp(1rem, 1.2vw, 1.25rem);
-      line-height: 1.65;
-      max-width: 65ch;
-    }
-    .pattern-list li::before {
-      content: counter(step);
-      flex-shrink: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      background: var(--color-sky);
-      color: var(--color-navy);
-      font-weight: 700;
-      font-size: 0.875rem;
-    }
+  /* Lists */
+  ul, ol {
+    margin: 0.75rem 0 1.25rem 1.25rem;
+    max-width: 65ch;
+  }
 
-    /* Cut rules */
-    .cut-list {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      margin: clamp(24px, 3vw, 40px) 0;
-    }
-    .cut-item {
-      background: var(--color-card);
-      border: 1px solid var(--color-border);
-      border-radius: 16px;
-      padding: 24px 32px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-      max-width: 600px;
-    }
-    .cut-item .cut-label {
-      font-size: 0.8125rem;
-      font-weight: 600;
-      color: var(--color-slate);
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-      margin-bottom: 8px;
-    }
-    .cut-item .cut-example {
-      font-size: clamp(1rem, 1.2vw, 1.15rem);
-      line-height: 1.6;
-    }
-    .cut-item .cut-example .before {
-      text-decoration: line-through;
-      color: var(--color-slate);
-    }
-    .cut-item .cut-example .arrow {
-      color: var(--color-navy);
-      font-weight: 700;
-      margin: 0 6px;
-    }
+  li {
+    margin-bottom: 0.4rem;
+  }
 
-    /* ============ SCROLL REVEAL ============ */
-    .reveal {
-      opacity: 0;
-      transform: translateY(8px);
-      transition: opacity 0.6s ease, transform 0.6s ease;
-    }
-    .reveal.is-visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
+  /* Blockquotes */
+  blockquote {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--ink);
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin: 1rem 0;
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
 
-    /* ============ MOBILE ============ */
-    @media (max-width: 768px) {
-      .attr-grid {
-        grid-template-columns: 1fr;
-        gap: 16px;
-      }
-      .attr-card {
-        padding: 24px;
-      }
-      .comparison-grid {
-        grid-template-columns: 1fr;
-        gap: 16px;
-      }
-      .compare-card {
-        padding: 24px;
-      }
-      .tone-card {
-        padding: 24px;
-      }
-      .tone-stack {
-        gap: 16px;
-      }
-      .personality-card {
-        padding: 24px;
-      }
-      .example-card {
-        padding: 24px;
-      }
-      .cut-item {
-        padding: 20px 24px;
-      }
-      .tab-pill {
-        padding: 10px 20px;
-        font-size: 0.875rem;
-      }
-    }
-  </style>
+  blockquote.muted {
+    border-left-color: var(--border);
+    color: var(--slate);
+  }
+
+  /* Section divider */
+  .divider {
+    margin-top: 3rem;
+    padding-top: 2.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .divider h2 {
+    margin-top: 0;
+  }
+
+  /* Before/after examples */
+  .before {
+    text-decoration: line-through;
+    color: var(--slate);
+  }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    table { font-size: 0.8rem; }
+    th, td { padding: 8px 10px; }
+  }
+</style>
 </head>
 <body>
 
-  <!-- ====== HERO ====== -->
-  <div id="hero" class="section section--warm">
-    <div class="section-inner">
-      <h1>How Stackable Sounds</h1>
-      <div class="personality-card reveal">
-        Stackable is a switched-on friend who knows the science, can explain it in plain language, and occasionally makes you smile.
-      </div>
-      <p class="voice-analogy reveal">
-        Think of a friend you can hear from across the room. You know who it is before you see them.
-      </p>
-    </div>
-  </div>
+<div class="doc-header">
+  <div class="brand">Stackable</div>
+  <h1>How Stackable Sounds</h1>
+  <p class="lead">Stackable is a switched-on friend who knows the science, can explain it in plain language, and occasionally makes you smile.</p>
+</div>
 
-  <!-- ====== TAB BAR ====== -->
-  <nav class="tab-bar" aria-label="Guide sections">
-    <button class="tab-pill active" data-tab="sounds" aria-selected="true">How We Sound</button>
-    <button class="tab-pill" data-tab="write" aria-selected="false">How to Write</button>
-  </nav>
+<p>Think of a friend you can hear from across the room. You know who it is before you see them.</p>
 
-  <!-- ============================================================ -->
-  <!-- TAB 1: HOW STACKABLE SOUNDS                                  -->
-  <!-- ============================================================ -->
-  <div class="tab-content active" id="tab-sounds">
+<h2>Voice</h2>
+<ul>
+  <li>Builder-minded, not consumer-oriented</li>
+  <li>Structured but not rigid</li>
+  <li>Encouraging but never patronising</li>
+  <li>Expert but not academic</li>
+  <li>Witty but not silly</li>
+  <li>Ambitious but not salesy</li>
+</ul>
 
-    <!-- Voice Attributes -->
-    <div id="voice-attributes" class="section section--neutral">
-      <div class="section-inner">
-        <div class="attr-grid">
-          <div class="attr-card reveal">
-            <div class="positive">Builder-minded</div>
-            <div class="negative">not consumer-oriented</div>
-          </div>
-          <div class="attr-card reveal">
-            <div class="positive">Structured</div>
-            <div class="negative">but not rigid</div>
-          </div>
-          <div class="attr-card reveal">
-            <div class="positive">Encouraging</div>
-            <div class="negative">but never patronising</div>
-          </div>
-          <div class="attr-card reveal">
-            <div class="positive">Expert</div>
-            <div class="negative">but not academic</div>
-          </div>
-          <div class="attr-card reveal">
-            <div class="positive">Witty</div>
-            <div class="negative">but not silly</div>
-          </div>
-          <div class="attr-card reveal">
-            <div class="positive">Ambitious</div>
-            <div class="negative">but not salesy</div>
-          </div>
-        </div>
-      </div>
-    </div>
+<h2>Economy of language</h2>
 
-    <!-- Economy of Language -->
-    <div id="economy" class="section section--warm">
-      <div class="section-inner">
-        <h2 class="reveal">We say more with less</h2>
-        <div class="comparison-grid">
-          <div class="compare-card compare-card--good reveal">
-            <blockquote>"Three Bricks this week. Your Block is taking shape."</blockquote>
-          </div>
-          <div class="compare-card compare-card--verbose reveal">
-            <blockquote>"Congratulations on completing three learning modules this week! You're making fantastic progress on your learning journey and we're so proud of you."</blockquote>
-          </div>
-        </div>
-        <p class="comparison-commentary reveal">Same information, and twice the words. That's not an accident.</p>
-      </div>
-    </div>
+<blockquote>"Three Bricks this week. Your Block is taking shape."</blockquote>
 
-    <!-- Tone Spectrum -->
-    <div id="tone-spectrum" class="section section--neutral">
-      <div class="section-inner">
-        <p class="tone-lead reveal" style="font-size:clamp(1.6rem,3vw,2.2rem); font-family:'Playfair Display',Georgia,serif; font-weight:700; color:var(--color-text); line-height:1.2; max-width:none; letter-spacing:-0.02em;">We have the same voice throughout Stackable. But we use tone at different energy levels.</p>
-        <div class="tone-stack">
-          <div class="tone-card reveal">
-            <div class="quote">"Are you a blockhead?"</div>
-            <div class="tone-pills">
-              <span class="tone-pill tone-pill--tone">Playful, bold</span>
-              <span class="tone-pill tone-pill--where">Marketing &amp; social</span>
-            </div>
-          </div>
-          <div class="tone-card reveal">
-            <div class="quote">"Start building"</div>
-            <div class="tone-pills">
-              <span class="tone-pill tone-pill--tone">Functional, warm</span>
-              <span class="tone-pill tone-pill--where">Product UI</span>
-            </div>
-          </div>
-          <div class="tone-card reveal">
-            <div class="quote">"Something went wrong loading this Brick. Try again in a moment."</div>
-            <div class="tone-pills">
-              <span class="tone-pill tone-pill--tone">Helpful, straight face</span>
-              <span class="tone-pill tone-pill--where">Error messages</span>
-            </div>
-          </div>
-          <div class="tone-card reveal">
-            <div class="quote">"Your brain is engineered to forget. This Block is engineered to make you remember."</div>
-            <div class="tone-pills">
-              <span class="tone-pill tone-pill--tone">Mentor, not comedian</span>
-              <span class="tone-pill tone-pill--where">Learning content</span>
-            </div>
-          </div>
-          <div class="tone-card reveal">
-            <div class="quote">"Stack complete. You built something that lasts."</div>
-            <div class="tone-pills">
-              <span class="tone-pill tone-pill--tone">Maximum personality</span>
-              <span class="tone-pill tone-pill--where">Completion moments</span>
-            </div>
-          </div>
-          <div class="tone-card reveal">
-            <div class="quote">"We're not just stacking skills, we're stacking careers."</div>
-            <div class="tone-pills">
-              <span class="tone-pill tone-pill--tone">Precise, belief-driven</span>
-              <span class="tone-pill tone-pill--where">Investor materials</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+<p>We say more with less.</p>
 
-    <!-- Closing -->
-    <div id="closing-sounds" class="section section--dark">
-      <div class="closing-inner reveal">
-        <h2>Marketing is where the vocabulary gets to have fun.</h2>
-        <p class="line-primary">In our product, we are always clear first, clever second.</p>
-        <p class="line-secondary">And if we use a joke and it doesn't help us teach, it doesn't belong.</p>
-      </div>
-    </div>
+<blockquote class="muted">"Congratulations on completing three learning modules this week! You're making fantastic progress on your learning journey and we're so proud of you."</blockquote>
 
-  </div><!-- /tab-sounds -->
+<p>Same information, and twice the words. That's not an accident.</p>
 
-  <!-- ============================================================ -->
-  <!-- TAB 2: HOW TO WRITE AT STACKABLE                             -->
-  <!-- ============================================================ -->
-  <div class="tab-content" id="tab-write">
+<h2>Tone</h2>
+<p>We have the same voice throughout Stackable. But we use tone at different energy levels.</p>
 
-    <!-- Active Voice -->
-    <div id="active-voice" class="section section--warm">
-      <div class="section-inner">
-        <h2 class="reveal">Active voice</h2>
-        <div class="prose">
-          <div class="example-card example-card--good reveal">
-            <blockquote>"Every learner is a builder."</blockquote>
-          </div>
-          <p class="reveal">The learner is the subject. They're doing the building. It's direct, it's clear, and it puts the reader in control. This is the single most important writing rule we have.</p>
-          <div class="example-card example-card--bad reveal">
-            <blockquote>"Learning is delivered to participants through our platform."</blockquote>
-          </div>
-          <p class="reveal">Same idea. All the life sucked out of it. The reader becomes a passenger and nobody is doing anything. The sentence just sort of… exists.</p>
-          <p class="reveal">You'll notice passive voice creeping in when you're tired, writing fast, or reaching for what sounds professional. It's the default setting for corporate writing, which is exactly why it kills our voice.</p>
-        </div>
-      </div>
-    </div>
+<div class="table-wrap">
+<table>
+  <tr>
+    <th>Example</th>
+    <th>Tone</th>
+    <th>Where</th>
+  </tr>
+  <tr>
+    <td>"Are you a blockhead?"</td>
+    <td>Playful, bold</td>
+    <td>Marketing and social</td>
+  </tr>
+  <tr>
+    <td>"Start building"</td>
+    <td>Functional, warm</td>
+    <td>Product UI</td>
+  </tr>
+  <tr>
+    <td>"Something went wrong loading this Brick. Try again in a moment."</td>
+    <td>Helpful, straight face</td>
+    <td>Error messages</td>
+  </tr>
+  <tr>
+    <td>"Your brain is engineered to forget. This Block is engineered to make you remember."</td>
+    <td>Mentor, not comedian</td>
+    <td>Learning content</td>
+  </tr>
+  <tr>
+    <td>"Stack complete. You built something that lasts."</td>
+    <td>Maximum personality</td>
+    <td>Completion moments</td>
+  </tr>
+  <tr>
+    <td>"We're not just stacking skills, we're stacking careers."</td>
+    <td>Precise, belief-driven</td>
+    <td>Investor materials</td>
+  </tr>
+</table>
+</div>
 
-    <!-- Topic Sentences -->
-    <div id="topic-sentences" class="section section--neutral">
-      <div class="section-inner">
-        <h2 class="reveal">Topic sentences</h2>
-        <div class="prose">
-          <p class="reveal">Every paragraph starts with a sentence that tells the reader what the paragraph is about. This sounds obvious. Almost nobody does it consistently.</p>
-          <p class="reveal">Look at the paragraph above. "Every paragraph starts with a sentence that tells the reader what the paragraph is about." You knew what was coming before you read the rest. That's a topic sentence. It orients the reader and keeps your writing tight.</p>
-        </div>
-      </div>
-    </div>
+<p>Marketing is where the vocabulary gets to have fun. In our product, we are always clear first, clever second. And if we use a joke and it doesn't help us teach, it doesn't belong.</p>
 
-    <!-- The Pattern -->
-    <div id="the-pattern" class="section section--warm">
-      <div class="section-inner">
-        <h2 class="reveal">The pattern</h2>
-        <div class="prose">
-          <p class="reveal">Once you have a topic sentence, you just follow the rhythm:</p>
-        </div>
-        <ol class="pattern-list reveal">
-          <li>explain or clarify what you mean.</li>
-          <li>then elaborate with a specific example if you can.</li>
-          <li>Readers also love it when you make the link to the topic clear, or link them to the next idea.</li>
-        </ol>
-        <div class="prose">
-          <p class="reveal">You don't need all four every time. But when copy feels loose or waffly, it's usually because one of them is missing. The topic sentence is the one that matters most. Start there and the rest tends to sort itself out.</p>
-        </div>
-      </div>
-    </div>
+<!-- ========== HOW TO WRITE ========== -->
+<div class="divider">
+  <h2>How to Write at Stackable</h2>
+</div>
 
-    <!-- Cut -->
-    <div id="cut" class="section section--neutral">
-      <div class="section-inner">
-        <h2 class="reveal">Cut</h2>
-        <div class="prose">
-          <p class="reveal">If you can remove a word without losing meaning, please remove it. Watch out for creep:</p>
-        </div>
-        <div class="cut-list">
-          <div class="cut-item reveal">
-            <div class="cut-label">Filler phrases</div>
-            <div class="cut-example">
-              <span class="before">"In order to"</span><span class="arrow">&rarr;</span><strong>"to."</strong>
-              &nbsp; <span class="before">"Due to the fact that"</span><span class="arrow">&rarr;</span><strong>"because."</strong>
-            </div>
-          </div>
-          <div class="cut-item reveal">
-            <div class="cut-label">Throat-clearing</div>
-            <div class="cut-example">
-              <span class="before">"It's worth noting that..."</span><span class="arrow">&rarr;</span><strong>Just note it.</strong>
-            </div>
-          </div>
-          <div class="cut-item reveal">
-            <div class="cut-label">Doubling up</div>
-            <div class="cut-example">
-              <span class="before">"Each and every"</span><span class="arrow">&rarr;</span><strong>"every."</strong>
-              &nbsp; <span class="before">"Completely finished"</span><span class="arrow">&rarr;</span><strong>"finished."</strong>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+<h3>Active voice</h3>
 
-    <!-- Say It Out Loud -->
-    <div id="say-it-out-loud" class="section section--dark">
-      <div class="closing-inner reveal">
-        <h2>Say it out loud</h2>
-        <p class="line-primary">If a sentence sounds weird when you read it aloud, rewrite it.</p>
-        <p class="line-secondary">This catches passive voice, over-long sentences, and anything that's trying to sound clever rather than being clear.</p>
-      </div>
-    </div>
+<blockquote>"Every learner is a builder."</blockquote>
 
-  </div><!-- /tab-write -->
+<p>The learner is the subject. They're doing the building. It's direct, it's clear, and it puts the reader in control. This is the single most important writing rule we have.</p>
 
-  <script>
-    /* ====== TAB SWITCHING ====== */
-    (function() {
-      const pills = document.querySelectorAll('.tab-pill');
-      const panels = document.querySelectorAll('.tab-content');
+<blockquote class="muted">"Learning is delivered to participants through our platform."</blockquote>
 
-      pills.forEach(function(pill) {
-        pill.addEventListener('click', function() {
-          var target = this.getAttribute('data-tab');
+<p>Same idea. All the life sucked out of it. The reader becomes a passenger and nobody is doing anything. The sentence just sort of… exists.</p>
 
-          // Update pills
-          pills.forEach(function(p) {
-            p.classList.remove('active');
-            p.setAttribute('aria-selected', 'false');
-          });
-          this.classList.add('active');
-          this.setAttribute('aria-selected', 'true');
+<p>You'll notice passive voice creeping in when you're tired, writing fast, or reaching for what sounds professional. It's the default setting for corporate writing, which is exactly why it kills our voice.</p>
 
-          // Fade out current, fade in target
-          panels.forEach(function(panel) {
-            if (panel.id === 'tab-' + target) {
-              panel.style.display = 'block';
-              // Force reflow then fade in
-              panel.offsetHeight;
-              panel.classList.add('active');
-              // Re-trigger reveal for newly visible elements
-              observeReveals(panel);
-            } else {
-              panel.classList.remove('active');
-              // Hide after transition
-              setTimeout(function() {
-                if (!panel.classList.contains('active')) {
-                  panel.style.display = 'none';
-                }
-              }, 300);
-            }
-          });
+<h3>Topic sentences</h3>
+<p>Every paragraph starts with a sentence that tells the reader what the paragraph is about. This sounds obvious. Almost nobody does it consistently.</p>
+<p>Look at the paragraph above. "Every paragraph starts with a sentence that tells the reader what the paragraph is about." You knew what was coming before you read the rest. That's a topic sentence. It orients the reader and keeps your writing tight.</p>
 
-          // Scroll to top of tab content
-          document.querySelector('.tab-bar').scrollIntoView({ behavior: 'smooth' });
-        });
-      });
-    })();
+<h3>The pattern</h3>
+<p>Once you have a topic sentence, you just follow the rhythm:</p>
+<ol>
+  <li>explain or clarify what you mean.</li>
+  <li>then elaborate with a specific example if you can.</li>
+  <li>Readers also love it when you make the link to the topic clear, or link them to the next idea.</li>
+</ol>
+<p>You don't need all four every time. But when copy feels loose or waffly, it's usually because one of them is missing. The topic sentence is the one that matters most. Start there and the rest tends to sort itself out.</p>
 
-    /* ====== SCROLL REVEAL ====== */
-    (function() {
-      var observer = new IntersectionObserver(function(entries) {
-        entries.forEach(function(entry) {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('is-visible');
-            observer.unobserve(entry.target);
-          }
-        });
-      }, { threshold: 0.1 });
+<h3>Cut</h3>
+<p>If you can remove a word without losing meaning, please remove it. Watch out for creep:</p>
+<ul>
+  <li><span class="before">"In order to"</span> &rarr; <strong>"to."</strong> &nbsp; <span class="before">"Due to the fact that"</span> &rarr; <strong>"because."</strong></li>
+  <li><span class="before">"It's worth noting that..."</span> &rarr; <strong>Just note it.</strong></li>
+  <li><span class="before">"Each and every"</span> &rarr; <strong>"every."</strong> &nbsp; <span class="before">"Completely finished"</span> &rarr; <strong>"finished."</strong></li>
+</ul>
 
-      window.observeReveals = function(root) {
-        var els = (root || document).querySelectorAll('.reveal:not(.is-visible)');
-        els.forEach(function(el) { observer.observe(el); });
-      };
+<h3>Say it out loud</h3>
+<p>If a sentence sounds weird when you read it aloud, rewrite it. This catches passive voice, over-long sentences, and anything that's trying to sound clever rather than being clear.</p>
 
-      observeReveals();
-    })();
-  </script>
 </body>
 </html>
