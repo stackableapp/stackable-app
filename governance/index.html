@@ -173,6 +173,18 @@
     margin-top: 0;
   }
 
+  /* Sub-group labels between cards */
+  .sub-group-label {
+    font-size: 0.65rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--slate);
+    margin-top: 1.25rem;
+    margin-bottom: 6px;
+    opacity: 0.7;
+  }
+
   /* Section cards */
   .section-card {
     background: var(--card);
@@ -300,8 +312,12 @@
         <li><a href="#lockup">Founder Lock-Up</a></li>
         <li><a href="#vesting">Founder Vesting</a></li>
         <li><a href="#vesting-reset">Vesting Reset</a></li>
+      </ul>
+      <ul class="toc-group-list" style="margin-top: 6px;">
         <li><a href="#badleaver">Bad Leaver</a></li>
         <li><a href="#buyback">How the Buyback Works</a></li>
+      </ul>
+      <ul class="toc-group-list" style="margin-top: 6px;">
         <li><a href="#restraints">Restraints on Founders</a></li>
         <li><a href="#confidentiality">Confidentiality</a></li>
       </ul>
@@ -371,6 +387,8 @@
 <!-- FOUNDER COMMITMENTS -->
 <div class="group-label">Founder Commitments</div>
 
+<div class="sub-group-label">Equity timeline</div>
+
 <div class="section-card" id="lockup">
   <h2>Founder Lock-Up</h2>
   <div class="highlight">Founders cannot sell or transfer their shares for 4 years.</div>
@@ -397,6 +415,8 @@
   <p>Vesting resets with each new raise. This means founders recommit to a fresh vesting schedule keeping them accountable to new investors too. However, founders may retain credit for work already done prior to the new round, so the reset is not always from zero. The exact terms are negotiated at the time of each raise.</p>
   <a href="#top" class="back-top">Back to top</a>
 </div>
+
+<div class="sub-group-label">If things go wrong</div>
 
 <div class="section-card" id="badleaver">
   <h2>Bad Leaver</h2>
@@ -429,6 +449,8 @@
   </ul>
   <a href="#top" class="back-top">Back to top</a>
 </div>
+
+<div class="sub-group-label">Ongoing obligations</div>
 
 <div class="section-card" id="restraints">
   <h2>Restraints on Founders</h2>
