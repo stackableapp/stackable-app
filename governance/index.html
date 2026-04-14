@@ -109,6 +109,70 @@
     display: block;
   }
 
+  /* View toggle (Plain English / Full Document) */
+  .view-toggle {
+    display: flex;
+    gap: 0;
+    margin-bottom: 1.5rem;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    width: fit-content;
+  }
+
+  .view-btn {
+    padding: 8px 20px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--slate);
+    background: var(--card);
+    border: none;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+    user-select: none;
+  }
+
+  .view-btn + .view-btn {
+    border-left: 1px solid var(--border);
+  }
+
+  .view-btn:hover {
+    background: var(--card-alt);
+  }
+
+  .view-btn.active {
+    background: var(--ink);
+    color: #fff;
+    cursor: default;
+  }
+
+  .view-btn.active:hover {
+    background: var(--ink);
+  }
+
+  .view-panel {
+    display: none;
+  }
+
+  .view-panel.visible {
+    display: block;
+  }
+
+  .doc-placeholder {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: clamp(24px, 4vw, 40px);
+    text-align: center;
+    color: var(--slate);
+    font-size: 0.9rem;
+  }
+
+  .doc-placeholder p {
+    max-width: none;
+  }
+
   /* Page intro */
   .page-intro {
     font-size: 1rem;
@@ -453,6 +517,12 @@
 
 <div class="tab-content visible" id="tab-deed">
 
+<div class="view-toggle">
+  <button class="view-btn active" data-view="plain">Plain English</button>
+  <button class="view-btn" data-view="doc">Full Document</button>
+</div>
+
+<div class="view-panel visible" data-panel="plain">
 <p class="page-intro">A simple guide to the Shareholders' Deed.</p>
 
 <nav class="toc">
@@ -668,10 +738,24 @@
   <a href="#top" class="back-top">Back to top</a>
 </div>
 
+</div><!-- /view-panel plain -->
+
+<div class="view-panel" data-panel="doc">
+  <div class="doc-placeholder">
+    <p>Full document coming soon.</p>
+  </div>
+</div>
+
 </div><!-- /tab-deed -->
 
 <div class="tab-content" id="tab-schedule1">
 
+<div class="view-toggle">
+  <button class="view-btn active" data-view="plain">Plain English</button>
+  <button class="view-btn" data-view="doc">Full Document</button>
+</div>
+
+<div class="view-panel visible" data-panel="plain">
 <p class="page-intro">Here's a quick overview of how the documents function.</p>
 
 <nav class="toc">
@@ -791,10 +875,24 @@
   <a href="#top" class="back-top">Back to top</a>
 </div>
 
+</div><!-- /view-panel plain -->
+
+<div class="view-panel" data-panel="doc">
+  <div class="doc-placeholder">
+    <p>Full document coming soon.</p>
+  </div>
+</div>
+
 </div><!-- /tab-schedule1 -->
 
 <div class="tab-content" id="tab-constitution">
 
+<div class="view-toggle">
+  <button class="view-btn active" data-view="plain">Plain English</button>
+  <button class="view-btn" data-view="doc">Full Document</button>
+</div>
+
+<div class="view-panel visible" data-panel="plain">
 <p class="page-intro">This document is a plain English summary of the company constitution. It is not legal advice. You should read the full constitution and seek independent advice before investing.</p>
 
 <nav class="toc">
@@ -885,10 +983,24 @@
   <a href="#top" class="back-top">Back to top</a>
 </div>
 
+</div><!-- /view-panel plain -->
+
+<div class="view-panel" data-panel="doc">
+  <div class="doc-placeholder">
+    <p>Full document coming soon.</p>
+  </div>
+</div>
+
 </div><!-- /tab-constitution -->
 
 <div class="tab-content" id="tab-safe">
 
+<div class="view-toggle">
+  <button class="view-btn active" data-view="plain">Plain English</button>
+  <button class="view-btn" data-view="doc">Full Document</button>
+</div>
+
+<div class="view-panel visible" data-panel="plain">
 <p class="page-intro">A guide to the Simple Agreement for Future Equity (SAFE)<br>From Kieran Thorpe, Founder of Stackable</p>
 
 <nav class="toc">
@@ -1001,17 +1113,48 @@
   <a href="#top" class="back-top">Back to top</a>
 </div>
 
+</div><!-- /view-panel plain -->
+
+<div class="view-panel" data-panel="doc">
+  <div class="doc-placeholder">
+    <p>Full document coming soon.</p>
+  </div>
+</div>
+
 </div><!-- /tab-safe -->
 
 <script>
+// Tab switching
 document.querySelectorAll('.pill-btn').forEach(function(btn) {
   btn.addEventListener('click', function() {
     if (this.classList.contains('active')) return;
     document.querySelectorAll('.pill-btn').forEach(function(b) { b.classList.remove('active'); });
     document.querySelectorAll('.tab-content').forEach(function(t) { t.classList.remove('visible'); });
     this.classList.add('active');
-    document.getElementById(this.dataset.tab).classList.add('visible');
+    var tab = document.getElementById(this.dataset.tab);
+    tab.classList.add('visible');
+    // Reset to Plain English view
+    tab.querySelectorAll('.view-btn').forEach(function(b, i) {
+      b.classList.toggle('active', i === 0);
+    });
+    tab.querySelectorAll('.view-panel').forEach(function(p, i) {
+      p.classList.toggle('visible', i === 0);
+    });
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+});
+
+// View toggle (Plain English / Full Document)
+document.querySelectorAll('.view-btn').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    if (this.classList.contains('active')) return;
+    var toggle = this.parentElement;
+    var tab = toggle.parentElement;
+    toggle.querySelectorAll('.view-btn').forEach(function(b) { b.classList.remove('active'); });
+    this.classList.add('active');
+    tab.querySelectorAll('.view-panel').forEach(function(p) {
+      p.classList.toggle('visible', p.dataset.panel === btn.dataset.view);
+    });
   });
 });
 </script>
