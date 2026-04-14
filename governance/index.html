@@ -80,14 +80,33 @@
     background: var(--card);
     border: 1px solid var(--border);
     border-radius: 999px;
-    cursor: default;
+    cursor: pointer;
     user-select: none;
+    transition: background 0.15s, color 0.15s;
+  }
+
+  .pill-btn:hover {
+    background: var(--card-alt);
   }
 
   .pill-btn.active {
     background: var(--ink);
     color: #fff;
     border-color: var(--ink);
+    cursor: default;
+  }
+
+  .pill-btn.active:hover {
+    background: var(--ink);
+  }
+
+  /* Tab content */
+  .tab-content {
+    display: none;
+  }
+
+  .tab-content.visible {
+    display: block;
   }
 
   /* Page intro */
@@ -284,8 +303,12 @@
 <p class="page-desc">This page provides an overview of Stackable's key governance documents in plain language. To access copies, please email <a href="mailto:kieran@stackable.app">kieran@stackable.app</a></p>
 
 <div class="pill-nav">
-  <span class="pill-btn active">Shareholders Deed</span>
+  <span class="pill-btn active" data-tab="tab-deed">Shareholders Deed</span>
+  <span class="pill-btn" data-tab="tab-schedule1">Schedule 1</span>
+  <span class="pill-btn" data-tab="tab-constitution">Constitution</span>
 </div>
+
+<div class="tab-content visible" id="tab-deed">
 
 <p class="page-intro">A simple guide to the Shareholders' Deed.</p>
 
@@ -501,6 +524,238 @@
   <p>If <span class="kf">75%</span> of shareholders agree to sell the whole company, remaining shareholders can be required to sell too, but always at the same price and on the same terms as everyone else. No one gets a worse deal.</p>
   <a href="#top" class="back-top">Back to top</a>
 </div>
+
+</div><!-- /tab-deed -->
+
+<div class="tab-content" id="tab-schedule1">
+
+<p class="page-intro">Here's a quick overview of how the documents function.</p>
+
+<nav class="toc">
+  <div class="toc-label">In this document</div>
+  <div class="toc-groups">
+    <div>
+      <div class="toc-group-title">Overview</div>
+      <ul class="toc-group-list">
+        <li><a href="#s1-overview">Understanding Schedule 1</a></li>
+        <li><a href="#s1-vc">What is a VC?</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="toc-group-title">Share Mechanics</div>
+      <ul class="toc-group-list">
+        <li><a href="#s1-voting">Voting</a></li>
+        <li><a href="#s1-conversion">Conversion</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="toc-group-title">Protections</div>
+      <ul class="toc-group-list">
+        <li><a href="#s1-antidilution">Anti-dilution</a></li>
+        <li><a href="#s1-noprotection">Why don't I get this?</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="toc-group-title">Outcomes</div>
+      <ul class="toc-group-list">
+        <li><a href="#s1-example">Example</a></li>
+        <li><a href="#s1-exit">Who gets paid first?</a></li>
+        <li><a href="#s1-changes">Can rules be changed?</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- OVERVIEW -->
+<div class="group-label">Overview</div>
+
+<div class="section-card" id="s1-overview">
+  <h2>Understanding Schedule 1</h2>
+  <div class="highlight">Schedule 1 sits at the top of the document hierarchy but does not apply yet.</div>
+  <p>Three key documents govern this company, arranged in a clear hierarchy. Schedule 1 is at the top, followed by the Shareholders' Deed, and then the Constitution at the bottom. When conflicts arise, the higher document takes precedence.</p>
+  <p>Currently, Schedule 1 does not apply because there is no Venture Capital (VC) investor yet. The Shareholders' Deed and the Constitution are the governing documents at this stage.</p>
+  <p>Schedule 1 will take effect once the company completes its seed funding round. We are including it now so you're familiar with it when the time comes.</p>
+  <a href="#top" class="back-top">Back to top</a>
+</div>
+
+<div class="section-card" id="s1-vc">
+  <h2>What is a VC, and why do they get special shares?</h2>
+  <div class="highlight">A VC invests larger amounts into proven startups. Their shares come with specific conditions.</div>
+  <p>As a startup grows, it raises funding in multiple stages. You are investing at the very beginning. Later, the company will attract a venture capital firm, an expert investment organisation focused on supporting high-growth startups. In Australia, a typical initial VC investment ranges from <span class="kf">$1 million to $3 million</span>. Before committing, they negotiate specific conditions, which this section explains.</p>
+  <p>The shares given to a VC are called Seed Preference Shares. Think of them as front-row seats on the same aeroplane; you're both on the flight, but if issues arise, they get off first.</p>
+  <a href="#top" class="back-top">Back to top</a>
+</div>
+
+<!-- SHARE MECHANICS -->
+<div class="group-label">Share Mechanics</div>
+
+<div class="section-card" id="s1-voting">
+  <h2>Voting</h2>
+  <div class="highlight">Preference shareholders vote the same way as ordinary shareholders.</div>
+  <p>Preference shareholders vote during the same meetings as ordinary shareholders. Their voting power depends on the number of ordinary shares their preference shares would convert into. In practice, it functions the same as your voting.</p>
+  <a href="#top" class="back-top">Back to top</a>
+</div>
+
+<div class="section-card" id="s1-conversion">
+  <h2>Conversion</h2>
+  <div class="highlight">Preference shares can be converted into ordinary shares. After conversion, they are identical to yours.</div>
+  <p>The VC determines when preference shares can be converted into ordinary shares at any time. They also automatically convert when holders of <span class="kf">75%</span> or more of preference shares agree, usually just before an IPO or acquisition. After conversion, their shares are identical to yours.</p>
+  <a href="#top" class="back-top">Back to top</a>
+</div>
+
+<!-- PROTECTIONS -->
+<div class="group-label">Protections</div>
+
+<div class="section-card" id="s1-antidilution">
+  <h2>Anti-dilution. The VC's insurance policy</h2>
+  <div class="highlight">If the company raises at a lower price, the VC's conversion ratio adjusts to protect their stake.</div>
+  <p>If the company needs to raise funds at a lower price per share than what the VC initially paid, known as a down round, a formula automatically adjusts the VC's conversion ratio to give them more ordinary shares upon conversion. This safeguards their stake from being diluted by the lower valuation. While down rounds are unfavorable for all parties, this protection helps mitigate the impact for the VC.</p>
+  <a href="#top" class="back-top">Back to top</a>
+</div>
+
+<div class="section-card" id="s1-noprotection">
+  <h2>Why don't I get this protection?</h2>
+  <div class="highlight">Early investors hold ordinary shares so the company can attract VC funding later.</div>
+  <p>In short, if early investors held preference shares, it would make it very difficult to raise capital from a VC firm later. Attracting the right VC is one of the most important things this company can do. Firms like Blackbird, Airtree, and Square Peg do not just write cheques. They open doors, provide strategic guidance, and accelerate growth in ways that directly increase the value of your shares. Giving up preference shares at this stage is how we make that possible.</p>
+  <p>To protect your interests as an early investor, the founder's shares are subject to a vesting schedule. The founder must stay with the company for <span class="kf">12 months</span> before any shares vest. This is called the cliff. After that, shares vest monthly over the following <span class="kf">3 years</span>. When a new funding round closes, the clock resets and the founder starts again from scratch. This means the founder always has strong financial incentive to stay, build, and deliver at every stage of the company's growth.</p>
+  <p>VCs receive preference share protections because they are writing large cheques into a business they do not run day to day. You are investing earlier, at a lower price, alongside a founder who is financially committed for the long haul. That is your advantage.</p>
+  <a href="#top" class="back-top">Back to top</a>
+</div>
+
+<!-- OUTCOMES -->
+<div class="group-label">Outcomes</div>
+
+<div class="section-card" id="s1-example">
+  <h2>Here is an example to put into context</h2>
+  <div class="highlight">Early investors buy at the lowest price. Growth compounds returns over time.</div>
+  <p>You purchase shares at <span class="kf">$0.10</span> each, so a <span class="kf">$10,000</span> investment grants you <span class="kf">100,000</span> shares. This is likely the lowest price the company will ever have, reflecting the high risk you're taking. Two years later, Blackbird invests at <span class="kf">$0.50</span> per share, five times your initial price. By then, the company has established customers, revenue, and proven its product, so this progress is factored into the valuation.</p>
+  <p>In ten years, if the company is acquired for <span class="kf">$20 million</span>, with <span class="kf">12 million</span> shares outstanding, each share is worth about <span class="kf">$1.67</span>. Your 100,000 shares would be valued at approximately <span class="kf">$167,000</span>, yielding a <span class="kf">16-fold</span> return on your original $10,000 investment, about <span class="kf">32% annually</span> compounded.</p>
+  <p>For comparison, the Australian stock market has historically averaged a <span class="kf">10%</span> annual return. This highlights the potential upside of investing early in startups. However, many startups fail, and you may lose everything. Only invest money you can afford to lose.</p>
+  <a href="#top" class="back-top">Back to top</a>
+</div>
+
+<div class="section-card" id="s1-exit">
+  <h2>Who gets paid first at exit?</h2>
+  <div class="highlight">The VC recovers their investment first. In a strong exit, everyone shares proportionally.</div>
+  <p>The VC always gets their money first. If the company's sale price is <span class="kf">$2 million</span> and they invested <span class="kf">$500,000</span>, they recover their initial investment before splitting any remaining profits. If the sale reaches <span class="kf">$20 million</span>, the VC converts to common shares and shares the proceeds proportionally with you, since this yields a larger return for them. This structure helps safeguard their investment in poor scenarios, while in successful ones, everyone benefits.</p>
+  <a href="#top" class="back-top">Back to top</a>
+</div>
+
+<div class="section-card" id="s1-changes">
+  <h2>Can these rules be changed?</h2>
+  <div class="highlight">Preference share terms cannot change without VC approval.</div>
+  <p>Once preference shares are issued, they cannot be changed without the VC's approval. At least <span class="kf">75%</span> of preference shareholders must agree to any modifications to their rights. This is a common practice in startup investing globally. Knowing this beforehand helps avoid surprises later.</p>
+  <a href="#top" class="back-top">Back to top</a>
+</div>
+
+</div><!-- /tab-schedule1 -->
+
+<div class="tab-content" id="tab-constitution">
+
+<p class="page-intro">This document is a plain English summary of the company constitution. It is not legal advice. You should read the full constitution and seek independent advice before investing.</p>
+
+<nav class="toc">
+  <div class="toc-label">In this document</div>
+  <div class="toc-groups">
+    <div>
+      <div class="toc-group-title">Company Structure</div>
+      <ul class="toc-group-list">
+        <li><a href="#c-company">What kind of company is this?</a></li>
+        <li><a href="#c-shares">What shares am I receiving?</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="toc-group-title">Your Rights</div>
+      <ul class="toc-group-list">
+        <li><a href="#c-rights">What rights do I have?</a></li>
+        <li><a href="#c-sell">Can I sell my shares?</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="toc-group-title">Governance</div>
+      <ul class="toc-group-list">
+        <li><a href="#c-rules">What rules govern the company?</a></li>
+        <li><a href="#c-windup">What happens if the company winds up?</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- COMPANY STRUCTURE -->
+<div class="group-label">Company Structure</div>
+
+<div class="section-card" id="c-company">
+  <h2>What kind of company is this?</h2>
+  <div class="highlight">Stackable is a private company. Your liability is limited to your initial investment.</div>
+  <p>Stackable is a private company not listed on any stock exchange, so its shares cannot be traded publicly. It has a maximum of <span class="kf">50</span> shareholders at any given time. The company is raising funds through a legal exemption that allows it to accept investments from up to <span class="kf">20</span> retail investors within a 12-month period, totalling up to <span class="kf">$2 million</span>, without the need for a formal prospectus. You are investing under this exemption. Your financial liability is limited to your initial investment. For instance, if you invest $10,000 and the company fails, your maximum loss is $10,000. No one can claim your house, savings, or other assets. Your risk is limited to your invested capital.</p>
+  <a href="#top" class="back-top">Back to top</a>
+</div>
+
+<div class="section-card" id="c-shares">
+  <h2>What shares am I receiving?</h2>
+  <div class="highlight">You receive ordinary shares identical to those owned by the founder.</div>
+  <p>You are granted ordinary shares that are identical to those owned by the founder. These shares give you three main rights:</p>
+  <ul>
+    <li>One vote per share at shareholder meetings</li>
+    <li>A proportional claim on assets if the company dissolves</li>
+    <li>The right to dividends if they are declared by the directors</li>
+  </ul>
+  <p>Dividends are not the main focus since early-stage startups reinvest profits to support growth. Therefore, your return mainly depends on the increase in your share value over time rather than cash income.</p>
+  <p>The term "Seed Preference Shares" might be mentioned here; these are a kind of shares usually issued to venture capital firms like Blackbird during later funding rounds. Preference shares provide extra protections, including priority during wind-ups, anti-dilution rights, and other terms listed in Schedule 1. While these provisions are prepared for future financing stages, you do not possess preference shares.</p>
+  <a href="#top" class="back-top">Back to top</a>
+</div>
+
+<!-- YOUR RIGHTS -->
+<div class="group-label">Your Rights</div>
+
+<div class="section-card" id="c-rights">
+  <h2>What rights do I have as a shareholder?</h2>
+  <div class="highlight">You can attend meetings, vote, and appoint a proxy if you cannot attend.</div>
+  <p>You have the right to receive <span class="kf">21 days</span> notice of any general meeting, to attend that meeting in person or online, and to vote. Most routine company decisions will be made by the directors without needing a shareholder vote; that is intentional. Startups need to move quickly. However, certain major decisions, such as selling the company's core business or a substantial portion of its assets, require shareholder approval.</p>
+  <p>If you cannot attend a meeting, you can appoint a proxy to vote on your behalf. Your proxy does not need to be a shareholder, and you can instruct them exactly how to vote.</p>
+  <a href="#top" class="back-top">Back to top</a>
+</div>
+
+<div class="section-card" id="c-sell">
+  <h2>Can I sell my shares?</h2>
+  <div class="highlight">Not freely. Startup shares are illiquid and transfers require director approval.</div>
+  <p>Not freely available. Startup shares are illiquid, meaning there is no active market to sell them, unlike shares in a listed company. Transfers must be made in writing and require approval from the directors. The Shareholders Deed outlines the procedures for transfers, usually requiring you to offer your shares first to existing shareholders before selling to an outsider.</p>
+  <p>Invest in Stackable only if you are comfortable holding your shares for several years, as this involves long-term, illiquid capital.</p>
+  <p>If you pass away, your shares will transfer to your estate and be managed by your executor. Be sure to include your shareholding in your estate planning.</p>
+  <a href="#top" class="back-top">Back to top</a>
+</div>
+
+<!-- GOVERNANCE -->
+<div class="group-label">Governance</div>
+
+<div class="section-card" id="c-rules">
+  <h2>What rules govern the company?</h2>
+  <div class="highlight">Three documents govern Stackable. When they conflict, the higher document wins.</div>
+  <p>Three documents govern Stackable, and when they conflict, a clear pecking order applies. The Seed Preference Share terms in Schedule 1 take precedence over everything else. The Shareholders' Deed sits in the middle and overrides the constitution. The constitution sits at the bottom. The company has written its own custom constitution rather than relying on the government's default rules, which is what any well-structured startup should do.</p>
+  <a href="#top" class="back-top">Back to top</a>
+</div>
+
+<div class="section-card" id="c-windup">
+  <h2>What happens if the company winds up?</h2>
+  <div class="highlight">All debts are paid first. Remaining assets go to shareholders by share class.</div>
+  <p>If the company is wound up, all debts are paid first. Whatever remains is distributed to shareholders. The order in which shareholders are paid depends on their share class preference; shareholders are paid before ordinary shareholders. As an ordinary shareholder, you are paid after preference shareholders but in proportion to other ordinary shareholders.</p>
+  <a href="#top" class="back-top">Back to top</a>
+</div>
+
+</div><!-- /tab-constitution -->
+
+<script>
+document.querySelectorAll('.pill-btn').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    if (this.classList.contains('active')) return;
+    document.querySelectorAll('.pill-btn').forEach(function(b) { b.classList.remove('active'); });
+    document.querySelectorAll('.tab-content').forEach(function(t) { t.classList.remove('visible'); });
+    this.classList.add('active');
+    document.getElementById(this.dataset.tab).classList.add('visible');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+});
+</script>
 
 </body>
 </html>
