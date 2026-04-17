@@ -291,7 +291,7 @@
       font-size: 0.75rem;
       letter-spacing: 0.18em;
       text-transform: uppercase;
-      color: #8A6E0E;
+      color: #6B6568;
       margin-bottom: -8px;
     }
     .how-card h3 {
@@ -307,6 +307,36 @@
       font-size: 1rem;
       line-height: 1.6;
       color: #4A4547;
+    }
+    .how-card-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .how-card-list li {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.9375rem;
+      line-height: 1.5;
+      color: #1A1A1A;
+      padding-left: 20px;
+      position: relative;
+    }
+    .how-card-list li::before {
+      content: "";
+      position: absolute;
+      left: 0; top: 8px;
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: #EDC935;
+    }
+    .how-card-note {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.8125rem !important;
+      color: #6B6568 !important;
+      margin-top: 4px;
     }
     .how-cta {
       margin-top: 56px;
@@ -532,7 +562,7 @@
       font-size: 0.8125rem;
       letter-spacing: 0.14em;
       text-transform: uppercase;
-      color: #8A6E0E;
+      color: #6B6568;
       margin-bottom: 14px;
     }
     .coach-fit {
@@ -599,9 +629,20 @@
       color: #4A4547;
     }
     .pricing-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .pricing-card-body {
+      display: grid !important;
+      grid-template-columns: 1fr 1.4fr;
+      gap: 40px;
+      align-items: start;
+    }
+    .pricing-card-body > .pricing-info { display: flex; flex-direction: column; gap: 14px; }
+    .pricing-card-body > .pricing-detail { display: flex; flex-direction: column; gap: 16px; }
+    @media (max-width: 720px) {
+      .pricing-card-body { grid-template-columns: 1fr !important; gap: 20px; }
     }
     .pricing-pills {
       display: flex;
@@ -745,11 +786,7 @@
       align-items: center;
       gap: 12px;
     }
-    @media (max-width: 1100px) {
-      .pricing-grid { grid-template-columns: repeat(2, 1fr); }
-    }
     @media (max-width: 640px) {
-      .pricing-grid { grid-template-columns: 1fr; gap: 16px; }
       .pricing-header { margin-bottom: 40px; }
     }
 
@@ -1184,15 +1221,15 @@
           <div class="how-num">3</div>
           <div class="how-tag">Run</div>
           <h3>Train</h3>
-          <p>Run your plan the way that suits you — solo with a monthly, fortnightly or weekly check-in, or 1:1 with Cody in person or over Zoom. 12-week blocks, reset at every new scan.</p>
+          <p>Run your plan the way that suits you:</p>
+          <ul class="how-card-list">
+            <li>Solo at home</li>
+            <li>Solo at the gym</li>
+            <li>1:1 with Cody — in person</li>
+            <li>1:1 with Cody — Zoom</li>
+          </ul>
+          <p class="how-card-note">12-week blocks, reset at every new scan.</p>
         </div>
-      </div>
-      <div class="how-cta">
-        <div class="cta-buttons">
-          <a href="#" class="btn btn-primary">Book your 60-min assessment</a>
-          <a href="#" class="btn btn-secondary">Book free 10-min call</a>
-        </div>
-        <p class="cta-micro">60 minutes with Cody, or a 10-minute chat if you're not ready yet.</p>
       </div>
     </div>
   </section>
@@ -1257,7 +1294,6 @@
           <div class="coach-eyebrow">Meet your coach</div>
           <h2 class="coach-title">Cody</h2>
           <div class="coach-cred">Exercise Physiologist · B.Sc. Exercise Science · 10+ years</div>
-          <blockquote class="coach-philosophy">"No punishment. No templates. Just a plan built around your body that makes you stronger every week."</blockquote>
           <div class="coach-stats">
             <span class="coach-stat">10+ years training</span>
             <span class="coach-stat">300+ scans completed</span>
@@ -1275,7 +1311,6 @@
               <a href="#" class="btn btn-primary">Book your 60-min assessment</a>
               <a href="#" class="btn btn-secondary">Book free 10-min call</a>
             </div>
-            <p class="cta-micro">With Cody · next slot Sat 25 April · 7:00am</p>
           </div>
         </div>
       </div>
@@ -1293,72 +1328,88 @@
         <div class="pricing-card">
           <div class="pricing-card-head">Step 1 · Scan</div>
           <div class="pricing-card-body">
-            <h3>Assess</h3>
-            <p class="pricing-tag">Where every client starts.</p>
-            <div class="pricing-pills">
-              <span class="pricing-pill">Online</span>
-              <span class="pricing-pill">In-person</span>
+            <div class="pricing-info">
+              <h3>Assess</h3>
+              <p class="pricing-tag">Where every client starts.</p>
             </div>
-            <ul>
-              <li>60-minute session with Cody</li>
-              <li>Movement, history and goals mapped</li>
-              <li>Written report to take home</li>
-            </ul>
+            <div class="pricing-detail">
+              <div class="pricing-pills">
+                <span class="pricing-pill">Online</span>
+                <span class="pricing-pill">In-person</span>
+              </div>
+              <ul>
+                <li>60-minute session with Cody</li>
+                <li>Movement, history and goals mapped</li>
+                <li>Written report to take home</li>
+              </ul>
+            </div>
           </div>
         </div>
         <div class="pricing-card">
           <div class="pricing-card-head">Step 2 · Build</div>
           <div class="pricing-card-body">
-            <h3>Plan</h3>
-            <p class="pricing-tag">Choose your block.</p>
-            <div class="pricing-pills">
-              <span class="pricing-pill">6 weeks</span>
-              <span class="pricing-pill">12 weeks</span>
+            <div class="pricing-info">
+              <h3>Plan</h3>
+              <p class="pricing-tag">Choose your block.</p>
             </div>
-            <ul>
-              <li>Tailored program built from your scan</li>
-              <li>Clear weekly progression</li>
-              <li>Yours to keep</li>
-            </ul>
-            <div class="pricing-foot">Optional. Take the report and self-manage, or upgrade here.</div>
+            <div class="pricing-detail">
+              <div class="pricing-pills">
+                <span class="pricing-pill">6 weeks</span>
+                <span class="pricing-pill">12 weeks</span>
+              </div>
+              <ul>
+                <li>Tailored program built from your scan</li>
+                <li>Clear weekly progression</li>
+                <li>Yours to keep</li>
+              </ul>
+              <div class="pricing-foot">Optional. Take the report and self-manage, or upgrade here.</div>
+            </div>
           </div>
         </div>
         <div class="pricing-card">
           <div class="pricing-card-head">Step 3 · Sync</div>
           <div class="pricing-card-body">
-            <h3>Support</h3>
-            <p class="pricing-tag">Stay on track.</p>
-            <div class="pricing-pills">
-              <span class="pricing-pill">Weekly</span>
-              <span class="pricing-pill">Fortnightly</span>
+            <div class="pricing-info">
+              <h3>Support</h3>
+              <p class="pricing-tag">Stay on track.</p>
             </div>
-            <ul>
-              <li>Check-in call or message from Cody</li>
-              <li>Program tweaks as you progress</li>
-              <li>Ask-anything between sessions</li>
-            </ul>
+            <div class="pricing-detail">
+              <div class="pricing-pills">
+                <span class="pricing-pill">Weekly</span>
+                <span class="pricing-pill">Fortnightly</span>
+              </div>
+              <ul>
+                <li>Check-in call or message from Cody</li>
+                <li>Program tweaks as you progress</li>
+                <li>Ask-anything between sessions</li>
+              </ul>
+            </div>
           </div>
         </div>
         <div class="pricing-card">
           <div class="pricing-card-head">Step 4 · Run</div>
           <div class="pricing-card-body">
-            <h3>Train</h3>
-            <p class="pricing-tag">Two ways to show up.</p>
-            <div class="pricing-subgroup">
-              <div class="pricing-subgroup-label">Self-directed</div>
-              <div class="pricing-pills">
-                <span class="pricing-pill">At home</span>
-                <span class="pricing-pill">At the gym</span>
-              </div>
+            <div class="pricing-info">
+              <h3>Train</h3>
+              <p class="pricing-tag">Two ways to show up.</p>
             </div>
-            <div class="pricing-subgroup">
-              <div class="pricing-subgroup-label">1:1 with Cody</div>
-              <div class="pricing-pills">
-                <span class="pricing-pill">In person</span>
-                <span class="pricing-pill">Online</span>
+            <div class="pricing-detail">
+              <div class="pricing-subgroup">
+                <div class="pricing-subgroup-label">Self-directed</div>
+                <div class="pricing-pills">
+                  <span class="pricing-pill">At home</span>
+                  <span class="pricing-pill">At the gym</span>
+                </div>
               </div>
+              <div class="pricing-subgroup">
+                <div class="pricing-subgroup-label">1:1 with Cody</div>
+                <div class="pricing-pills">
+                  <span class="pricing-pill">In person</span>
+                  <span class="pricing-pill">Online</span>
+                </div>
+              </div>
+              <div class="pricing-foot">12-week blocks reset at your next scan.</div>
             </div>
-            <div class="pricing-foot">12-week blocks reset at your next scan.</div>
           </div>
         </div>
       </div>
@@ -1367,7 +1418,6 @@
           <a href="#" class="btn btn-primary">Book your 60-min assessment</a>
           <a href="#" class="btn btn-secondary">Book free 10-min call</a>
         </div>
-        <p class="cta-micro">Start with a scan. The rest stays optional.</p>
       </div>
     </div>
   </section>
@@ -1449,7 +1499,7 @@
       <span style="display: block;">
         <span class="booking-popup-title">Next available assessment</span>
         <span class="booking-popup-date">Sat 25 April · 7:00am</span>
-        <span class="booking-popup-link">Book your 60-min scan with Cody →</span>
+        <span class="booking-popup-link">Book your 60-min assessment →</span>
       </span>
     </a>
     <button class="booking-popup-close" id="bookingClose" aria-label="Dismiss">
@@ -1499,7 +1549,27 @@
         popup.classList.add('dismissed');
         return;
       }
-      setTimeout(function() { popup.classList.add('visible'); }, 2500);
+      var trigger = document.querySelector('.cred-wrap');
+      if (!trigger || !('IntersectionObserver' in window)) {
+        // Fallback: show on any scroll past 600px
+        var onScroll = function() {
+          if (window.scrollY > 600) {
+            popup.classList.add('visible');
+            window.removeEventListener('scroll', onScroll);
+          }
+        };
+        window.addEventListener('scroll', onScroll, { passive: true });
+      } else {
+        var io = new IntersectionObserver(function(entries) {
+          entries.forEach(function(e) {
+            if (e.boundingClientRect.top < 0) {
+              popup.classList.add('visible');
+              io.disconnect();
+            }
+          });
+        }, { threshold: 0 });
+        io.observe(trigger);
+      }
       document.getElementById('bookingClose').addEventListener('click', function(e) {
         e.preventDefault();
         popup.classList.add('dismissed');
