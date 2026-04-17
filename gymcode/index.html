@@ -600,8 +600,71 @@
     }
     .pricing-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 24px;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+    .pricing-pills {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .pricing-pill {
+      font-family: 'Inter', sans-serif;
+      font-weight: 700;
+      font-size: 0.8125rem;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: #FFFFFF;
+      border: 1px solid #1A1A1A;
+      color: #1A1A1A;
+      letter-spacing: 0.01em;
+      cursor: pointer;
+      transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+    }
+    .pricing-pill:hover { background: #F2F0EB; }
+    .pricing-pill.selected {
+      background: #EDC935;
+      border-color: #EDC935;
+      color: #111111;
+    }
+    .pricing-summary {
+      margin-top: 32px;
+      background: #1F1F23;
+      color: #FFFFFF;
+      border-radius: 16px;
+      padding: 24px 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .pricing-summary-label {
+      font-family: 'Inter', sans-serif;
+      font-weight: 700;
+      font-size: 0.75rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #EDC935;
+    }
+    .pricing-summary-text {
+      font-family: 'Inter', sans-serif;
+      font-size: 1.0625rem;
+      line-height: 1.5;
+      color: #FFFFFF;
+    }
+    .pricing-summary-text.empty { color: #A8A49E; font-style: italic; }
+    .pricing-subgroup {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .pricing-subgroup + .pricing-subgroup { margin-top: 4px; }
+    .pricing-subgroup-label {
+      font-family: 'Inter', sans-serif;
+      font-weight: 700;
+      font-size: 0.6875rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #6B6568;
     }
     .pricing-card {
       background: #F2F0EB;
@@ -682,9 +745,179 @@
       align-items: center;
       gap: 12px;
     }
-    @media (max-width: 900px) {
+    @media (max-width: 1100px) {
+      .pricing-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 640px) {
       .pricing-grid { grid-template-columns: 1fr; gap: 16px; }
       .pricing-header { margin-bottom: 40px; }
+    }
+
+    /* FAQ */
+    .faq { background: #F2F0EB; }
+    .faq-inner {
+      max-width: 840px;
+      margin: 0 auto;
+      padding: clamp(64px, 9vw, 120px) clamp(24px, 6vw, 80px);
+    }
+    .faq-header { text-align: center; margin-bottom: 48px; }
+    .faq-eyebrow {
+      font-family: 'Inter', sans-serif;
+      font-weight: 700;
+      font-size: 0.8125rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #6B6568;
+      margin-bottom: 16px;
+    }
+    .faq-title {
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      font-size: clamp(2rem, 4vw, 3.25rem);
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      color: #1A1A1A;
+    }
+    .faq-list { display: flex; flex-direction: column; gap: 12px; }
+    .faq-item {
+      background: #FFFFFF;
+      border: 1px solid #E8E2D9;
+      border-radius: 12px;
+      overflow: hidden;
+      transition: border-color 0.15s ease;
+    }
+    .faq-item[open] { border-color: #EDC935; }
+    .faq-item summary {
+      cursor: pointer;
+      padding: 20px 24px;
+      font-family: 'Inter', sans-serif;
+      font-weight: 700;
+      font-size: 1.0625rem;
+      color: #1A1A1A;
+      list-style: none;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .faq-item summary::-webkit-details-marker { display: none; }
+    .faq-icon {
+      width: 24px;
+      height: 24px;
+      flex-shrink: 0;
+      border-radius: 50%;
+      border: 1.5px solid #1A1A1A;
+      position: relative;
+      transition: background 0.15s ease, border-color 0.15s ease;
+    }
+    .faq-icon::before, .faq-icon::after {
+      content: "";
+      position: absolute;
+      background: #1A1A1A;
+      left: 50%; top: 50%;
+      transform: translate(-50%, -50%);
+    }
+    .faq-icon::before { width: 10px; height: 2px; }
+    .faq-icon::after { width: 2px; height: 10px; transition: transform 0.2s ease; }
+    .faq-item[open] .faq-icon { background: #EDC935; border-color: #EDC935; }
+    .faq-item[open] .faq-icon::after { transform: translate(-50%, -50%) scaleY(0); }
+    .faq-answer {
+      padding: 0 24px 22px 24px;
+      font-family: 'Inter', sans-serif;
+      font-size: 1rem;
+      line-height: 1.65;
+      color: #4A4547;
+      max-width: 65ch;
+    }
+    .faq-hidden { display: none; }
+    .faq-more-wrap { display: flex; justify-content: center; margin-top: 24px; }
+    .faq-more {
+      background: transparent;
+      border: 1.5px solid #1A1A1A;
+      color: #1A1A1A;
+      font-family: 'Inter', sans-serif;
+      font-weight: 700;
+      font-size: 0.9375rem;
+      padding: 12px 24px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.15s ease, color 0.15s ease;
+    }
+    .faq-more:hover { background: #1A1A1A; color: #FFFFFF; }
+
+    /* Big CTA band */
+    .cta-band { background: #1F1F23; }
+    .cta-band-inner {
+      max-width: 1040px;
+      margin: 0 auto;
+      padding: clamp(64px, 9vw, 120px) clamp(24px, 6vw, 80px);
+      text-align: center;
+    }
+    .cta-band h2 {
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      font-size: clamp(2.25rem, 5vw, 4rem);
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      color: #FFFFFF;
+      margin-bottom: 20px;
+    }
+    .cta-band p {
+      font-family: 'Inter', sans-serif;
+      font-size: clamp(1.05rem, 1.4vw, 1.25rem);
+      line-height: 1.55;
+      color: #D6D4CF;
+      max-width: 620px;
+      margin: 0 auto 36px;
+    }
+    .cta-band .cta-buttons { justify-content: center; }
+    .cta-band .btn-secondary {
+      color: #FFFFFF;
+      border-color: #FFFFFF;
+    }
+    .cta-band .btn-secondary:hover {
+      background: #FFFFFF;
+      color: #111111;
+    }
+    .cta-band .cta-micro { color: #A8A49E; margin-top: 16px; }
+
+    /* Footer */
+    .site-footer { background: #0F0F12; color: #D6D4CF; }
+    .site-footer-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 40px clamp(24px, 6vw, 80px);
+    }
+    .site-footer-simple {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+    .site-footer-brand {
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      font-size: 1.375rem;
+      color: #FFFFFF;
+      letter-spacing: -0.02em;
+    }
+    .site-footer-links {
+      display: flex;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+    .site-footer-links a {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.875rem;
+      color: #D6D4CF;
+      text-decoration: none;
+    }
+    .site-footer-links a:hover { color: #EDC935; }
+    .site-footer-copyright {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.8125rem;
+      color: #8A8680;
     }
 
     /* Booking popup */
@@ -777,6 +1010,24 @@
         padding: 18px 44px 18px 18px;
       }
     }
+    .hero-wrap .btn-secondary {
+      color: #FFFFFF;
+      border-color: #FFFFFF;
+    }
+    .hero-wrap .btn-secondary:hover {
+      background: #FFFFFF;
+      color: #111111;
+    }
+    .cta-buttons {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    @media (max-width: 560px) {
+      .cta-buttons { flex-direction: column; align-items: stretch; width: 100%; }
+      .cta-buttons .btn { text-align: center; }
+    }
     .hero-link {
       font-family: 'Inter', sans-serif;
       font-weight: 600;
@@ -854,8 +1105,8 @@
       </ul>
     </nav>
     <div class="header-ctas">
-      <!-- Single dominant action — matches the page goal -->
       <a href="#" class="btn btn-primary">Book your 60-min assessment</a>
+      <a href="#" class="btn btn-secondary">Book free 10-min call</a>
     </div>
     <button class="hamburger" aria-label="Toggle menu" aria-expanded="false" onclick="toggleMenu(this)">
       <svg class="icon-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
@@ -878,6 +1129,7 @@
     </ul>
     <div class="mobile-ctas">
       <a href="#" class="btn btn-primary">Book your 60-min assessment</a>
+      <a href="#" class="btn btn-secondary">Book free 10-min call</a>
     </div>
   </div>
   </div>
@@ -886,9 +1138,9 @@
     <p class="hero-subhead">With GymCode, stop guessing, and be supported to start rebuilding your strength, energy and confidence.</p>
     <div class="hero-ctas">
       <a href="#" class="btn btn-primary">Book your 60-min assessment</a>
-      <a href="#how" class="hero-link">How it works <span aria-hidden="true">↓</span></a>
+      <a href="#" class="btn btn-secondary">Book free 10-min call</a>
     </div>
-    <p class="cta-micro" style="margin-top: 16px;">No pressure. No gym needed for the first scan.</p>
+    <p class="cta-micro" style="margin-top: 16px;">No pressure. The 10-min call is a no-commitment chat with Cody.</p>
   </section></div>
   <div class="cred-wrap"><div class="cred">
     <svg class="cred-google" viewBox="0 0 48 48" aria-hidden="true">
@@ -936,8 +1188,11 @@
         </div>
       </div>
       <div class="how-cta">
-        <a href="#" class="btn btn-primary">Book your 60-min assessment</a>
-        <p class="cta-micro">60 minutes with Cody. Walk out with a plan.</p>
+        <div class="cta-buttons">
+          <a href="#" class="btn btn-primary">Book your 60-min assessment</a>
+          <a href="#" class="btn btn-secondary">Book free 10-min call</a>
+        </div>
+        <p class="cta-micro">60 minutes with Cody, or a 10-minute chat if you're not ready yet.</p>
       </div>
     </div>
   </section>
@@ -1016,7 +1271,10 @@
             <li>New to lifting and want a patient, structured start</li>
           </ul>
           <div class="coach-cta">
-            <a href="#" class="btn btn-primary">Book your 60-min assessment</a>
+            <div class="cta-buttons">
+              <a href="#" class="btn btn-primary">Book your 60-min assessment</a>
+              <a href="#" class="btn btn-secondary">Book free 10-min call</a>
+            </div>
             <p class="cta-micro">With Cody · next slot Sat 25 April · 7:00am</p>
           </div>
         </div>
@@ -1037,10 +1295,13 @@
           <div class="pricing-card-body">
             <h3>Assess</h3>
             <p class="pricing-tag">Where every client starts.</p>
+            <div class="pricing-pills">
+              <span class="pricing-pill">Online</span>
+              <span class="pricing-pill">In-person</span>
+            </div>
             <ul>
               <li>60-minute session with Cody</li>
               <li>Movement, history and goals mapped</li>
-              <li>Stop-at-pain approach throughout</li>
               <li>Written report to take home</li>
             </ul>
           </div>
@@ -1049,10 +1310,13 @@
           <div class="pricing-card-head">Step 2 · Build</div>
           <div class="pricing-card-body">
             <h3>Plan</h3>
-            <p class="pricing-tag">Your 12-week blueprint.</p>
+            <p class="pricing-tag">Choose your block.</p>
+            <div class="pricing-pills">
+              <span class="pricing-pill">6 weeks</span>
+              <span class="pricing-pill">12 weeks</span>
+            </div>
             <ul>
               <li>Tailored program built from your scan</li>
-              <li>Designed around your schedule, equipment and energy</li>
               <li>Clear weekly progression</li>
               <li>Yours to keep</li>
             </ul>
@@ -1060,27 +1324,118 @@
           </div>
         </div>
         <div class="pricing-card">
-          <div class="pricing-card-head">Step 3 · Run</div>
+          <div class="pricing-card-head">Step 3 · Sync</div>
+          <div class="pricing-card-body">
+            <h3>Support</h3>
+            <p class="pricing-tag">Stay on track.</p>
+            <div class="pricing-pills">
+              <span class="pricing-pill">Weekly</span>
+              <span class="pricing-pill">Fortnightly</span>
+            </div>
+            <ul>
+              <li>Check-in call or message from Cody</li>
+              <li>Program tweaks as you progress</li>
+              <li>Ask-anything between sessions</li>
+            </ul>
+          </div>
+        </div>
+        <div class="pricing-card">
+          <div class="pricing-card-head">Step 4 · Run</div>
           <div class="pricing-card-body">
             <h3>Train</h3>
-            <p class="pricing-tag">12 weeks, your way.</p>
-            <ul>
-              <li>Self-directed with a monthly check-in</li>
-              <li>Self-directed with a fortnightly check-in</li>
-              <li>Self-directed with a weekly check-in</li>
-              <li>1:1 with Cody — in person</li>
-              <li>1:1 with Cody — Zoom</li>
-            </ul>
-            <div class="pricing-foot">All tiers run on 12-week blocks. Your next scan resets the plan.</div>
+            <p class="pricing-tag">Two ways to show up.</p>
+            <div class="pricing-subgroup">
+              <div class="pricing-subgroup-label">Self-directed</div>
+              <div class="pricing-pills">
+                <span class="pricing-pill">At home</span>
+                <span class="pricing-pill">At the gym</span>
+              </div>
+            </div>
+            <div class="pricing-subgroup">
+              <div class="pricing-subgroup-label">1:1 with Cody</div>
+              <div class="pricing-pills">
+                <span class="pricing-pill">In person</span>
+                <span class="pricing-pill">Online</span>
+              </div>
+            </div>
+            <div class="pricing-foot">12-week blocks reset at your next scan.</div>
           </div>
         </div>
       </div>
       <div class="pricing-cta">
-        <a href="#" class="btn btn-primary">Book your 60-min assessment</a>
+        <div class="cta-buttons">
+          <a href="#" class="btn btn-primary">Book your 60-min assessment</a>
+          <a href="#" class="btn btn-secondary">Book free 10-min call</a>
+        </div>
         <p class="cta-micro">Start with a scan. The rest stays optional.</p>
       </div>
     </div>
   </section>
+
+  <section class="faq" id="faq">
+    <div class="faq-inner">
+      <div class="faq-header">
+        <div class="faq-eyebrow">Questions</div>
+        <h2 class="faq-title">Things people ask before they book</h2>
+      </div>
+      <div class="faq-list" id="faqList">
+        <details class="faq-item">
+          <summary>I'm not fit enough — is it too early to start? <span class="faq-icon"></span></summary>
+          <div class="faq-answer">The scan is designed for exactly that. Cody meets you where you are — there's no "minimum fitness" to book. The whole point is to see what your body does today, then build a plan from that starting point.</div>
+        </details>
+        <details class="faq-item">
+          <summary>What if something hurts during the scan? <span class="faq-icon"></span></summary>
+          <div class="faq-answer">We stop. The stop-at-pain rule is built in. Pain tells us something specific, and the report captures it rather than pushing through it.</div>
+        </details>
+        <details class="faq-item">
+          <summary>Do I have to commit to a plan after? <span class="faq-icon"></span></summary>
+          <div class="faq-answer">No. You can take the report and train on your own. Plan, Support and Train are all separate opt-ins — add them when (and if) you're ready.</div>
+        </details>
+        <details class="faq-item faq-hidden">
+          <summary>What should I wear to the scan? <span class="faq-icon"></span></summary>
+          <div class="faq-answer">Anything you can move comfortably in. You'll bend, squat and try light exercises, so nothing tight or restrictive. No special gear needed.</div>
+        </details>
+        <details class="faq-item faq-hidden">
+          <summary>Can I train if I have an existing injury? <span class="faq-icon"></span></summary>
+          <div class="faq-answer">Yes. Most clients come in with something — old back pain, a dodgy knee, a shoulder niggle. The scan maps it so the plan works around it, not through it. If needed, Cody liaises with your physio.</div>
+        </details>
+        <details class="faq-item faq-hidden">
+          <summary>What happens after 12 weeks? <span class="faq-icon"></span></summary>
+          <div class="faq-answer">A new scan. You see what's changed, what's next, and whether to keep the current plan, switch modes, or rebuild from scratch. The cycle continues as long as you want it.</div>
+        </details>
+      </div>
+      <div class="faq-more-wrap">
+        <button class="faq-more" id="faqMore">Show more questions</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-band">
+    <div class="cta-band-inner">
+      <h2>Ready when you are.</h2>
+      <p>Start with a 60-minute scan. Or a 10-minute chat. No pressure either way.</p>
+      <div class="cta-buttons">
+        <a href="#" class="btn btn-primary">Book your 60-min assessment</a>
+        <a href="#" class="btn btn-secondary">Book free 10-min call</a>
+      </div>
+      <p class="cta-micro">Next scan slot: Sat 25 April · 7:00am</p>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="site-footer-inner">
+      <div class="site-footer-simple">
+        <div class="site-footer-brand">GymCode</div>
+        <div class="site-footer-links">
+          <a href="mailto:hello@gymcode.com">hello@gymcode.com</a>
+          <a href="#">Instagram</a>
+          <a href="#">Privacy</a>
+          <a href="#">Terms</a>
+        </div>
+        <div class="site-footer-copyright">© 2026 GymCode</div>
+      </div>
+    </div>
+  </footer>
 
   <aside class="booking-popup" id="bookingPopup" role="complementary" aria-label="Next available assessment">
     <a href="#" class="booking-popup-body" id="bookingBody" style="display: flex; gap: 16px; align-items: flex-start;">
@@ -1110,6 +1465,16 @@
       var open = menu.classList.toggle('open');
       btn.setAttribute('aria-expanded', open ? 'true' : 'false');
     }
+    (function() {
+      var btn = document.getElementById('faqMore');
+      if (!btn) return;
+      btn.addEventListener('click', function() {
+        document.querySelectorAll('.faq-item.faq-hidden').forEach(function(el) {
+          el.classList.remove('faq-hidden');
+        });
+        btn.parentElement.style.display = 'none';
+      });
+    })();
     (function() {
       var tabs = document.querySelectorAll('.cases-tab');
       var panels = document.querySelectorAll('.case-panel');
