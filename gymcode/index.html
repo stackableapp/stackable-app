@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GymCode</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { min-height: 100vh; background: #F2F0EB; font-family: 'Inter', sans-serif; color: #1A1A1A; }
+
+    .header-wrap {
+      background: #FFFFFF;
+      border-bottom: 1px solid #E8E2D9;
+    }
+    header {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 18px clamp(24px, 6vw, 80px);
+      display: flex;
+      align-items: center;
+      gap: 48px;
+    }
+    .logo {
+      width: 36px;
+      height: 36px;
+      color: #F24405;
+      flex-shrink: 0;
+    }
+    .logo svg { width: 100%; height: 100%; display: block; }
+
+    nav.main-nav { flex: 1; }
+    nav.main-nav ul {
+      list-style: none;
+      display: flex;
+      gap: 40px;
+      align-items: center;
+    }
+    nav.main-nav a {
+      font-weight: 700;
+      font-size: 1rem;
+      color: #1A1A1A;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    nav.main-nav a:hover { color: #120DA6; }
+    nav.main-nav .caret {
+      width: 12px;
+      height: 12px;
+      stroke: currentColor;
+      stroke-width: 2.5;
+      fill: none;
+    }
+
+    .header-ctas { display: flex; gap: 12px; align-items: center; }
+    .btn {
+      font-family: 'Inter', sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
+      padding: 14px 26px;
+      border-radius: 10px;
+      text-decoration: none;
+      line-height: 1;
+      cursor: pointer;
+      display: inline-block;
+      white-space: nowrap;
+    }
+    .btn-primary {
+      background: #120DA6;
+      color: #FFFFFF;
+      border: 1px solid #120DA6;
+    }
+    .btn-secondary {
+      background: #F2F8FD;
+      color: #120DA6;
+      border: 1px solid #120DA6;
+    }
+
+    .hamburger {
+      display: none;
+      background: transparent;
+      border: none;
+      padding: 8px;
+      cursor: pointer;
+      color: #1A1A1A;
+      margin-left: auto;
+    }
+    .hamburger svg { width: 28px; height: 28px; display: block; }
+
+    .mobile-menu {
+      display: none;
+      background: #FFFFFF;
+      border-bottom: 1px solid #E8E2D9;
+      padding: 16px clamp(24px, 6vw, 80px) 24px;
+    }
+    .mobile-menu.open { display: block; }
+    .mobile-menu ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .mobile-menu a {
+      display: block;
+      padding: 14px 4px;
+      font-weight: 700;
+      font-size: 1.0625rem;
+      color: #1A1A1A;
+      text-decoration: none;
+      border-bottom: 1px solid #E8E2D9;
+    }
+    .mobile-menu .mobile-ctas {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 20px;
+    }
+    .mobile-menu .btn { width: 100%; text-align: center; padding: 16px 24px; }
+
+    @media (max-width: 960px) {
+      header { gap: 16px; }
+      nav.main-nav, .header-ctas { display: none; }
+      .hamburger { display: inline-flex; }
+    }
+
+    .hero-wrap {
+      background: #C4E5F2;
+      border-bottom: 1px solid #E8E2D9;
+    }
+    .hero {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: clamp(48px, 10vw, 140px) clamp(24px, 6vw, 80px);
+      min-height: 60vh;
+    }
+  </style>
+</head>
+<body>
+  <div class="header-wrap"><header>
+    <a href="#" class="logo" aria-label="GymCode home">
+      <!-- Dumbbell icon — Feather Icons style, MIT licensed pattern -->
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <rect x="1.5" y="8" width="3" height="8" rx="1"/>
+        <rect x="4.5" y="5.5" width="3" height="13" rx="1"/>
+        <line x1="7.5" y1="12" x2="16.5" y2="12"/>
+        <rect x="16.5" y="5.5" width="3" height="13" rx="1"/>
+        <rect x="19.5" y="8" width="3" height="8" rx="1"/>
+      </svg>
+    </a>
+    <nav class="main-nav">
+      <ul>
+        <li><a href="#">Products <svg class="caret" viewBox="0 0 12 12"><polyline points="2,4 6,8 10,4"/></svg></a></li>
+        <li><a href="#">Solutions <svg class="caret" viewBox="0 0 12 12"><polyline points="2,4 6,8 10,4"/></svg></a></li>
+        <li><a href="#">Pricing</a></li>
+        <li><a href="#">Resources <svg class="caret" viewBox="0 0 12 12"><polyline points="2,4 6,8 10,4"/></svg></a></li>
+      </ul>
+    </nav>
+    <div class="header-ctas">
+      <a href="#" class="btn btn-primary">Get a demo</a>
+      <a href="#" class="btn btn-secondary">Get started free</a>
+    </div>
+    <button class="hamburger" aria-label="Open menu" aria-expanded="false" onclick="toggleMenu(this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round">
+        <line x1="4" y1="7" x2="20" y2="7"/>
+        <line x1="4" y1="12" x2="20" y2="12"/>
+        <line x1="4" y1="17" x2="20" y2="17"/>
+      </svg>
+    </button>
+  </header>
+  <div class="mobile-menu" id="mobileMenu">
+    <ul>
+      <li><a href="#">Products</a></li>
+      <li><a href="#">Solutions</a></li>
+      <li><a href="#">Pricing</a></li>
+      <li><a href="#">Resources</a></li>
+    </ul>
+    <div class="mobile-ctas">
+      <a href="#" class="btn btn-primary">Get a demo</a>
+      <a href="#" class="btn btn-secondary">Get started free</a>
+    </div>
+  </div>
+  </div>
+  <div class="hero-wrap"><section class="hero"></section></div>
+  <script>
+    function toggleMenu(btn) {
+      var menu = document.getElementById('mobileMenu');
+      var open = menu.classList.toggle('open');
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    }
+  </script>
+</body>
+</html>
