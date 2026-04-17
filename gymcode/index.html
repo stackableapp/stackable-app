@@ -317,6 +317,97 @@
       .how-grid { grid-template-columns: 1fr; gap: 16px; }
       .how-header { margin-bottom: 48px; }
     }
+
+    /* Booking popup */
+    .booking-popup {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      max-width: 380px;
+      background: #FFFFFF;
+      border: 1px solid #E8E2D9;
+      border-radius: 16px;
+      padding: 20px 40px 20px 20px;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.14);
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+      z-index: 100;
+      font-family: 'Inter', sans-serif;
+      transform: translateY(24px);
+      opacity: 0;
+      pointer-events: none;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+    .booking-popup.visible {
+      transform: translateY(0);
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .booking-popup.dismissed { display: none; }
+    .booking-popup-icon {
+      width: 44px;
+      height: 44px;
+      flex-shrink: 0;
+      color: #1A1A1A;
+    }
+    .booking-popup-body {
+      flex: 1;
+      min-width: 0;
+      text-decoration: none;
+      color: inherit;
+    }
+    .booking-popup-title {
+      font-weight: 700;
+      font-size: 1rem;
+      color: #1A1A1A;
+      line-height: 1.25;
+    }
+    .booking-popup-date {
+      font-weight: 700;
+      font-size: 1.25rem;
+      color: #1A1A1A;
+      margin-top: 4px;
+      line-height: 1.2;
+      letter-spacing: -0.01em;
+    }
+    .booking-popup-link {
+      display: block;
+      margin-top: 8px;
+      font-weight: 700;
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #1A1A1A;
+      line-height: 1.45;
+    }
+    .booking-popup-body:hover .booking-popup-link { color: #8A6E0E; }
+    .booking-popup-close {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      width: 28px;
+      height: 28px;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      color: #6B6568;
+      border-radius: 6px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .booking-popup-close:hover { background: #F2F0EB; color: #1A1A1A; }
+    .booking-popup-close svg { width: 16px; height: 16px; }
+    @media (max-width: 560px) {
+      .booking-popup {
+        left: 16px;
+        right: 16px;
+        bottom: 16px;
+        max-width: none;
+        padding: 18px 44px 18px 18px;
+      }
+    }
     .hero-link {
       font-family: 'Inter', sans-serif;
       font-weight: 600;
@@ -450,9 +541,9 @@
   <section class="how" id="how">
     <div class="how-inner">
       <div class="how-header">
-        <div class="how-eyebrow">How it works</div>
-        <h2 class="how-title">Three steps from stuck to strong</h2>
-        <p class="how-lede">A clear path, built around your body and your life.</p>
+        <div class="how-eyebrow">Your first assessment</div>
+        <h2 class="how-title">Here's exactly what happens — and what comes next</h2>
+        <p class="how-lede">60 minutes with Cody. No pressure, no judgement. You leave with a clear picture of your body and the plan built around it.</p>
       </div>
       <div class="how-grid">
         <div class="how-card">
@@ -479,12 +570,48 @@
       </div>
     </div>
   </section>
+  <aside class="booking-popup" id="bookingPopup" role="complementary" aria-label="Next available assessment">
+    <a href="#" class="booking-popup-body" id="bookingBody" style="display: flex; gap: 16px; align-items: flex-start;">
+      <svg class="booking-popup-icon" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <rect x="8" y="14" width="48" height="44" rx="3"/>
+        <line x1="8" y1="26" x2="56" y2="26"/>
+        <line x1="20" y1="8" x2="20" y2="18"/>
+        <line x1="44" y1="8" x2="44" y2="18"/>
+        <polyline points="22,42 30,50 44,34" stroke="#EDC935" stroke-width="4"/>
+      </svg>
+      <span style="display: block;">
+        <span class="booking-popup-title">Next available assessment</span>
+        <span class="booking-popup-date">Sat 25 April · 7:00am</span>
+        <span class="booking-popup-link">Book your 60-min scan with Cody →</span>
+      </span>
+    </a>
+    <button class="booking-popup-close" id="bookingClose" aria-label="Dismiss">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true">
+        <line x1="6" y1="6" x2="18" y2="18"/>
+        <line x1="18" y1="6" x2="6" y2="18"/>
+      </svg>
+    </button>
+  </aside>
   <script>
     function toggleMenu(btn) {
       var menu = document.getElementById('mobileMenu');
       var open = menu.classList.toggle('open');
       btn.setAttribute('aria-expanded', open ? 'true' : 'false');
     }
+    (function() {
+      var popup = document.getElementById('bookingPopup');
+      if (!popup) return;
+      if (sessionStorage.getItem('bookingDismissed')) {
+        popup.classList.add('dismissed');
+        return;
+      }
+      setTimeout(function() { popup.classList.add('visible'); }, 2500);
+      document.getElementById('bookingClose').addEventListener('click', function(e) {
+        e.preventDefault();
+        popup.classList.add('dismissed');
+        try { sessionStorage.setItem('bookingDismissed', '1'); } catch(_) {}
+      });
+    })();
   </script>
 </body>
 </html>
