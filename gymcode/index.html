@@ -157,6 +157,25 @@
       flex-direction: column;
       justify-content: center;
     }
+    .hero-headline {
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      font-size: clamp(2.25rem, 5.5vw, 4.5rem);
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      color: #1A1A1A;
+      max-width: 18ch;
+      margin-bottom: 24px;
+    }
+    .hero-subhead {
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
+      font-size: clamp(1.05rem, 1.4vw, 1.25rem);
+      line-height: 1.55;
+      color: #1A1A1A;
+      max-width: 52ch;
+      margin-bottom: 40px;
+    }
     .hero-ctas {
       display: flex;
       gap: 16px;
@@ -223,6 +242,8 @@
   </div>
   </div>
   <div class="hero-wrap"><section class="hero">
+    <h1 class="hero-headline">header text goes here</h1>
+    <p class="hero-subhead">secondary text goes here</p>
     <div class="hero-ctas">
       <a href="#" class="btn btn-primary">Start My Plan</a>
       <a href="#" class="btn btn-secondary">Book a Free Consult</a>
