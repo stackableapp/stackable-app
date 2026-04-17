@@ -153,6 +153,18 @@
       margin: 0 auto;
       padding: clamp(48px, 10vw, 140px) clamp(24px, 6vw, 80px);
       min-height: 60vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .hero-ctas {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    @media (max-width: 560px) {
+      .hero-ctas { flex-direction: column; align-items: stretch; }
+      .hero-ctas .btn { text-align: center; }
     }
   </style>
 </head>
@@ -210,7 +222,12 @@
     </div>
   </div>
   </div>
-  <div class="hero-wrap"><section class="hero"></section></div>
+  <div class="hero-wrap"><section class="hero">
+    <div class="hero-ctas">
+      <a href="#" class="btn btn-primary">Start My Plan</a>
+      <a href="#" class="btn btn-secondary">Book a Free Consult</a>
+    </div>
+  </section></div>
   <script>
     function toggleMenu(btn) {
       var menu = document.getElementById('mobileMenu');
