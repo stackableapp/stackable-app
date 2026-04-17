@@ -311,7 +311,23 @@
     .how-cta {
       margin-top: 56px;
       display: flex;
-      justify-content: center;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+    }
+    .cta-micro {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.875rem;
+      line-height: 1.4;
+      color: #6B6568;
+      margin: 0;
+    }
+    .hero .cta-micro { color: #D6D4CF; }
+    .coach-cta {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 12px;
     }
     @media (max-width: 900px) {
       .how-grid { grid-template-columns: 1fr; gap: 16px; }
@@ -718,7 +734,7 @@
     </nav>
     <div class="header-ctas">
       <!-- Single dominant action — matches the page goal -->
-      <a href="#" class="btn btn-primary">Book your assessment</a>
+      <a href="#" class="btn btn-primary">Book your 60-min assessment</a>
     </div>
     <button class="hamburger" aria-label="Toggle menu" aria-expanded="false" onclick="toggleMenu(this)">
       <svg class="icon-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
@@ -740,7 +756,7 @@
       <li><a href="#">Pricing</a></li>
     </ul>
     <div class="mobile-ctas">
-      <a href="#" class="btn btn-primary">Book your assessment</a>
+      <a href="#" class="btn btn-primary">Book your 60-min assessment</a>
     </div>
   </div>
   </div>
@@ -748,9 +764,10 @@
     <h1 class="hero-headline">Build a body that supports your life, not limits it.</h1>
     <p class="hero-subhead">With GymCode, stop guessing, and be supported to start rebuilding your strength, energy and confidence.</p>
     <div class="hero-ctas">
-      <a href="#" class="btn btn-primary">Book your assessment</a>
+      <a href="#" class="btn btn-primary">Book your 60-min assessment</a>
       <a href="#how" class="hero-link">How it works <span aria-hidden="true">↓</span></a>
     </div>
+    <p class="cta-micro" style="margin-top: 16px;">No pressure. No gym needed for the first scan.</p>
   </section></div>
   <div class="cred-wrap"><div class="cred">
     <svg class="cred-google" viewBox="0 0 48 48" aria-hidden="true">
@@ -798,7 +815,8 @@
         </div>
       </div>
       <div class="how-cta">
-        <a href="#" class="btn btn-primary">Book your assessment</a>
+        <a href="#" class="btn btn-primary">Book your 60-min assessment</a>
+        <p class="cta-micro">60 minutes with Cody. Walk out with a plan.</p>
       </div>
     </div>
   </section>
@@ -876,7 +894,10 @@
             <li>Over 50 and rebuilding strength, energy and confidence</li>
             <li>New to lifting and want a patient, structured start</li>
           </ul>
-          <a href="#" class="btn btn-primary">Book your assessment with Cody</a>
+          <div class="coach-cta">
+            <a href="#" class="btn btn-primary">Book your 60-min assessment</a>
+            <p class="cta-micro">With Cody · next slot Sat 25 April · 7:00am</p>
+          </div>
         </div>
       </div>
     </div>
