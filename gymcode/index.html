@@ -224,6 +224,98 @@
       .cred { gap: 16px; padding: 18px clamp(24px, 6vw, 80px); }
       .cred-divider, .cred-avatars { display: none; }
     }
+
+    /* How It Works */
+    .how {
+      background: #F2F0EB;
+    }
+    .how-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: clamp(64px, 9vw, 120px) clamp(24px, 6vw, 80px);
+    }
+    .how-header { text-align: center; max-width: 720px; margin: 0 auto 64px; }
+    .how-eyebrow {
+      font-family: 'Inter', sans-serif;
+      font-weight: 700;
+      font-size: 0.8125rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #6B6568;
+      margin-bottom: 16px;
+    }
+    .how-title {
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      font-size: clamp(2rem, 4vw, 3.25rem);
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      color: #1A1A1A;
+      margin-bottom: 20px;
+    }
+    .how-lede {
+      font-family: 'Inter', sans-serif;
+      font-size: clamp(1rem, 1.3vw, 1.125rem);
+      line-height: 1.6;
+      color: #4A4547;
+    }
+    .how-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    .how-card {
+      background: #FFFFFF;
+      border: 1px solid #E8E2D9;
+      border-radius: 16px;
+      padding: 40px 32px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+    .how-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+    }
+    .how-num {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: #EDC935;
+      color: #111111;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      font-size: 1.375rem;
+      flex-shrink: 0;
+    }
+    .how-card h3 {
+      font-family: 'Inter', sans-serif;
+      font-weight: 700;
+      font-size: 1.375rem;
+      color: #1A1A1A;
+      line-height: 1.25;
+      letter-spacing: -0.01em;
+    }
+    .how-card p {
+      font-family: 'Inter', sans-serif;
+      font-size: 1rem;
+      line-height: 1.6;
+      color: #4A4547;
+    }
+    .how-cta {
+      margin-top: 56px;
+      display: flex;
+      justify-content: center;
+    }
+    @media (max-width: 900px) {
+      .how-grid { grid-template-columns: 1fr; gap: 16px; }
+      .how-header { margin-bottom: 48px; }
+    }
     .hero-wrap .btn-secondary {
       color: #FFFFFF;
       border-color: #FFFFFF;
@@ -363,6 +455,36 @@
     <div class="cred-divider"></div>
     <a href="#" class="cred-link">Read reviews →</a>
   </div></div>
+
+  <section class="how">
+    <div class="how-inner">
+      <div class="how-header">
+        <div class="how-eyebrow">How it works</div>
+        <h2 class="how-title">Three steps from stuck to strong</h2>
+        <p class="how-lede">A simple, proven process — no guesswork, no overwhelm. Just a clear path built around your body and your life.</p>
+      </div>
+      <div class="how-grid">
+        <div class="how-card">
+          <div class="how-num">1</div>
+          <h3>Assess</h3>
+          <p>We map your movement, history, and goals in a 60-minute assessment so every decision after is built on evidence — not a template.</p>
+        </div>
+        <div class="how-card">
+          <div class="how-num">2</div>
+          <h3>Plan</h3>
+          <p>You get a personalised program designed around your schedule, equipment, and energy levels. Clear sessions, clear reasons, clear progression.</p>
+        </div>
+        <div class="how-card">
+          <div class="how-num">3</div>
+          <h3>Train</h3>
+          <p>We train together — in person or online — with regular check-ins and adjustments so momentum compounds week after week.</p>
+        </div>
+      </div>
+      <div class="how-cta">
+        <a href="#" class="btn btn-primary">Book your assessment</a>
+      </div>
+    </div>
+  </section>
   <script>
     function toggleMenu(btn) {
       var menu = document.getElementById('mobileMenu');
