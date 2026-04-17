@@ -318,6 +318,118 @@
       .how-header { margin-bottom: 48px; }
     }
 
+    /* Case studies */
+    .cases { background: #FAFAF7; }
+    .cases-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: clamp(64px, 9vw, 120px) clamp(24px, 6vw, 80px);
+    }
+    .cases-header { text-align: center; max-width: 720px; margin: 0 auto 48px; }
+    .cases-eyebrow {
+      font-family: 'Inter', sans-serif;
+      font-weight: 700;
+      font-size: 0.8125rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #6B6568;
+      margin-bottom: 16px;
+    }
+    .cases-title {
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      font-size: clamp(2rem, 4vw, 3.25rem);
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      color: #1A1A1A;
+    }
+    .cases-tabs {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      border-bottom: 1px solid #E8E2D9;
+      margin-bottom: 48px;
+      flex-wrap: wrap;
+    }
+    .cases-tab {
+      font-family: 'Inter', sans-serif;
+      font-weight: 700;
+      font-size: 1.0625rem;
+      color: #6B6568;
+      background: transparent;
+      border: none;
+      padding: 16px 4px;
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      margin-bottom: -1px;
+      transition: color 0.2s ease, border-color 0.2s ease;
+    }
+    .cases-tab:hover { color: #1A1A1A; }
+    .cases-tab.active { color: #1A1A1A; border-color: #EDC935; }
+
+    .case-panel {
+      display: none;
+      grid-template-columns: 1.05fr 1fr;
+      gap: 48px;
+      align-items: center;
+      background: #FFFFFF;
+      border: 1px solid #E8E2D9;
+      border-radius: 16px;
+      padding: 32px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+    }
+    .case-panel.active {
+      display: grid;
+      animation: caseFade 0.25s ease;
+    }
+    @keyframes caseFade {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .case-photo {
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      border-radius: 12px;
+      object-fit: cover;
+      display: block;
+      background: #E8E2D9;
+    }
+    .case-quote {
+      font-family: 'Inter', sans-serif;
+      font-size: clamp(1.125rem, 1.6vw, 1.375rem);
+      line-height: 1.5;
+      color: #1A1A1A;
+      margin-bottom: 32px;
+    }
+    .case-name {
+      font-family: 'Inter', sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
+      color: #1A1A1A;
+    }
+    .case-role {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.9375rem;
+      color: #6B6568;
+      margin-bottom: 16px;
+    }
+    .case-link {
+      font-family: 'Inter', sans-serif;
+      font-weight: 700;
+      font-size: 0.9375rem;
+      color: #1A1A1A;
+      text-decoration: none;
+      border-bottom: 2px solid #EDC935;
+      padding-bottom: 2px;
+      display: inline-block;
+    }
+    .case-link:hover { color: #8A6E0E; border-color: #8A6E0E; }
+    @media (max-width: 900px) {
+      .case-panel { grid-template-columns: 1fr; padding: 20px; gap: 24px; }
+      .cases-tabs { gap: 20px; }
+      .cases-header { margin-bottom: 32px; }
+    }
+
     /* Booking popup */
     .booking-popup {
       position: fixed;
@@ -570,6 +682,59 @@
       </div>
     </div>
   </section>
+
+  <section class="cases" id="cases">
+    <div class="cases-inner">
+      <div class="cases-header">
+        <div class="cases-eyebrow">Client stories</div>
+        <h2 class="cases-title">Real people, real change</h2>
+      </div>
+      <div class="cases-tabs" role="tablist">
+        <button class="cases-tab active" role="tab" aria-selected="true" data-target="kieran">Kieran</button>
+        <button class="cases-tab" role="tab" aria-selected="false" data-target="barbara">Barbara</button>
+        <button class="cases-tab" role="tab" aria-selected="false" data-target="jack">Jack</button>
+        <button class="cases-tab" role="tab" aria-selected="false" data-target="karen">Karen</button>
+      </div>
+      <div class="cases-panels">
+        <div class="case-panel active" id="case-kieran" role="tabpanel">
+          <img class="case-photo" src="https://picsum.photos/seed/kierangym/1000/800" alt="Kieran training" loading="lazy">
+          <div>
+            <p class="case-quote">"I came in with chronic back pain and no confidence to lift. Three months later I'm deadlifting again — without pain."</p>
+            <div class="case-name">Kieran</div>
+            <div class="case-role">Builder, 34 · rebuilding after injury</div>
+            <a href="#" class="case-link">Read Kieran's story →</a>
+          </div>
+        </div>
+        <div class="case-panel" id="case-barbara" role="tabpanel">
+          <img class="case-photo" src="https://picsum.photos/seed/barbaragym/1000/800" alt="Barbara training" loading="lazy">
+          <div>
+            <p class="case-quote">"At 62 I thought strength training wasn't for me. Cody's scan showed exactly where to start. I feel stronger than I did at 50."</p>
+            <div class="case-name">Barbara</div>
+            <div class="case-role">Retired nurse, 62 · strength &amp; mobility</div>
+            <a href="#" class="case-link">Read Barbara's story →</a>
+          </div>
+        </div>
+        <div class="case-panel" id="case-jack" role="tabpanel">
+          <img class="case-photo" src="https://picsum.photos/seed/jackgym/1000/800" alt="Jack training" loading="lazy">
+          <div>
+            <p class="case-quote">"I had zero energy after my second kid. Now my weekends are back and I can actually play with them."</p>
+            <div class="case-name">Jack</div>
+            <div class="case-role">Dad of two, 41 · energy &amp; stamina</div>
+            <a href="#" class="case-link">Read Jack's story →</a>
+          </div>
+        </div>
+        <div class="case-panel" id="case-karen" role="tabpanel">
+          <img class="case-photo" src="https://picsum.photos/seed/karengym/1000/800" alt="Karen training" loading="lazy">
+          <div>
+            <p class="case-quote">"I hadn't stepped in a gym for years. The assessment made me feel safe, not judged. I haven't missed a session since."</p>
+            <div class="case-name">Karen</div>
+            <div class="case-role">Teacher, 47 · confidence &amp; consistency</div>
+            <a href="#" class="case-link">Read Karen's story →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
   <aside class="booking-popup" id="bookingPopup" role="complementary" aria-label="Next available assessment">
     <a href="#" class="booking-popup-body" id="bookingBody" style="display: flex; gap: 16px; align-items: flex-start;">
       <svg class="booking-popup-icon" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -598,6 +763,23 @@
       var open = menu.classList.toggle('open');
       btn.setAttribute('aria-expanded', open ? 'true' : 'false');
     }
+    (function() {
+      var tabs = document.querySelectorAll('.cases-tab');
+      var panels = document.querySelectorAll('.case-panel');
+      tabs.forEach(function(t) {
+        t.addEventListener('click', function() {
+          tabs.forEach(function(x) {
+            x.classList.remove('active');
+            x.setAttribute('aria-selected', 'false');
+          });
+          panels.forEach(function(x) { x.classList.remove('active'); });
+          t.classList.add('active');
+          t.setAttribute('aria-selected', 'true');
+          var panel = document.getElementById('case-' + t.dataset.target);
+          if (panel) panel.classList.add('active');
+        });
+      });
+    })();
     (function() {
       var popup = document.getElementById('bookingPopup');
       if (!popup) return;
