@@ -566,6 +566,127 @@
       .coach-photo { max-width: 440px; margin: 0 auto; aspect-ratio: 4 / 5; }
     }
 
+    /* Pricing / tiers */
+    .pricing { background: #FFFFFF; border-top: 1px solid #E8E2D9; border-bottom: 1px solid #E8E2D9; }
+    .pricing-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: clamp(64px, 9vw, 120px) clamp(24px, 6vw, 80px);
+    }
+    .pricing-header { text-align: center; max-width: 720px; margin: 0 auto 56px; }
+    .pricing-eyebrow {
+      font-family: 'Inter', sans-serif;
+      font-weight: 700;
+      font-size: 0.8125rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #6B6568;
+      margin-bottom: 16px;
+    }
+    .pricing-title {
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      font-size: clamp(2rem, 4vw, 3.25rem);
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      color: #1A1A1A;
+      margin-bottom: 20px;
+    }
+    .pricing-lede {
+      font-family: 'Inter', sans-serif;
+      font-size: clamp(1rem, 1.3vw, 1.125rem);
+      line-height: 1.6;
+      color: #4A4547;
+    }
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    .pricing-card {
+      background: #F2F0EB;
+      border: 1px solid #E8E2D9;
+      border-radius: 16px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .pricing-card-head {
+      background: #EDC935;
+      padding: 16px 28px;
+      font-family: 'Inter', sans-serif;
+      font-weight: 700;
+      font-size: 0.75rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #111111;
+    }
+    .pricing-card-body {
+      padding: 32px 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      flex: 1;
+    }
+    .pricing-card h3 {
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      font-size: 1.75rem;
+      letter-spacing: -0.01em;
+      color: #1A1A1A;
+      line-height: 1.1;
+    }
+    .pricing-card .pricing-tag {
+      font-family: 'Inter', sans-serif;
+      font-size: 1rem;
+      color: #6B6568;
+      margin-top: -12px;
+    }
+    .pricing-card ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .pricing-card li {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.9375rem;
+      line-height: 1.5;
+      color: #1A1A1A;
+      padding-left: 22px;
+      position: relative;
+    }
+    .pricing-card li::before {
+      content: "";
+      position: absolute;
+      left: 0; top: 8px;
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: #EDC935;
+    }
+    .pricing-foot {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.8125rem;
+      color: #6B6568;
+      line-height: 1.5;
+      margin-top: auto;
+      padding-top: 16px;
+      border-top: 1px solid #E8E2D9;
+    }
+    .pricing-cta {
+      margin-top: 48px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+    @media (max-width: 900px) {
+      .pricing-grid { grid-template-columns: 1fr; gap: 16px; }
+      .pricing-header { margin-bottom: 40px; }
+    }
+
     /* Booking popup */
     .booking-popup {
       position: fixed;
@@ -799,19 +920,19 @@
           <div class="how-num">1</div>
           <div class="how-tag">Scan</div>
           <h3>Assess</h3>
-          <p>Come in for 60 minutes in comfortable clothes. You move, bend and squat while we watch for misalignments and try light exercises — stopping the moment anything hurts. You leave with a clear picture of where your body is today.</p>
+          <p>Come in for 60 minutes in comfortable clothes. You move, bend and squat while we watch for misalignments and try light exercises — stopping the moment anything hurts. You leave with a written report showing where your body is today.</p>
         </div>
         <div class="how-card">
           <div class="how-num">2</div>
           <div class="how-tag">Build</div>
           <h3>Plan</h3>
-          <p>We turn your scan into a 12-week program tailored to your body, goals, and schedule. Every session has a reason; every week builds on the last.</p>
+          <p>If you want a plan, we turn your scan into a 12-week program tailored to your body, goals and schedule. Every session has a reason; every week builds on the last.</p>
         </div>
         <div class="how-card">
           <div class="how-num">3</div>
           <div class="how-tag">Run</div>
           <h3>Train</h3>
-          <p>Run your plan anywhere that works — at home, at the gym, or with a trainer. Built around your life, not the other way round.</p>
+          <p>Run your plan the way that suits you — solo with a monthly, fortnightly or weekly check-in, or 1:1 with Cody in person or over Zoom. 12-week blocks, reset at every new scan.</p>
         </div>
       </div>
       <div class="how-cta">
@@ -899,6 +1020,64 @@
             <p class="cta-micro">With Cody · next slot Sat 25 April · 7:00am</p>
           </div>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="pricing" id="pricing">
+    <div class="pricing-inner">
+      <div class="pricing-header">
+        <div class="pricing-eyebrow">How it fits together</div>
+        <h2 class="pricing-title">Choose where to start, upgrade when ready</h2>
+        <p class="pricing-lede">Every step is optional. Start with a scan, add what you need, when you need it.</p>
+      </div>
+      <div class="pricing-grid">
+        <div class="pricing-card">
+          <div class="pricing-card-head">Step 1 · Scan</div>
+          <div class="pricing-card-body">
+            <h3>Assess</h3>
+            <p class="pricing-tag">Where every client starts.</p>
+            <ul>
+              <li>60-minute session with Cody</li>
+              <li>Movement, history and goals mapped</li>
+              <li>Stop-at-pain approach throughout</li>
+              <li>Written report to take home</li>
+            </ul>
+          </div>
+        </div>
+        <div class="pricing-card">
+          <div class="pricing-card-head">Step 2 · Build</div>
+          <div class="pricing-card-body">
+            <h3>Plan</h3>
+            <p class="pricing-tag">Your 12-week blueprint.</p>
+            <ul>
+              <li>Tailored program built from your scan</li>
+              <li>Designed around your schedule, equipment and energy</li>
+              <li>Clear weekly progression</li>
+              <li>Yours to keep</li>
+            </ul>
+            <div class="pricing-foot">Optional. Take the report and self-manage, or upgrade here.</div>
+          </div>
+        </div>
+        <div class="pricing-card">
+          <div class="pricing-card-head">Step 3 · Run</div>
+          <div class="pricing-card-body">
+            <h3>Train</h3>
+            <p class="pricing-tag">12 weeks, your way.</p>
+            <ul>
+              <li>Self-directed with a monthly check-in</li>
+              <li>Self-directed with a fortnightly check-in</li>
+              <li>Self-directed with a weekly check-in</li>
+              <li>1:1 with Cody — in person</li>
+              <li>1:1 with Cody — Zoom</li>
+            </ul>
+            <div class="pricing-foot">All tiers run on 12-week blocks. Your next scan resets the plan.</div>
+          </div>
+        </div>
+      </div>
+      <div class="pricing-cta">
+        <a href="#" class="btn btn-primary">Book your 60-min assessment</a>
+        <p class="cta-micro">Start with a scan. The rest stays optional.</p>
       </div>
     </div>
   </section>
