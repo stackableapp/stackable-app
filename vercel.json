@@ -1,0 +1,12 @@
+{
+  "rewrites": [
+    {
+      "source": "/pizza",
+      "destination": "https://santo-pizza.vercel.app/pizza"
+    },
+    {
+      "source": "/pizza/:path*",
+      "destination": "https://santo-pizza.vercel.app/pizza/:path*"
+    }
+  ]
+}
