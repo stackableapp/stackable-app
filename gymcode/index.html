@@ -9,6 +9,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
     html, body { min-height: 100vh; background: #F2F0EB; font-family: 'Inter', sans-serif; color: #1A1A1A; }
 
     .header-wrap {
@@ -48,13 +49,6 @@
       gap: 6px;
     }
     nav.main-nav a:hover { color: #120DA6; }
-    nav.main-nav .caret {
-      width: 12px;
-      height: 12px;
-      stroke: currentColor;
-      stroke-width: 2.5;
-      fill: none;
-    }
 
     .header-ctas { display: flex; gap: 12px; align-items: center; }
     .btn {
@@ -178,14 +172,12 @@
       color: #F5A623;
     }
     .cred-stars svg { width: 18px; height: 18px; display: block; }
-    .cred-rating {
-      font-weight: 700;
-      font-size: 1rem;
+    .cred-text {
+      font-size: 0.9375rem;
       color: #1A1A1A;
     }
-    .cred-count {
-      font-size: 0.9375rem;
-      color: #6B6568;
+    .cred-text strong {
+      font-weight: 700;
     }
     .cred-avatars {
       display: inline-flex;
@@ -316,14 +308,20 @@
       .how-grid { grid-template-columns: 1fr; gap: 16px; }
       .how-header { margin-bottom: 48px; }
     }
-    .hero-wrap .btn-secondary {
+    .hero-link {
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      font-size: 1rem;
       color: #FFFFFF;
-      border-color: #FFFFFF;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 4px;
+      border-bottom: 1px solid rgba(255,255,255,0.4);
+      transition: color 0.15s ease, border-color 0.15s ease;
     }
-    .hero-wrap .btn-secondary:hover {
-      background: #FFFFFF;
-      color: #111111;
-    }
+    .hero-link:hover { color: #EDC935; border-color: #EDC935; }
     .hero {
       max-width: 1280px;
       margin: 0 auto;
@@ -378,19 +376,17 @@
     <nav class="main-nav">
       <ul>
         <!-- Attitude: why training is worth it -->
-        <li><a href="#">Why Train <svg class="caret" viewBox="0 0 12 12"><polyline points="2,4 6,8 10,4"/></svg></a></li>
+        <li><a href="#">Why Train</a></li>
         <!-- Subjective norms: social proof, community -->
-        <li><a href="#">Client Results <svg class="caret" viewBox="0 0 12 12"><polyline points="2,4 6,8 10,4"/></svg></a></li>
+        <li><a href="#">Client Results</a></li>
         <!-- Perceived behavioural control: it's doable for you -->
-        <li><a href="#">How It Works <svg class="caret" viewBox="0 0 12 12"><polyline points="2,4 6,8 10,4"/></svg></a></li>
+        <li><a href="#how">How It Works</a></li>
         <li><a href="#">Pricing</a></li>
       </ul>
     </nav>
     <div class="header-ctas">
-      <!-- Intention: low-friction first step -->
-      <a href="#" class="btn btn-secondary">Book a Free Consult</a>
-      <!-- Behaviour: committed action -->
-      <a href="#" class="btn btn-primary">Start My Plan</a>
+      <!-- Single dominant action — matches the page goal -->
+      <a href="#" class="btn btn-primary">Book your assessment</a>
     </div>
     <button class="hamburger" aria-label="Toggle menu" aria-expanded="false" onclick="toggleMenu(this)">
       <svg class="icon-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
@@ -412,56 +408,42 @@
       <li><a href="#">Pricing</a></li>
     </ul>
     <div class="mobile-ctas">
-      <a href="#" class="btn btn-primary">Start My Plan</a>
-      <a href="#" class="btn btn-secondary">Book a Free Consult</a>
+      <a href="#" class="btn btn-primary">Book your assessment</a>
     </div>
   </div>
   </div>
   <div class="hero-wrap"><section class="hero">
-    <h1 class="hero-headline">Build a body that supports your</h1>
+    <h1 class="hero-headline">Build a body that supports your life, not limits it.</h1>
     <p class="hero-subhead">With GymCode, stop guessing, and be supported to start rebuilding your strength, energy and confidence.</p>
     <div class="hero-ctas">
-      <a href="#" class="btn btn-primary">Start My Plan</a>
-      <a href="#" class="btn btn-secondary">Book a Free Consult</a>
+      <a href="#" class="btn btn-primary">Book your assessment</a>
+      <a href="#how" class="hero-link">How it works <span aria-hidden="true">↓</span></a>
     </div>
   </section></div>
   <div class="cred-wrap"><div class="cred">
-    <div class="cred-block">
-      <svg class="cred-google" viewBox="0 0 48 48" aria-hidden="true">
-        <path fill="#4285F4" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
-        <path fill="#34A853" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
-        <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
-        <path fill="#EA4335" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
-      </svg>
-      <span class="cred-stars" aria-label="Rated 5 out of 5">
-        <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg>
-        <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg>
-        <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg>
-        <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg>
-        <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg>
-      </span>
-      <span class="cred-rating">4.9</span>
-      <span class="cred-count">on Google</span>
-    </div>
-    <div class="cred-divider"></div>
-    <div class="cred-block">
-      <div class="cred-avatars">
-        <span class="avatar a1">SM</span>
-        <span class="avatar a2">JT</span>
-        <span class="avatar a3">AK</span>
-      </div>
-      <span class="cred-count">from 127 reviews</span>
-    </div>
-    <div class="cred-divider"></div>
+    <svg class="cred-google" viewBox="0 0 48 48" aria-hidden="true">
+      <path fill="#4285F4" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+      <path fill="#34A853" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+      <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+      <path fill="#EA4335" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+    </svg>
+    <span class="cred-stars" aria-label="Rated 5 out of 5">
+      <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg>
+      <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg>
+      <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg>
+      <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg>
+      <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg>
+    </span>
+    <span class="cred-text"><strong>4.9</strong> from 127 Google reviews</span>
     <a href="#" class="cred-link">Read reviews →</a>
   </div></div>
 
-  <section class="how">
+  <section class="how" id="how">
     <div class="how-inner">
       <div class="how-header">
         <div class="how-eyebrow">How it works</div>
         <h2 class="how-title">Three steps from stuck to strong</h2>
-        <p class="how-lede">A simple, proven process — no guesswork, no overwhelm. Just a clear path built around your body and your life.</p>
+        <p class="how-lede">A clear path, built around your body and your life.</p>
       </div>
       <div class="how-grid">
         <div class="how-card">
