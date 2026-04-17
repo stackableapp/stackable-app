@@ -430,6 +430,126 @@
       .cases-header { margin-bottom: 32px; }
     }
 
+    /* Meet Cody */
+    .coach { background: #F2F0EB; }
+    .coach-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: clamp(64px, 9vw, 120px) clamp(24px, 6vw, 80px);
+    }
+    .coach-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.1fr;
+      gap: 64px;
+      align-items: center;
+    }
+    .coach-photo {
+      width: 100%;
+      aspect-ratio: 4 / 5;
+      border-radius: 16px;
+      object-fit: cover;
+      display: block;
+      background: #E8E2D9;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.12);
+    }
+    .coach-eyebrow {
+      font-family: 'Inter', sans-serif;
+      font-weight: 700;
+      font-size: 0.8125rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #6B6568;
+      margin-bottom: 12px;
+    }
+    .coach-title {
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      font-size: clamp(2rem, 4vw, 3.25rem);
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      color: #1A1A1A;
+      margin-bottom: 8px;
+    }
+    .coach-cred {
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      font-size: 1.0625rem;
+      color: #6B6568;
+      margin-bottom: 24px;
+    }
+    .coach-philosophy {
+      font-family: 'Inter', sans-serif;
+      font-size: clamp(1.05rem, 1.4vw, 1.25rem);
+      line-height: 1.5;
+      color: #1A1A1A;
+      margin-bottom: 28px;
+      font-style: italic;
+      padding: 4px 0 4px 18px;
+      border-left: 3px solid #EDC935;
+    }
+    .coach-stats {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 28px;
+    }
+    .coach-stat {
+      font-family: 'Inter', sans-serif;
+      font-weight: 700;
+      font-size: 0.875rem;
+      padding: 10px 16px;
+      border-radius: 999px;
+      background: #FFFFFF;
+      border: 1px solid #E8E2D9;
+      color: #1A1A1A;
+    }
+    .coach-why {
+      font-family: 'Inter', sans-serif;
+      font-size: 1rem;
+      line-height: 1.65;
+      color: #4A4547;
+      margin-bottom: 28px;
+    }
+    .coach-fit-label {
+      font-family: 'Inter', sans-serif;
+      font-weight: 700;
+      font-size: 0.8125rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #8A6E0E;
+      margin-bottom: 14px;
+    }
+    .coach-fit {
+      list-style: none;
+      margin: 0 0 36px 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .coach-fit li {
+      font-family: 'Inter', sans-serif;
+      font-size: 1.0625rem;
+      color: #1A1A1A;
+      line-height: 1.5;
+      padding-left: 28px;
+      position: relative;
+    }
+    .coach-fit li::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 8px;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: #EDC935;
+    }
+    @media (max-width: 900px) {
+      .coach-grid { grid-template-columns: 1fr; gap: 32px; }
+      .coach-photo { max-width: 440px; margin: 0 auto; aspect-ratio: 4 / 5; }
+    }
+
     /* Booking popup */
     .booking-popup {
       position: fixed;
@@ -735,6 +855,33 @@
       </div>
     </div>
   </section>
+  <section class="coach" id="coach">
+    <div class="coach-inner">
+      <div class="coach-grid">
+        <img class="coach-photo" src="https://picsum.photos/seed/codytrainer/900/1100" alt="Cody, trainer at GymCode" loading="lazy">
+        <div>
+          <div class="coach-eyebrow">Meet your coach</div>
+          <h2 class="coach-title">Cody</h2>
+          <div class="coach-cred">Exercise Physiologist · B.Sc. Exercise Science · 10+ years</div>
+          <blockquote class="coach-philosophy">"No punishment. No templates. Just a plan built around your body that makes you stronger every week."</blockquote>
+          <div class="coach-stats">
+            <span class="coach-stat">10+ years training</span>
+            <span class="coach-stat">300+ scans completed</span>
+            <span class="coach-stat">Trusted by local physios</span>
+          </div>
+          <p class="coach-why">I became a PT after rehabbing my own back injury and realising how few coaches actually work with pain, history and real life. Now I train adults who want to rebuild safely — not grind themselves down.</p>
+          <div class="coach-fit-label">Great fit if you're</div>
+          <ul class="coach-fit">
+            <li>Returning to training after injury or a long break</li>
+            <li>Over 50 and rebuilding strength, energy and confidence</li>
+            <li>New to lifting and want a patient, structured start</li>
+          </ul>
+          <a href="#" class="btn btn-primary">Book your assessment with Cody</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <aside class="booking-popup" id="bookingPopup" role="complementary" aria-label="Next available assessment">
     <a href="#" class="booking-popup-body" id="bookingBody" style="display: flex; gap: 16px; align-items: flex-start;">
       <svg class="booking-popup-icon" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
