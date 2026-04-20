@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Metacognition and Learning Strategies — Wireframe</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+<style>
+ *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+ body { font-family: monospace; min-width: 1280px; }
+
+ /* ── shared ── */
+ section { min-height: 85vh; position: relative; }
+
+ .wrap {
+ max-width: 1280px;
+ margin: 0 auto;
+ padding: 0 clamp(80px, 12vw, 180px);
+ height: 100%;
+ }
+
+ .zone {
+ border: 1.5px dashed rgba(0,0,0,0.18);
+ border-radius: 4px;
+ position: relative;
+ }
+
+ .zone-label {
+ position: absolute;
+ top: 8px;
+ left: 12px;
+ font-size: 10px;
+ letter-spacing: 0.08em;
+ text-transform: uppercase;
+ color: rgba(0,0,0,0.3);
+ pointer-events: none;
+ }
+
+ /* dark section labels */
+ .dark-label { color: rgba(255,255,255,0.3); }
+
+ /* ── layout helpers ── */
+ .col-2 {
+ display: grid;
+ grid-template-columns: 1fr 1fr;
+ gap: clamp(24px, 4vw, 64px);
+ height: 100%;
+ }
+
+ .col-3 {
+ display: grid;
+ grid-template-columns: repeat(3, 1fr);
+ gap: 24px;
+ }
+
+ .col-2-narrow {
+ display: grid;
+ grid-template-columns: repeat(2, 1fr);
+ gap: 24px;
+ }
+
+ .section-layout {
+ display: flex;
+ flex-direction: column;
+ gap: 24px;
+ padding: clamp(64px, 8vw, 100px) 0;
+ }
+
+ /* ─────────────────────────────────────── */
+ /* HERO #F2F0EB */
+ /* ─────────────────────────────────────── */
+ .s1 { background: #F2F0EB; }
+
+ .s1 .section-layout { padding: clamp(48px, 10vw, 140px) 0; }
+
+ .s1 .col-2 { align-items: center; }
+
+ .s1-left {
+ display: flex;
+ flex-direction: column;
+ gap: 16px;
+ height: 100%;
+ min-height: clamp(320px, 50vh, 480px);
+ }
+
+ .zone-h1 { flex: 0 0 clamp(80px, 14vh, 140px); }
+ .zone-body { flex: 0 0 60px; }
+ .zone-buttons { flex: 0 0 56px; }
+ .zone-image { flex: 1; min-height: clamp(240px, 40vh, 400px); }
+
+ /* ─────────────────────────────────────── */
+ /* FEATURES #F2F2F2 */
+ /* ─────────────────────────────────────── */
+ .s2 { background: #F2F2F2; min-height: auto; }
+
+ .zone-section-head { height: clamp(80px, 12vh, 120px); }
+
+ .zone-card { height: clamp(200px, 28vh, 280px); }
+
+ /* ─────────────────────────────────────── */
+ /* HOW IT WORKS #F2F0EB */
+ /* ─────────────────────────────────────── */
+ .s3 { background: #F2F0EB; }
+
+ .s3 .col-2 { align-items: center; }
+
+ .zone-media { min-height: clamp(260px, 42vh, 440px); }
+
+ .s3-right {
+ display: flex;
+ flex-direction: column;
+ gap: 16px;
+ height: 100%;
+ }
+
+ .zone-h2-block { height: clamp(60px, 10vh, 100px); }
+ .zone-step { height: clamp(56px, 8vh, 72px); }
+
+ /* ─────────────────────────────────────── */
+ /* SOCIAL PROOF #F8F2ED */
+ /* ─────────────────────────────────────── */
+ .s4 { background: #F8F2ED; }
+
+ .zone-stat { height: clamp(100px, 14vh, 140px); }
+ .zone-quote { height: clamp(160px, 22vh, 220px); }
+
+ /* ─────────────────────────────────────── */
+ /* CTA #032626 */
+ /* ─────────────────────────────────────── */
+ .s5 { background: #032626; min-height: 50vh; }
+
+ .s5 .zone {
+ border-color: rgba(255,255,255,0.2);
+ }
+
+ .s5 .section-layout {
+ align-items: center;
+ justify-content: center;
+ min-height: 50vh;
+ }
+
+ .s5-centre {
+ display: flex;
+ flex-direction: column;
+ gap: 16px;
+ width: min(640px, 100%);
+ }
+
+ .zone-cta-h2 { height: clamp(60px, 10vh, 100px); }
+ .zone-cta-body { height: 40px; }
+ .zone-cta-buttons { height: 56px; }
+
+ /* ─────────────────────────────────────── */
+ /* QUIZ #F2F2F2 */
+ /* ─────────────────────────────────────── */
+ .s-quiz { background: #F2F2F2; }
+
+ .quiz-layout {
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+ gap: 24px;
+ padding: clamp(64px, 8vw, 100px) 0;
+ }
+
+ .quiz-card {
+ width: min(640px, 100%);
+ border: 1.5px dashed rgba(0,0,0,0.18);
+ border-radius: 16px;
+ padding: 40px;
+ display: flex;
+ flex-direction: column;
+ gap: 16px;
+ background: #FAFAF7;
+ position: relative;
+ }
+
+ .zone-dots { height: 20px; width: 120px; align-self: flex-end; }
+ .zone-question { height: clamp(56px, 8vh, 80px); }
+ .zone-option { height: 52px; }
+ .zone-feedback { height: 64px; }
+ .zone-next-btn { height: 52px; width: 160px; align-self: flex-end; }
+
+ /* result feedback options — pill style, visually distinct from quiz options */
+ .zone-feedback-option {
+ height: 48px;
+ border-radius: 999px;
+ border: 1.5px dashed rgba(0,0,0,0.15);
+ background: #F2F8FD;
+ position: relative;
+ }
+
+ /* ─────────────────────────────────────── */
+ /* BRANCHING #F8F2ED */
+ /* ─────────────────────────────────────── */
+ .s-branch { background: #F8F2ED; }
+
+ .branch-layout {
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+ gap: 48px;
+ padding: clamp(64px, 8vw, 100px) 0;
+ }
+
+ /* section heading */
+ .branch-head {
+ text-align: center;
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+ gap: 12px;
+ width: 100%;
+ }
+
+ /* step progress strip — floats above card centre */
+ .step-strip {
+ display: flex;
+ align-items: center;
+ gap: 0;
+ position: absolute;
+ top: 0;
+ left: 50%;
+ transform: translate(-50%, -50%);
+ background: #FFFFFF;
+ padding: 4px 12px;
+ border-radius: 999px;
+ border: 1.5px dashed rgba(0,0,0,0.18);
+ white-space: nowrap;
+ z-index: 2;
+ }
+ .step-pip {
+ width: 24px; height: 24px;
+ border-radius: 999px;
+ background: #E8E4DE;
+ border: 1.5px dashed rgba(0,0,0,0.18);
+ display: flex; align-items: center; justify-content: center;
+ font-size: 9px; color: rgba(0,0,0,0.3); letter-spacing: 0;
+ }
+ .step-pip.active { background: #120DA620; border-color: #120DA6; color: #120DA6; }
+ .step-pip.done { background: #C8C4BC; border-color: rgba(0,0,0,0.25); color: rgba(0,0,0,0.4); }
+ .step-line {
+ width: 20px; height: 1.5px;
+ background: rgba(0,0,0,0.15);
+ border-top: 1.5px dashed rgba(0,0,0,0.18);
+ }
+
+ /* shared screen card */
+ .screen-card {
+ width: min(680px, 100%);
+ background: #FFFFFF;
+ border: 1.5px dashed rgba(0,0,0,0.15);
+ border-radius: 16px;
+ padding: 36px;
+ padding-top: 48px;
+ display: flex;
+ flex-direction: column;
+ gap: 16px;
+ position: relative;
+ margin-top: 20px;
+ }
+
+ .screen-label {
+ font-size: 10px;
+ letter-spacing: 0.08em;
+ text-transform: uppercase;
+ color: rgba(0,0,0,0.3);
+ }
+
+ .zone-sc-heading { height: 32px; }
+ .zone-sc-body { height: 72px; }
+ .zone-sc-next { height: 48px; width: 120px; align-self: flex-end; }
+
+ /* branching activity card — wider */
+ .screen-card-wide {
+ width: min(680px, 100%);
+ background: #FFFFFF;
+ border: 1.5px dashed rgba(0,0,0,0.15);
+ border-radius: 16px;
+ padding: 36px;
+ padding-top: 48px;
+ display: flex;
+ flex-direction: column;
+ gap: 20px;
+ position: relative;
+ margin-top: 20px;
+ }
+
+ .zone-scenario { height: 80px; }
+ .three-options { display: flex; flex-direction: column; gap: 12px; }
+ .zone-option-card { padding: 14px 16px; display: flex; flex-direction: column; gap: 8px; }
+
+ /* down arrow connector */
+ .flow-arrow {
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+ gap: 0;
+ color: rgba(0,0,0,0.2);
+ font-size: 18px;
+ }
+ .flow-arrow::before {
+ content: '';
+ display: block;
+ width: 1.5px;
+ height: 24px;
+ border-left: 1.5px dashed rgba(0,0,0,0.2);
+ }
+
+ /* summary screen */
+ .summary-chain {
+ display: flex;
+ flex-direction: column;
+ gap: 12px;
+ width: 100%;
+ }
+ .chain-row {
+ display: grid;
+ grid-template-columns: 1fr 1fr;
+ gap: 12px;
+ }
+ .zone-chain-scenario { height: 52px; }
+ .zone-chain-choice { height: 52px; background: #F2F8FD; }
+
+ /* editable text area */
+ .text-area-wrap {
+ display: flex;
+ flex-direction: column;
+ gap: 0;
+ border: 1.5px dashed rgba(0,0,0,0.18);
+ border-radius: 8px;
+ overflow: hidden;
+ }
+ .text-toolbar {
+ display: flex;
+ align-items: center;
+ gap: 8px;
+ padding: 6px 10px;
+ background: #F5F5F5;
+ border-bottom: 1px solid rgba(0,0,0,0.08);
+ }
+ .zone-font-size {
+ height: 22px;
+ width: 64px;
+ border-radius: 4px;
+ border: 1.5px dashed rgba(0,0,0,0.18);
+ background: #fff;
+ position: relative;
+ }
+ .toolbar-label {
+ font-size: 9px;
+ text-transform: uppercase;
+ letter-spacing: 0.07em;
+ color: rgba(0,0,0,0.25);
+ }
+ .text-body {
+ min-height: 120px;
+ background: #fff;
+ border: none;
+ position: relative;
+ }
+
+ /* ai suggestion pills */
+ .ai-pills {
+ display: flex;
+ flex-wrap: wrap;
+ gap: 8px;
+ }
+ .ai-pill {
+ height: 32px;
+ border-radius: 999px;
+ border: 1.5px dashed rgba(0,0,0,0.18);
+ background: #F2F8FD;
+ position: relative;
+ display: flex;
+ align-items: center;
+ padding: 0 14px;
+ }
+ .ai-pill::after {
+ content: '';
+ display: block;
+ height: 8px;
+ background: rgba(0,0,0,0.18);
+ border-radius: 3px;
+ width: 100%;
+ }
+ .ai-pill:nth-child(1) { width: 140px; }
+ .ai-pill:nth-child(2) { width: 110px; }
+ .ai-pill:nth-child(3) { width: 160px; }
+ .ai-pills-label {
+ font-size: 9px;
+ letter-spacing: 0.08em;
+ text-transform: uppercase;
+ color: rgba(0,0,0,0.25);
+ margin-bottom: 2px;
+ }
+
+ /* slider zone */
+ .zone-slider-q { height: 32px; }
+ .zone-slider-bar { height: 40px; border-radius: 999px; }
+
+ /* 5-point slider */
+ .slider-section-wrap {
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+ gap: 48px;
+ padding: clamp(64px, 8vw, 100px) 0;
+ }
+
+ .slider-card {
+ width: min(680px, 100%);
+ background: #FFFFFF;
+ border: 1.5px dashed rgba(0,0,0,0.15);
+ border-radius: 16px;
+ padding: 40px;
+ display: flex;
+ flex-direction: column;
+ gap: 32px;
+ }
+
+ .slider-track-wrap {
+ display: flex;
+ flex-direction: column;
+ gap: 12px;
+ }
+
+ .slider-track {
+ position: relative;
+ display: flex;
+ align-items: center;
+ justify-content: space-between;
+ height: 48px;
+ }
+
+ /* the line */
+ .slider-track::before {
+ content: '';
+ position: absolute;
+ top: 50%;
+ left: 0;
+ right: 0;
+ transform: translateY(-50%);
+ height: 4px;
+ border-radius: 999px;
+ background: #E8E2D9;
+ border: 1.5px dashed rgba(0,0,0,0.15);
+ }
+
+ .slider-point {
+ width: 28px;
+ height: 28px;
+ border-radius: 999px;
+ background: #E8E2D9;
+ border: 1.5px dashed rgba(0,0,0,0.2);
+ position: relative;
+ z-index: 1;
+ flex-shrink: 0;
+ }
+
+ /* thumb — shown at rest (unused state) */
+ .slider-thumb {
+ position: absolute;
+ left: 0;
+ top: 50%;
+ transform: translate(-50%, -50%);
+ width: 40px;
+ height: 40px;
+ border-radius: 999px;
+ background: #D8D4CC;
+ border: 2px dashed rgba(0,0,0,0.2);
+ z-index: 2;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ }
+
+ .slider-nudge {
+ font-size: 9px;
+ text-transform: uppercase;
+ letter-spacing: 0.08em;
+ color: rgba(0,0,0,0.25);
+ text-align: center;
+ }
+
+ /* colour-changed state label */
+ .slider-state-row {
+ display: flex;
+ gap: 16px;
+ align-items: center;
+ justify-content: center;
+ }
+ .slider-state {
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+ gap: 6px;
+ font-size: 9px;
+ text-transform: uppercase;
+ letter-spacing: 0.07em;
+ color: rgba(0,0,0,0.3);
+ }
+ .slider-state-dot {
+ width: 28px; height: 28px;
+ border-radius: 999px;
+ border: 1.5px dashed;
+ }
+ .state-unused { background: #E8E2D9; border-color: rgba(0,0,0,0.2); }
+ .state-active { background: #120DA620; border-color: #120DA6; }
+
+ .slider-labels {
+ display: flex;
+ justify-content: space-between;
+ }
+ .slider-point-label {
+ font-size: 9px;
+ text-transform: uppercase;
+ letter-spacing: 0.06em;
+ color: rgba(0,0,0,0.3);
+ width: 28px;
+ text-align: center;
+ }
+
+ .col-3-branch { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; }
+
+ /* ── responsive ── */
+ @media (max-width: 768px) {
+ .col-2 { grid-template-columns: 1fr; }
+ .col-3 { grid-template-columns: 1fr; }
+ .col-2-narrow { grid-template-columns: 1fr; }
+ .col-3-branch { grid-template-columns: 1fr; }
+ }
+
+ /* ══════════════════════════════════════════════════════ */
+ /* WIREFRAME OVERRIDE — zero colour, outlines & fills */
+ /* ══════════════════════════════════════════════════════ */
+
+ /* 1. Strip shadows and gradients globally */
+ * { box-shadow: none !important; text-shadow: none !important; }
+ div[style*="linear-gradient"], section[style*="linear-gradient"] { background-image: none !important; }
+
+ /* 2. All sections → flat alternating grey regardless of inline colour */
+ section,
+ section[style] { background: #F0EFED !important; }
+ section:nth-of-type(even),
+ section:nth-of-type(even)[style] { background: #E8E7E5 !important; }
+
+ /* 3. Headings → solid grey placeholder bars */
+ h1 { background: #A8A5A2 !important; color: transparent !important; border-radius: 6px !important; display: block !important; }
+ h2 { background: #B2AFAC !important; color: transparent !important; border-radius: 6px !important; display: block !important; }
+ h3 { background: #BCBAB6 !important; color: transparent !important; border-radius: 6px !important; display: block !important; }
+ h4 { background: #C4C2BE !important; color: transparent !important; border-radius: 6px !important; display: block !important; }
+
+ /* 4. Paragraphs → grey placeholder lines */
+ p { background: #D0CCC8 !important; color: transparent !important; border-radius: 4px !important; }
+
+ /* 5. Links → wireframe button outlines */
+ a { background: transparent !important; background-image: none !important; color: transparent !important;
+ border: 1.5px dashed rgba(0,0,0,0.22) !important; border-radius: 8px !important; }
+ a * { color: transparent !important; background: transparent !important; background-image: none !important; }
+
+ /* 6. Brand colours on divs/spans → neutral wireframe grey
+ Targets colour values in inline style attributes */
+ div[style*="120DA6"], span[style*="120DA6"] { background-color: #C0BCBA !important; background-image: none !important; color: rgba(0,0,0,0.28) !important; border-color: rgba(0,0,0,0.18) !important; }
+ div[style*="032626"], span[style*="032626"] { background-color: #C8C4C0 !important; background-image: none !important; color: rgba(0,0,0,0.28) !important; border-color: rgba(0,0,0,0.18) !important; }
+ div[style*="40062B"], span[style*="40062B"] { background-color: #D0CCC8 !important; background-image: none !important; color: rgba(0,0,0,0.28) !important; border-color: rgba(0,0,0,0.18) !important; }
+ div[style*="F2BDD6"], span[style*="F2BDD6"] { background-color: #DEDAD6 !important; background-image: none !important; color: rgba(0,0,0,0.28) !important; border-color: rgba(0,0,0,0.15) !important; }
+ div[style*="C4E5F2"], span[style*="C4E5F2"] { background-color: #DDDAD5 !important; background-image: none !important; color: rgba(0,0,0,0.28) !important; border-color: rgba(0,0,0,0.15) !important; }
+ div[style*="F24405"], span[style*="F24405"] { background-color: #C8C4C0 !important; background-image: none !important; color: rgba(0,0,0,0.28) !important; border-color: rgba(0,0,0,0.18) !important; }
+ div[style*="8C5473"], span[style*="8C5473"] { background-color: #D0CCC8 !important; background-image: none !important; color: rgba(0,0,0,0.28) !important; border-color: rgba(0,0,0,0.18) !important; }
+
+ /* 7. White/near-white card backgrounds → keep off-white so structure shows */
+ div[style*="FFFFFF"], div[style*="FAFAF7"] { background-color: #F5F4F2 !important; border-color: rgba(0,0,0,0.14) !important; }
+
+ /* 8. Text colour overrides — all branded text → muted grey */
+ [style*="color:#120DA6"], [style*="color: #120DA6"] { color: rgba(0,0,0,0.35) !important; }
+ [style*="color:#FFFFFF"], [style*="color: #FFFFFF"] { color: rgba(0,0,0,0.35) !important; }
+ [style*="color:#1A1A1A"], [style*="color: #1A1A1A"] { color: rgba(0,0,0,0.45) !important; }
+ [style*="color:#40062B"], [style*="color: #40062B"] { color: rgba(0,0,0,0.35) !important; }
+ [style*="color:#6B6568"], [style*="color: #6B6568"] { color: rgba(0,0,0,0.30) !important; }
+
+ /* 9. Zone boxes — wireframe dashed fills */
+ .zone { background: #DEDAD6 !important; border: 1.5px dashed rgba(0,0,0,0.22) !important; }
+ .zone-label, .screen-label, .flow-arrow { color: rgba(0,0,0,0.30) !important; background: transparent !important; }
+
+ /* 10. Screen/quiz cards — structural white containers with dashed border */
+ .screen-card { background: #F5F4F2 !important; border: 1.5px dashed rgba(0,0,0,0.18) !important; }
+ .quiz-card { background: #F5F4F2 !important; border: 1.5px dashed rgba(0,0,0,0.18) !important; }
+
+ /* 11. Step pips */
+ .step-pip { background: #E0DDD8 !important; border: 1.5px dashed rgba(0,0,0,0.18) !important; color: rgba(0,0,0,0.30) !important; }
+ .step-pip.active { background: #C8C4C0 !important; border-color: rgba(0,0,0,0.30) !important; color: rgba(0,0,0,0.40) !important; }
+ .step-line { background: rgba(0,0,0,0.15) !important; border-color: rgba(0,0,0,0.18) !important; }
+
+ /* ═══════════════════════════════════════════════════════════ */
+ /* SUPPLEMENTAL OVERRIDES — catching all remaining colour leaks */
+ /* ═══════════════════════════════════════════════════════════ */
+
+ /* Additional background colours not caught above */
+ [style*="background:#F2F8FD"], [style*="background: #F2F8FD"] { background-color: #E2E0DC !important; }
+ [style*="background:#F8F2ED"], [style*="background: #F8F2ED"] { background-color: #E8E6E2 !important; }
+ [style*="background:#F2F0EB"], [style*="background: #F2F0EB"] { background-color: #ECEBE8 !important; }
+ [style*="background:#F2F2F2"], [style*="background: #F2F2F2"] { background-color: #EBEBEA !important; }
+ [style*="background:#FAFAF7"], [style*="background: #FAFAF7"] { background-color: #F0EFEC !important; }
+ [style*="background:#F9F9F9"], [style*="background: #F9F9F9"] { background-color: #EEECEA !important; }
+ [style*="background:#FFFDE8"], [style*="background: #FFFDE8"] { background-color: #E5E3DF !important; border-color: rgba(0,0,0,0.12) !important; }
+ [style*="background:#F8E04A"] { background-color: #D4D0CA !important; border-color: rgba(0,0,0,0.15) !important; }
+ [style*="background:#F8E04A60"] { background-color: rgba(200,195,190,0.3) !important; }
+ [style*="background:#1A1A1A"], [style*="background: #1A1A1A"] { background-color: #C0BCBA !important; }
+ [style*="background:#2A2A2A"], [style*="background: #2A2A2A"] { background-color: #BEBAB6 !important; }
+ [style*="background:#E8E2D9"], [style*="background: #E8E2D9"] { background-color: #DDD9D3 !important; }
+
+ /* Kill box-shadows from ALL inline-styled elements */
+ [style*="box-shadow"] { box-shadow: none !important; }
+
+ /* Kill linear gradients from inline styles */
+ [style*="linear-gradient"] { background-image: none !important; background-color: #D8D4CC !important; }
+
+ /* All coloured text via inline style → neutral grey */
+ [style*="color:#120DA6"], [style*="color: #120DA6"] { color: rgba(0,0,0,0.38) !important; }
+ [style*="color:#40062B"], [style*="color: #40062B"] { color: rgba(0,0,0,0.35) !important; }
+ [style*="color:#8C5473"], [style*="color: #8C5473"] { color: rgba(0,0,0,0.30) !important; }
+ [style*="color:#032626"], [style*="color: #032626"] { color: rgba(0,0,0,0.30) !important; }
+ [style*="color:#F24405"], [style*="color: #F24405"] { color: rgba(0,0,0,0.30) !important; }
+ [style*="color:#FFFFFF"], [style*="color: #FFFFFF"] { color: rgba(0,0,0,0.40) !important; }
+ [style*="color:#6B6568"], [style*="color: #6B6568"] { color: rgba(0,0,0,0.30) !important; }
+ [style*="color:#C8C4BC"] { color: rgba(0,0,0,0.25) !important; }
+
+ /* Borders using brand colours → neutral */
+ [style*="border:2px solid #40062B"], [style*="border: 2px solid #40062B"] { border-color: rgba(0,0,0,0.22) !important; }
+ [style*="border:1.5px solid #120DA6"], [style*="border: 1.5px solid #120DA6"] { border-color: rgba(0,0,0,0.20) !important; }
+ [style*="border:1px solid #120DA6"], [style*="border: 1px solid #120DA6"] { border-color: rgba(0,0,0,0.18) !important; }
+ [style*="border:2px solid #120DA6"], [style*="border: 2px solid #120DA6"] { border-color: rgba(0,0,0,0.22) !important; }
+ [style*="border:1px solid #E8E2D9"], [style*="border: 1px solid #E8E2D9"] { border-color: rgba(0,0,0,0.14) !important; }
+ [style*="border-bottom:2px solid #F8E04A"] { border-bottom-color: rgba(0,0,0,0.18) !important; }
+ [style*="border-bottom:1px solid #E8E2D9"] { border-bottom-color: rgba(0,0,0,0.12) !important; }
+ [style*="border-left:2px solid #E8E2D9"] { border-left-color: rgba(0,0,0,0.12) !important; }
+ [style*="border-top:1px solid #E8E2D9"] { border-top-color: rgba(0,0,0,0.12) !important; }
+ [style*="border-right:1px solid #E8E2D9"] { border-right-color: rgba(0,0,0,0.12) !important; }
+
+ /* Word cloud coloured spans → uniform neutral */
+ span[style*="color:#120DA6"], span[style*="color:#40062B"],
+ span[style*="color:#032626"], span[style*="color:#8C5473"],
+ span[style*="color:#6B6568"], span[style*="color:#C8C4BC"] {
+ color: rgba(0,0,0,0.40) !important;
+ }
+ span[style*="background:#C4E5F2"] { background-color: #D8D4CC !important; }
+
+ /* ── Section name labels (outside wireframe, not part of design) ── */
+ .section-name {
+ position: absolute;
+ top: 12px;
+ left: 12px;
+ font-family: monospace;
+ font-size: 10px;
+ font-weight: 700;
+ text-transform: uppercase;
+ letter-spacing: 0.1em;
+ color: rgba(0,0,0,0.35);
+ background: rgba(255,255,255,0.85);
+ padding: 4px 10px;
+ border-radius: 4px;
+ border: 1px dashed rgba(0,0,0,0.18);
+ pointer-events: none;
+ z-index: 100;
+ user-select: none;
+ }
+ section { position: relative; }
+
+ </style>
+</head>
+<body>
+  <section style="background:#F2F0EB; padding:clamp(48px,8vw,100px) clamp(24px,6vw,80px);">
+    <div style="max-width:1280px; margin:0 auto;">
+
+      <div style="display:flex; align-items:center; gap:12px; margin-bottom:48px;">
+        <div style="background:#1A1A1A; color:#fff; font-size:0.75rem; font-weight:700; letter-spacing:0.08em; padding:4px 10px; border-radius:4px; text-transform:uppercase;">Master Digital Asset</div>
+        <div style="font-size:0.875rem; color:#6B6568;">Three embeddable components · planning prompts · strategy matching · strategy library</div>
+      </div>
+
+      <div class="section-name">Metacognition &amp; Learning Strategies</div>
+
+      <div style="background:#EAF4FB; border:1px solid #B8D8EC; border-radius:6px; padding:16px 20px; margin-bottom:56px; max-width:900px;">
+        <div style="font-size:0.8125rem; color:#1A5276; font-weight:600; margin-bottom:4px;">Screen builder note</div>
+        <div style="font-size:0.8125rem; color:#1A5276;">Metacognition in e-learning = giving learners the tools to manage their own thinking. Three distinct components shown: (1) Pre-lesson Planning Prompt — learner enters intentionally rather than clicking next; (2) Strategy Matcher — matches study strategy to learning goal; (3) Concrete Strategy Library — 8 specific techniques with short how-to descriptions. Each component is embeddable independently.</div>
+      </div>
+
+      <!-- COMPONENT 1: Planning Prompts -->
+      <div style="margin-bottom:64px;">
+        <div style="display:flex; align-items:center; gap:12px; margin-bottom:20px;">
+          <div style="background:#120DA6; color:#fff; border-radius:50%; width:32px; height:32px; display:flex; align-items:center; justify-content:center; font-size:0.875rem; font-weight:700; flex-shrink:0;">1</div>
+          <div>
+            <div style="font-size:1.0625rem; font-weight:700; color:#1A1A1A;">Planning Prompts</div>
+            <div style="font-size:0.8125rem; color:#6B6568; margin-top:2px;">Placed at the start of a lesson — before any content. Learner pauses and makes a small plan.</div>
+          </div>
+        </div>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:20px; align-items:start;">
+
+          <!-- State 1: Open / unanswered -->
+          <div>
+            <div style="font-size:0.8125rem; color:#6B6568; font-weight:600; margin-bottom:12px; text-transform:uppercase; letter-spacing:0.06em;">State 1 — Open</div>
+            <div style="background:#FAFAF7; border:1px solid #E8E2D9; border-radius:12px; overflow:hidden;">
+              <!-- Header band -->
+              <div style="background:#120DA6; padding:16px 20px;">
+                <div style="font-size:0.75rem; color:rgba(255,255,255,0.75); font-weight:600; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:4px;">Before you start</div>
+                <div style="font-size:0.9375rem; font-weight:700; color:#fff;">Take 60 seconds to plan</div>
+              </div>
+              <div style="padding:18px 20px; display:flex; flex-direction:column; gap:12px;">
+                <div>
+                  <div style="font-size:0.8125rem; color:#6B6568; font-weight:600; margin-bottom:6px;">What is my goal for this lesson?</div>
+                  <div style="background:#fff; border:1px solid #E8E2D9; border-radius:7px; padding:9px 12px; font-size:0.875rem; color:#6B6568; min-height:36px; font-style:italic;">Type here…</div>
+                </div>
+                <div>
+                  <div style="font-size:0.8125rem; color:#6B6568; font-weight:600; margin-bottom:6px;">What do I already know?</div>
+                  <div style="background:#fff; border:1px solid #E8E2D9; border-radius:7px; padding:9px 12px; font-size:0.875rem; color:#6B6568; min-height:36px; font-style:italic;">Type here…</div>
+                </div>
+                <div>
+                  <div style="font-size:0.8125rem; color:#6B6568; font-weight:600; margin-bottom:6px;">What part usually trips me up?</div>
+                  <div style="background:#fff; border:1px solid #E8E2D9; border-radius:7px; padding:9px 12px; font-size:0.875rem; color:#6B6568; min-height:36px; font-style:italic;">Type here…</div>
+                </div>
+                <div>
+                  <div style="font-size:0.8125rem; color:#6B6568; font-weight:600; margin-bottom:6px;">What strategy will I use if I get stuck?</div>
+                  <div style="background:#fff; border:1px solid #E8E2D9; border-radius:7px; padding:9px 12px; font-size:0.875rem; color:#6B6568; min-height:36px; font-style:italic;">Type here…</div>
+                </div>
+                <div style="background:#D8D4CC; border-radius:8px; padding:10px 16px; text-align:center; font-size:0.875rem; font-weight:700; color:#6B6568; cursor:not-allowed;">Start the lesson</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- State 2: Partially filled -->
+          <div>
+            <div style="font-size:0.8125rem; color:#6B6568; font-weight:600; margin-bottom:12px; text-transform:uppercase; letter-spacing:0.06em;">State 2 — Filled (ready)</div>
+            <div style="background:#FAFAF7; border:1px solid #E8E2D9; border-radius:12px; overflow:hidden;">
+              <div style="background:#120DA6; padding:16px 20px;">
+                <div style="font-size:0.75rem; color:rgba(255,255,255,0.75); font-weight:600; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:4px;">Before you start</div>
+                <div style="font-size:0.9375rem; font-weight:700; color:#fff;">Take 60 seconds to plan</div>
+              </div>
+              <div style="padding:18px 20px; display:flex; flex-direction:column; gap:12px;">
+                <div>
+                  <div style="font-size:0.8125rem; color:#6B6568; font-weight:600; margin-bottom:6px;">What is my goal for this lesson?</div>
+                  <div style="background:#F2F8FD; border:1.5px solid #120DA6; border-radius:7px; padding:9px 12px; font-size:0.875rem; color:#1A1A1A;">To understand when to use Spearman instead of Pearson</div>
+                </div>
+                <div>
+                  <div style="font-size:0.8125rem; color:#6B6568; font-weight:600; margin-bottom:6px;">What do I already know?</div>
+                  <div style="background:#F2F8FD; border:1.5px solid #120DA6; border-radius:7px; padding:9px 12px; font-size:0.875rem; color:#1A1A1A;">Both are correlation tests but Pearson needs normal data</div>
+                </div>
+                <div>
+                  <div style="font-size:0.8125rem; color:#6B6568; font-weight:600; margin-bottom:6px;">What part usually trips me up?</div>
+                  <div style="background:#F2F8FD; border:1.5px solid #120DA6; border-radius:7px; padding:9px 12px; font-size:0.875rem; color:#1A1A1A;">Checking whether the data are normal</div>
+                </div>
+                <div>
+                  <div style="font-size:0.8125rem; color:#6B6568; font-weight:600; margin-bottom:6px;">What strategy will I use if I get stuck?</div>
+                  <div style="background:#F2F8FD; border:1.5px solid #120DA6; border-radius:7px; padding:9px 12px; font-size:0.875rem; color:#1A1A1A;">Reread the worked example before trying the task</div>
+                </div>
+                <div style="background:#120DA6; color:#fff; border-radius:8px; padding:10px 16px; text-align:center; font-size:0.875rem; font-weight:700; cursor:pointer;">Start the lesson →</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- State 3: End-of-lesson review -->
+          <div>
+            <div style="font-size:0.8125rem; color:#6B6568; font-weight:600; margin-bottom:12px; text-transform:uppercase; letter-spacing:0.06em;">State 3 — End-of-lesson review</div>
+            <div style="background:#FAFAF7; border:1px solid #E8E2D9; border-radius:12px; overflow:hidden;">
+              <div style="background:#032626; padding:16px 20px;">
+                <div style="font-size:0.75rem; color:rgba(255,255,255,0.65); font-weight:600; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:4px;">At the start you said…</div>
+                <div style="font-size:0.875rem; font-weight:600; color:#fff;">Your plan, revisited</div>
+              </div>
+              <div style="padding:18px 20px; display:flex; flex-direction:column; gap:12px;">
+                <div style="background:#F2F2F2; border-radius:8px; padding:12px 14px;">
+                  <div style="font-size:0.75rem; color:#6B6568; font-weight:600; margin-bottom:4px;">Your goal was</div>
+                  <div style="font-size:0.875rem; color:#1A1A1A; margin-bottom:10px;">To understand when to use Spearman instead of Pearson</div>
+                  <div style="font-size:0.75rem; color:#6B6568; font-weight:600; margin-bottom:6px;">Did you reach it?</div>
+                  <div style="display:flex; gap:8px;">
+                    <div style="background:#C4E5F2; border:2px solid #120DA6; border-radius:6px; padding:5px 12px; font-size:0.8125rem; font-weight:600; color:#120DA6; cursor:pointer;">Yes</div>
+                    <div style="background:#fff; border:1px solid #E8E2D9; border-radius:6px; padding:5px 12px; font-size:0.8125rem; font-weight:600; color:#6B6568; cursor:pointer;">Partly</div>
+                    <div style="background:#fff; border:1px solid #E8E2D9; border-radius:6px; padding:5px 12px; font-size:0.8125rem; font-weight:600; color:#6B6568; cursor:pointer;">Not yet</div>
+                  </div>
+                </div>
+                <div style="font-size:0.8125rem; color:#6B6568; line-height:1.5;">What you said was tricky — checking normality — will appear in your next check-in as a flagged area.</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- COMPONENT 2: Strategy Matcher -->
+      <div style="margin-bottom:64px;">
+        <div style="display:flex; align-items:center; gap:12px; margin-bottom:20px;">
+          <div style="background:#120DA6; color:#fff; border-radius:50%; width:32px; height:32px; display:flex; align-items:center; justify-content:center; font-size:0.875rem; font-weight:700; flex-shrink:0;">2</div>
+          <div>
+            <div style="font-size:1.0625rem; font-weight:700; color:#1A1A1A;">Strategy Matcher</div>
+            <div style="font-size:0.8125rem; color:#6B6568; margin-top:2px;">Helps learners choose the right strategy for their goal — builds repertoire, not one-size-fits-all habits.</div>
+          </div>
+        </div>
+
+        <div style="background:#FAFAF7; border:1px solid #E8E2D9; border-radius:14px; padding:28px 32px;">
+          <div style="font-size:0.9375rem; font-weight:700; color:#1A1A1A; margin-bottom:6px;">What are you trying to do right now?</div>
+          <div style="font-size:0.875rem; color:#6B6568; margin-bottom:24px;">Select your goal and the matcher will suggest the best strategy.</div>
+
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px;">
+
+            <!-- Goal options column -->
+            <div>
+              <div style="font-size:0.75rem; color:#6B6568; font-weight:600; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:12px;">My goal is to…</div>
+              <div style="display:flex; flex-direction:column; gap:8px;">
+                <div style="background:#C4E5F2; border:2px solid #120DA6; border-radius:8px; padding:12px 16px; cursor:pointer;">
+                  <div style="font-size:0.9375rem; font-weight:600; color:#120DA6;">Remember key terms or definitions</div>
+                </div>
+                <div style="background:#fff; border:1px solid #E8E2D9; border-radius:8px; padding:12px 16px; cursor:pointer;">
+                  <div style="font-size:0.9375rem; font-weight:600; color:#1A1A1A;">Understand how a process works</div>
+                </div>
+                <div style="background:#fff; border:1px solid #E8E2D9; border-radius:8px; padding:12px 16px; cursor:pointer;">
+                  <div style="font-size:0.9375rem; font-weight:600; color:#1A1A1A;">Apply knowledge to a new situation</div>
+                </div>
+                <div style="background:#fff; border:1px solid #E8E2D9; border-radius:8px; padding:12px 16px; cursor:pointer;">
+                  <div style="font-size:0.9375rem; font-weight:600; color:#1A1A1A;">Improve the quality of my writing</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Matched strategy -->
+            <div>
+              <div style="font-size:0.75rem; color:#6B6568; font-weight:600; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:12px;">Best strategy for this goal</div>
+              <div style="background:#120DA6; border-radius:10px; padding:20px 22px; height:calc(100% - 28px); display:flex; flex-direction:column; justify-content:space-between;">
+                <div>
+                  <div style="font-size:0.75rem; color:rgba(255,255,255,0.7); font-weight:600; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:6px;">Recommended</div>
+                  <div style="font-size:1.0625rem; font-weight:700; color:#fff; margin-bottom:12px;">Retrieval practice</div>
+                  <div style="font-size:0.875rem; color:rgba(255,255,255,0.85); line-height:1.6; margin-bottom:16px;">Close your notes. Try to recall the definition from memory. Write it out. Then check. Repeat on the ones you missed.</div>
+                  <div style="font-size:0.8125rem; color:rgba(255,255,255,0.7);">Why this works: retrieving from memory strengthens the memory trace far more than rereading.</div>
+                </div>
+                <div style="margin-top:16px; background:rgba(255,255,255,0.15); border-radius:8px; padding:10px 14px; font-size:0.8125rem; color:#fff; cursor:pointer; text-align:center; font-weight:600;">Try this strategy now</div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Strategy map table -->
+          <div style="margin-top:24px; border-top:1px solid #E8E2D9; padding-top:20px;">
+            <div style="font-size:0.75rem; color:#6B6568; font-weight:600; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:14px;">All goal → strategy matches</div>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; font-size:0.8125rem;">
+              <div style="background:#F2F8FD; border:1px solid #C4E5F2; border-radius:8px; padding:10px 14px;">
+                <div style="font-weight:600; color:#120DA6; margin-bottom:3px;">Remembering terms</div>
+                <div style="color:#6B6568;">→ Retrieval practice</div>
+              </div>
+              <div style="background:#F2F2F2; border:1px solid #E8E2D9; border-radius:8px; padding:10px 14px;">
+                <div style="font-weight:600; color:#1A1A1A; margin-bottom:3px;">Understanding a process</div>
+                <div style="color:#6B6568;">→ Worked example + self-explanation</div>
+              </div>
+              <div style="background:#F2F2F2; border:1px solid #E8E2D9; border-radius:8px; padding:10px 14px;">
+                <div style="font-weight:600; color:#1A1A1A; margin-bottom:3px;">Applying knowledge</div>
+                <div style="color:#6B6568;">→ Case study + justify your choice</div>
+              </div>
+              <div style="background:#F2F2F2; border:1px solid #E8E2D9; border-radius:8px; padding:10px 14px;">
+                <div style="font-weight:600; color:#1A1A1A; margin-bottom:3px;">Improving writing</div>
+                <div style="color:#6B6568;">→ Rubric comparison + model answer</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- COMPONENT 3: Strategy Library -->
+      <div style="margin-bottom:48px;">
+        <div style="display:flex; align-items:center; gap:12px; margin-bottom:20px;">
+          <div style="background:#120DA6; color:#fff; border-radius:50%; width:32px; height:32px; display:flex; align-items:center; justify-content:center; font-size:0.875rem; font-weight:700; flex-shrink:0;">3</div>
+          <div>
+            <div style="font-size:1.0625rem; font-weight:700; color:#1A1A1A;">Concrete Strategy Library</div>
+            <div style="font-size:0.8125rem; color:#6B6568; margin-top:2px;">8 specific techniques — each with a short how-to. Browse and select. Builds repertoire over time.</div>
+          </div>
+        </div>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr 1fr 1fr; gap:16px; margin-bottom:20px;">
+
+          <!-- Strategy 1 -->
+          <div style="background:#FAFAF7; border:1px solid #E8E2D9; border-radius:12px; padding:18px;">
+            <div style="width:32px; height:32px; background:#120DA6; border-radius:8px; display:flex; align-items:center; justify-content:center; margin-bottom:12px;">
+              <div style="font-size:0.875rem; font-weight:700; color:#fff;">R</div>
+            </div>
+            <div style="font-size:0.9375rem; font-weight:700; color:#1A1A1A; margin-bottom:6px;">Retrieval practice</div>
+            <div style="font-size:0.8125rem; color:#6B6568; line-height:1.55;">Close notes. Try to recall from memory. Write it. Check. Repeat on gaps. Stronger than rereading.</div>
+          </div>
+
+          <!-- Strategy 2 -->
+          <div style="background:#FAFAF7; border:1px solid #E8E2D9; border-radius:12px; padding:18px;">
+            <div style="width:32px; height:32px; background:#120DA6; border-radius:8px; display:flex; align-items:center; justify-content:center; margin-bottom:12px;">
+              <div style="font-size:0.875rem; font-weight:700; color:#fff;">Q</div>
+            </div>
+            <div style="font-size:0.9375rem; font-weight:700; color:#1A1A1A; margin-bottom:6px;">Self-questioning</div>
+            <div style="font-size:0.8125rem; color:#6B6568; line-height:1.55;">After each section, ask: what was the main point? Why does this matter? What would happen if this were different?</div>
+          </div>
+
+          <!-- Strategy 3 -->
+          <div style="background:#FAFAF7; border:1px solid #E8E2D9; border-radius:12px; padding:18px;">
+            <div style="width:32px; height:32px; background:#120DA6; border-radius:8px; display:flex; align-items:center; justify-content:center; margin-bottom:12px;">
+              <div style="font-size:0.875rem; font-weight:700; color:#fff;">W</div>
+            </div>
+            <div style="font-size:0.9375rem; font-weight:700; color:#1A1A1A; margin-bottom:6px;">Worked example first</div>
+            <div style="font-size:0.8125rem; color:#6B6568; line-height:1.55;">Study the worked example carefully. Explain each step to yourself. Then try a similar problem independently.</div>
+          </div>
+
+          <!-- Strategy 4 -->
+          <div style="background:#FAFAF7; border:1px solid #E8E2D9; border-radius:12px; padding:18px;">
+            <div style="width:32px; height:32px; background:#120DA6; border-radius:8px; display:flex; align-items:center; justify-content:center; margin-bottom:12px;">
+              <div style="font-size:0.875rem; font-weight:700; color:#fff;">C</div>
+            </div>
+            <div style="font-size:0.9375rem; font-weight:700; color:#1A1A1A; margin-bottom:6px;">Compare and contrast</div>
+            <div style="font-size:0.8125rem; color:#6B6568; line-height:1.55;">Take two similar concepts. Write down what they share and how they differ. Forces you to understand both.</div>
+          </div>
+
+          <!-- Strategy 5 -->
+          <div style="background:#FAFAF7; border:1px solid #E8E2D9; border-radius:12px; padding:18px;">
+            <div style="width:32px; height:32px; background:#40062B; border-radius:8px; display:flex; align-items:center; justify-content:center; margin-bottom:12px;">
+              <div style="font-size:0.875rem; font-weight:700; color:#fff;">S</div>
+            </div>
+            <div style="font-size:0.9375rem; font-weight:700; color:#1A1A1A; margin-bottom:6px;">Summarise in your own words</div>
+            <div style="font-size:0.8125rem; color:#6B6568; line-height:1.55;">After reading, close the material and write a 2–3 sentence summary from memory in plain language.</div>
+          </div>
+
+          <!-- Strategy 6 -->
+          <div style="background:#FAFAF7; border:1px solid #E8E2D9; border-radius:12px; padding:18px;">
+            <div style="width:32px; height:32px; background:#40062B; border-radius:8px; display:flex; align-items:center; justify-content:center; margin-bottom:12px;">
+              <div style="font-size:0.875rem; font-weight:700; color:#fff;">✓</div>
+            </div>
+            <div style="font-size:0.9375rem; font-weight:700; color:#1A1A1A; margin-bottom:6px;">Checklist before submitting</div>
+            <div style="font-size:0.8125rem; color:#6B6568; line-height:1.55;">Before you submit, check your work against the criteria one criterion at a time. Do not skim — verify each.</div>
+          </div>
+
+          <!-- Strategy 7 -->
+          <div style="background:#FAFAF7; border:1px solid #E8E2D9; border-radius:12px; padding:18px;">
+            <div style="width:32px; height:32px; background:#40062B; border-radius:8px; display:flex; align-items:center; justify-content:center; margin-bottom:12px;">
+              <div style="font-size:0.875rem; font-weight:700; color:#fff;">B</div>
+            </div>
+            <div style="font-size:0.9375rem; font-weight:700; color:#1A1A1A; margin-bottom:6px;">Break into steps</div>
+            <div style="font-size:0.8125rem; color:#6B6568; line-height:1.55;">Write out every step needed before you start. Work through them one at a time. Do not skip ahead.</div>
+          </div>
+
+          <!-- Strategy 8 -->
+          <div style="background:#FAFAF7; border:1px solid #E8E2D9; border-radius:12px; padding:18px;">
+            <div style="width:32px; height:32px; background:#40062B; border-radius:8px; display:flex; align-items:center; justify-content:center; margin-bottom:12px;">
+              <div style="font-size:0.875rem; font-weight:700; color:#fff;">M</div>
+            </div>
+            <div style="font-size:0.9375rem; font-weight:700; color:#1A1A1A; margin-bottom:6px;">Monitor confidence vs performance</div>
+            <div style="font-size:0.8125rem; color:#6B6568; line-height:1.55;">Rate your confidence before attempting a task. Then check your actual result. Notice the gap — it reveals blind spots.</div>
+          </div>
+
+        </div>
+
+        <!-- Strategy card — expanded state -->
+        <div style="background:#120DA6; border-radius:12px; padding:24px 28px; display:grid; grid-template-columns:auto 1fr; gap:20px; align-items:start; max-width:760px;">
+          <div style="width:48px; height:48px; background:rgba(255,255,255,0.15); border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:1.25rem; font-weight:700; color:#fff; flex-shrink:0;">R</div>
+          <div>
+            <div style="font-size:0.75rem; color:rgba(255,255,255,0.65); font-weight:600; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:4px;">Expanded — when learner taps a strategy</div>
+            <div style="font-size:1.0625rem; font-weight:700; color:#fff; margin-bottom:10px;">Retrieval practice</div>
+            <div style="font-size:0.875rem; color:rgba(255,255,255,0.85); line-height:1.65; margin-bottom:14px;">Close your notes and try to recall what you just learned from memory. Write it out without looking. Then open your notes and check. Repeat specifically on the points you could not recall. The effort of retrieval — even when you fail — strengthens the memory far more than rereading the material.</div>
+            <div style="display:flex; gap:10px;">
+              <div style="background:rgba(255,255,255,0.15); border-radius:8px; padding:9px 16px; font-size:0.8125rem; font-weight:600; color:#fff; cursor:pointer;">Try this now</div>
+              <div style="background:transparent; border:1px solid rgba(255,255,255,0.3); border-radius:8px; padding:9px 16px; font-size:0.8125rem; font-weight:600; color:rgba(255,255,255,0.8); cursor:pointer;">Close ✕</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+</body>
+</html>

@@ -212,8 +212,9 @@
   </header>
 
   <div class="pill-nav" role="tablist" aria-label="Template status">
-    <button role="tab" data-view="masters" aria-selected="true">Masters</button>
-    <button role="tab" data-view="working" aria-selected="false">Working</button>
+    <button role="tab" data-view="masters"   aria-selected="true">Masters</button>
+    <button role="tab" data-view="working"   aria-selected="false">Working</button>
+    <button role="tab" data-view="wireframe" aria-selected="false">Wireframe</button>
   </div>
 
   <div class="view view-masters" data-view="masters">
@@ -235,6 +236,14 @@
       <h2>In progress</h2>
       <p class="section-intro">Drafts still in <code>_working/</code> — not yet approved as masters.</p>
       <div class="grid" id="grid-working"></div>
+    </section>
+  </div>
+
+  <div class="view view-wireframe" data-view="wireframe" hidden>
+    <section>
+      <h2>Wireframes</h2>
+      <p class="section-intro">Early concepts in <code>_wireframe/</code> — no master or working version yet.</p>
+      <div class="grid" id="grid-wireframe"></div>
     </section>
   </div>
 
@@ -276,6 +285,26 @@
     { path: '/landing-quiz',  name: 'Landing Quiz' }
   ];
 
+  const wireframeSlugs = [
+    'activity-to-assessment-link','anonymous-wonder-box','carousel','case-application',
+    'case-based-questioning','comprehension-check','contact-cta','contact-form',
+    'contact-hero','credentials','curiosity-wall-sorting','discussion-forum',
+    'end-of-module-goal-review','explicit-teaching-sequence','faq-nudge','faq',
+    'features','first-forum-post','forward-reflection-prompt','gibbs-reflection',
+    'goal-selector','hot-take-rethink','hotspot-book','impact-numbers',
+    'learning-intentions-success-criteria','lesson-map','metacognition-learning-strategies',
+    'mission-hero','muddiest-point-board','origin-story','poll','pre-module-diagnostic',
+    'question-ladder','resource-download','short-explanation','slider','sorting-activity',
+    'the-people','transition-signal','values','video','who-were-for','word-cloud',
+    'worked-example'
+  ];
+  const specialCaps = { cta: 'CTA', faq: 'FAQ' };
+  const humanize = slug =>
+    slug.split('-').map(w => specialCaps[w] || w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+  const wireframe = wireframeSlugs
+    .sort()
+    .map(slug => ({ path: '/wireframe/' + slug, name: humanize(slug) }));
+
   function render(items, mountId) {
     const mount = document.getElementById(mountId);
     const frag = document.createDocumentFragment();
@@ -300,6 +329,7 @@
   render(masterbrick, 'grid-masterbrick');
   render(classic,     'grid-classic');
   render(working,     'grid-working');
+  render(wireframe,   'grid-wireframe');
 
   // Pill toggle
   const tabs  = document.querySelectorAll('.pill-nav button');

@@ -1,0 +1,1175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="UTF-8" />
+ <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+ <title>Curiosity Wall (Sorting) — Wireframe Section</title>
+ <link rel="preconnect" href="https://fonts.googleapis.com" />
+ <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+ <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet" />
+ <style>
+
+ *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+ body { font-family: monospace; min-width: 1280px; }
+
+ /* ── shared ── */
+ section { min-height: 85vh; position: relative; }
+
+ .wrap {
+ max-width: 1280px;
+ margin: 0 auto;
+ padding: 0 clamp(80px, 12vw, 180px);
+ height: 100%;
+ }
+
+ .zone {
+ border: 1.5px dashed rgba(0,0,0,0.18);
+ border-radius: 4px;
+ position: relative;
+ }
+
+ .zone-label {
+ position: absolute;
+ top: 8px;
+ left: 12px;
+ font-size: 10px;
+ letter-spacing: 0.08em;
+ text-transform: uppercase;
+ color: rgba(0,0,0,0.3);
+ pointer-events: none;
+ }
+
+ /* dark section labels */
+ .dark-label { color: rgba(255,255,255,0.3); }
+
+ /* ── layout helpers ── */
+ .col-2 {
+ display: grid;
+ grid-template-columns: 1fr 1fr;
+ gap: clamp(24px, 4vw, 64px);
+ height: 100%;
+ }
+
+ .col-3 {
+ display: grid;
+ grid-template-columns: repeat(3, 1fr);
+ gap: 24px;
+ }
+
+ .col-2-narrow {
+ display: grid;
+ grid-template-columns: repeat(2, 1fr);
+ gap: 24px;
+ }
+
+ .section-layout {
+ display: flex;
+ flex-direction: column;
+ gap: 24px;
+ padding: clamp(64px, 8vw, 100px) 0;
+ }
+
+ /* ─────────────────────────────────────── */
+ /* HERO #F2F0EB */
+ /* ─────────────────────────────────────── */
+ .s1 { background: #F2F0EB; }
+
+ .s1 .section-layout { padding: clamp(48px, 10vw, 140px) 0; }
+
+ .s1 .col-2 { align-items: center; }
+
+ .s1-left {
+ display: flex;
+ flex-direction: column;
+ gap: 16px;
+ height: 100%;
+ min-height: clamp(320px, 50vh, 480px);
+ }
+
+ .zone-h1 { flex: 0 0 clamp(80px, 14vh, 140px); }
+ .zone-body { flex: 0 0 60px; }
+ .zone-buttons { flex: 0 0 56px; }
+ .zone-image { flex: 1; min-height: clamp(240px, 40vh, 400px); }
+
+ /* ─────────────────────────────────────── */
+ /* FEATURES #F2F2F2 */
+ /* ─────────────────────────────────────── */
+ .s2 { background: #F2F2F2; min-height: auto; }
+
+ .zone-section-head { height: clamp(80px, 12vh, 120px); }
+
+ .zone-card { height: clamp(200px, 28vh, 280px); }
+
+ /* ─────────────────────────────────────── */
+ /* HOW IT WORKS #F2F0EB */
+ /* ─────────────────────────────────────── */
+ .s3 { background: #F2F0EB; }
+
+ .s3 .col-2 { align-items: center; }
+
+ .zone-media { min-height: clamp(260px, 42vh, 440px); }
+
+ .s3-right {
+ display: flex;
+ flex-direction: column;
+ gap: 16px;
+ height: 100%;
+ }
+
+ .zone-h2-block { height: clamp(60px, 10vh, 100px); }
+ .zone-step { height: clamp(56px, 8vh, 72px); }
+
+ /* ─────────────────────────────────────── */
+ /* SOCIAL PROOF #F8F2ED */
+ /* ─────────────────────────────────────── */
+ .s4 { background: #F8F2ED; }
+
+ .zone-stat { height: clamp(100px, 14vh, 140px); }
+ .zone-quote { height: clamp(160px, 22vh, 220px); }
+
+ /* ─────────────────────────────────────── */
+ /* CTA #032626 */
+ /* ─────────────────────────────────────── */
+ .s5 { background: #032626; min-height: 50vh; }
+
+ .s5 .zone {
+ border-color: rgba(255,255,255,0.2);
+ }
+
+ .s5 .section-layout {
+ align-items: center;
+ justify-content: center;
+ min-height: 50vh;
+ }
+
+ .s5-centre {
+ display: flex;
+ flex-direction: column;
+ gap: 16px;
+ width: min(640px, 100%);
+ }
+
+ .zone-cta-h2 { height: clamp(60px, 10vh, 100px); }
+ .zone-cta-body { height: 40px; }
+ .zone-cta-buttons { height: 56px; }
+
+ /* ─────────────────────────────────────── */
+ /* QUIZ #F2F2F2 */
+ /* ─────────────────────────────────────── */
+ .s-quiz { background: #F2F2F2; }
+
+ .quiz-layout {
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+ gap: 24px;
+ padding: clamp(64px, 8vw, 100px) 0;
+ }
+
+ .quiz-card {
+ width: min(640px, 100%);
+ border: 1.5px dashed rgba(0,0,0,0.18);
+ border-radius: 16px;
+ padding: 40px;
+ display: flex;
+ flex-direction: column;
+ gap: 16px;
+ background: #FAFAF7;
+ position: relative;
+ }
+
+ .zone-dots { height: 20px; width: 120px; align-self: flex-end; }
+ .zone-question { height: clamp(56px, 8vh, 80px); }
+ .zone-option { height: 52px; }
+ .zone-feedback { height: 64px; }
+ .zone-next-btn { height: 52px; width: 160px; align-self: flex-end; }
+
+ /* result feedback options — pill style, visually distinct from quiz options */
+ .zone-feedback-option {
+ height: 48px;
+ border-radius: 999px;
+ border: 1.5px dashed rgba(0,0,0,0.15);
+ background: #F2F8FD;
+ position: relative;
+ }
+
+ /* ─────────────────────────────────────── */
+ /* BRANCHING #F8F2ED */
+ /* ─────────────────────────────────────── */
+ .s-branch { background: #F8F2ED; }
+
+ .branch-layout {
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+ gap: 48px;
+ padding: clamp(64px, 8vw, 100px) 0;
+ }
+
+ /* section heading */
+ .branch-head {
+ text-align: center;
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+ gap: 12px;
+ width: 100%;
+ }
+
+ /* step progress strip — floats above card centre */
+ .step-strip {
+ display: flex;
+ align-items: center;
+ gap: 0;
+ position: absolute;
+ top: 0;
+ left: 50%;
+ transform: translate(-50%, -50%);
+ background: #FFFFFF;
+ padding: 4px 12px;
+ border-radius: 999px;
+ border: 1.5px dashed rgba(0,0,0,0.18);
+ white-space: nowrap;
+ z-index: 2;
+ }
+ .step-pip {
+ width: 24px; height: 24px;
+ border-radius: 999px;
+ background: #E8E4DE;
+ border: 1.5px dashed rgba(0,0,0,0.18);
+ display: flex; align-items: center; justify-content: center;
+ font-size: 9px; color: rgba(0,0,0,0.3); letter-spacing: 0;
+ }
+ .step-pip.active { background: #120DA620; border-color: #120DA6; color: #120DA6; }
+ .step-pip.done { background: #C8C4BC; border-color: rgba(0,0,0,0.25); color: rgba(0,0,0,0.4); }
+ .step-line {
+ width: 20px; height: 1.5px;
+ background: rgba(0,0,0,0.15);
+ border-top: 1.5px dashed rgba(0,0,0,0.18);
+ }
+
+ /* shared screen card */
+ .screen-card {
+ width: min(680px, 100%);
+ background: #FFFFFF;
+ border: 1.5px dashed rgba(0,0,0,0.15);
+ border-radius: 16px;
+ padding: 36px;
+ padding-top: 48px;
+ display: flex;
+ flex-direction: column;
+ gap: 16px;
+ position: relative;
+ margin-top: 20px;
+ }
+
+ .screen-label {
+ font-size: 10px;
+ letter-spacing: 0.08em;
+ text-transform: uppercase;
+ color: rgba(0,0,0,0.3);
+ }
+
+ .zone-sc-heading { height: 32px; }
+ .zone-sc-body { height: 72px; }
+ .zone-sc-next { height: 48px; width: 120px; align-self: flex-end; }
+
+ /* branching activity card — wider */
+ .screen-card-wide {
+ width: min(680px, 100%);
+ background: #FFFFFF;
+ border: 1.5px dashed rgba(0,0,0,0.15);
+ border-radius: 16px;
+ padding: 36px;
+ padding-top: 48px;
+ display: flex;
+ flex-direction: column;
+ gap: 20px;
+ position: relative;
+ margin-top: 20px;
+ }
+
+ .zone-scenario { height: 80px; }
+ .three-options { display: flex; flex-direction: column; gap: 12px; }
+ .zone-option-card { padding: 14px 16px; display: flex; flex-direction: column; gap: 8px; }
+
+ /* down arrow connector */
+ .flow-arrow {
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+ gap: 0;
+ color: rgba(0,0,0,0.2);
+ font-size: 18px;
+ }
+ .flow-arrow::before {
+ content: '';
+ display: block;
+ width: 1.5px;
+ height: 24px;
+ border-left: 1.5px dashed rgba(0,0,0,0.2);
+ }
+
+ /* summary screen */
+ .summary-chain {
+ display: flex;
+ flex-direction: column;
+ gap: 12px;
+ width: 100%;
+ }
+ .chain-row {
+ display: grid;
+ grid-template-columns: 1fr 1fr;
+ gap: 12px;
+ }
+ .zone-chain-scenario { height: 52px; }
+ .zone-chain-choice { height: 52px; background: #F2F8FD; }
+
+ /* editable text area */
+ .text-area-wrap {
+ display: flex;
+ flex-direction: column;
+ gap: 0;
+ border: 1.5px dashed rgba(0,0,0,0.18);
+ border-radius: 8px;
+ overflow: hidden;
+ }
+ .text-toolbar {
+ display: flex;
+ align-items: center;
+ gap: 8px;
+ padding: 6px 10px;
+ background: #F5F5F5;
+ border-bottom: 1px solid rgba(0,0,0,0.08);
+ }
+ .zone-font-size {
+ height: 22px;
+ width: 64px;
+ border-radius: 4px;
+ border: 1.5px dashed rgba(0,0,0,0.18);
+ background: #fff;
+ position: relative;
+ }
+ .toolbar-label {
+ font-size: 9px;
+ text-transform: uppercase;
+ letter-spacing: 0.07em;
+ color: rgba(0,0,0,0.25);
+ }
+ .text-body {
+ min-height: 120px;
+ background: #fff;
+ border: none;
+ position: relative;
+ }
+
+ /* ai suggestion pills */
+ .ai-pills {
+ display: flex;
+ flex-wrap: wrap;
+ gap: 8px;
+ }
+ .ai-pill {
+ height: 32px;
+ border-radius: 999px;
+ border: 1.5px dashed rgba(0,0,0,0.18);
+ background: #F2F8FD;
+ position: relative;
+ display: flex;
+ align-items: center;
+ padding: 0 14px;
+ }
+ .ai-pill::after {
+ content: '';
+ display: block;
+ height: 8px;
+ background: rgba(0,0,0,0.18);
+ border-radius: 3px;
+ width: 100%;
+ }
+ .ai-pill:nth-child(1) { width: 140px; }
+ .ai-pill:nth-child(2) { width: 110px; }
+ .ai-pill:nth-child(3) { width: 160px; }
+ .ai-pills-label {
+ font-size: 9px;
+ letter-spacing: 0.08em;
+ text-transform: uppercase;
+ color: rgba(0,0,0,0.25);
+ margin-bottom: 2px;
+ }
+
+ /* slider zone */
+ .zone-slider-q { height: 32px; }
+ .zone-slider-bar { height: 40px; border-radius: 999px; }
+
+ /* 5-point slider */
+ .slider-section-wrap {
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+ gap: 48px;
+ padding: clamp(64px, 8vw, 100px) 0;
+ }
+
+ .slider-card {
+ width: min(680px, 100%);
+ background: #FFFFFF;
+ border: 1.5px dashed rgba(0,0,0,0.15);
+ border-radius: 16px;
+ padding: 40px;
+ display: flex;
+ flex-direction: column;
+ gap: 32px;
+ }
+
+ .slider-track-wrap {
+ display: flex;
+ flex-direction: column;
+ gap: 12px;
+ }
+
+ .slider-track {
+ position: relative;
+ display: flex;
+ align-items: center;
+ justify-content: space-between;
+ height: 48px;
+ }
+
+ /* the line */
+ .slider-track::before {
+ content: '';
+ position: absolute;
+ top: 50%;
+ left: 0;
+ right: 0;
+ transform: translateY(-50%);
+ height: 4px;
+ border-radius: 999px;
+ background: #E8E2D9;
+ border: 1.5px dashed rgba(0,0,0,0.15);
+ }
+
+ .slider-point {
+ width: 28px;
+ height: 28px;
+ border-radius: 999px;
+ background: #E8E2D9;
+ border: 1.5px dashed rgba(0,0,0,0.2);
+ position: relative;
+ z-index: 1;
+ flex-shrink: 0;
+ }
+
+ /* thumb — shown at rest (unused state) */
+ .slider-thumb {
+ position: absolute;
+ left: 0;
+ top: 50%;
+ transform: translate(-50%, -50%);
+ width: 40px;
+ height: 40px;
+ border-radius: 999px;
+ background: #D8D4CC;
+ border: 2px dashed rgba(0,0,0,0.2);
+ z-index: 2;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ }
+
+ .slider-nudge {
+ font-size: 9px;
+ text-transform: uppercase;
+ letter-spacing: 0.08em;
+ color: rgba(0,0,0,0.25);
+ text-align: center;
+ }
+
+ /* colour-changed state label */
+ .slider-state-row {
+ display: flex;
+ gap: 16px;
+ align-items: center;
+ justify-content: center;
+ }
+ .slider-state {
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+ gap: 6px;
+ font-size: 9px;
+ text-transform: uppercase;
+ letter-spacing: 0.07em;
+ color: rgba(0,0,0,0.3);
+ }
+ .slider-state-dot {
+ width: 28px; height: 28px;
+ border-radius: 999px;
+ border: 1.5px dashed;
+ }
+ .state-unused { background: #E8E2D9; border-color: rgba(0,0,0,0.2); }
+ .state-active { background: #120DA620; border-color: #120DA6; }
+
+ .slider-labels {
+ display: flex;
+ justify-content: space-between;
+ }
+ .slider-point-label {
+ font-size: 9px;
+ text-transform: uppercase;
+ letter-spacing: 0.06em;
+ color: rgba(0,0,0,0.3);
+ width: 28px;
+ text-align: center;
+ }
+
+ .col-3-branch { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; }
+
+ /* ── responsive ── */
+ @media (max-width: 768px) {
+ .col-2 { grid-template-columns: 1fr; }
+ .col-3 { grid-template-columns: 1fr; }
+ .col-2-narrow { grid-template-columns: 1fr; }
+ .col-3-branch { grid-template-columns: 1fr; }
+ }
+
+ /* ══════════════════════════════════════════════════════ */
+ /* WIREFRAME OVERRIDE — zero colour, outlines & fills */
+ /* ══════════════════════════════════════════════════════ */
+
+ /* 1. Strip shadows and gradients globally */
+ * { box-shadow: none !important; text-shadow: none !important; }
+ div[style*="linear-gradient"], section[style*="linear-gradient"] { background-image: none !important; }
+
+ /* 2. All sections → flat alternating grey regardless of inline colour */
+ section,
+ section[style] { background: #F0EFED !important; }
+ section:nth-of-type(even),
+ section:nth-of-type(even)[style] { background: #E8E7E5 !important; }
+
+ /* 3. Headings → solid grey placeholder bars */
+ h1 { background: #A8A5A2 !important; color: transparent !important; border-radius: 6px !important; display: block !important; }
+ h2 { background: #B2AFAC !important; color: transparent !important; border-radius: 6px !important; display: block !important; }
+ h3 { background: #BCBAB6 !important; color: transparent !important; border-radius: 6px !important; display: block !important; }
+ h4 { background: #C4C2BE !important; color: transparent !important; border-radius: 6px !important; display: block !important; }
+
+ /* 4. Paragraphs → grey placeholder lines */
+ p { background: #D0CCC8 !important; color: transparent !important; border-radius: 4px !important; }
+
+ /* 5. Links → wireframe button outlines */
+ a { background: transparent !important; background-image: none !important; color: transparent !important;
+ border: 1.5px dashed rgba(0,0,0,0.22) !important; border-radius: 8px !important; }
+ a * { color: transparent !important; background: transparent !important; background-image: none !important; }
+
+ /* 6. Brand colours on divs/spans → neutral wireframe grey
+ Targets colour values in inline style attributes */
+ div[style*="120DA6"], span[style*="120DA6"] { background-color: #C0BCBA !important; background-image: none !important; color: rgba(0,0,0,0.28) !important; border-color: rgba(0,0,0,0.18) !important; }
+ div[style*="032626"], span[style*="032626"] { background-color: #C8C4C0 !important; background-image: none !important; color: rgba(0,0,0,0.28) !important; border-color: rgba(0,0,0,0.18) !important; }
+ div[style*="40062B"], span[style*="40062B"] { background-color: #D0CCC8 !important; background-image: none !important; color: rgba(0,0,0,0.28) !important; border-color: rgba(0,0,0,0.18) !important; }
+ div[style*="F2BDD6"], span[style*="F2BDD6"] { background-color: #DEDAD6 !important; background-image: none !important; color: rgba(0,0,0,0.28) !important; border-color: rgba(0,0,0,0.15) !important; }
+ div[style*="C4E5F2"], span[style*="C4E5F2"] { background-color: #DDDAD5 !important; background-image: none !important; color: rgba(0,0,0,0.28) !important; border-color: rgba(0,0,0,0.15) !important; }
+ div[style*="F24405"], span[style*="F24405"] { background-color: #C8C4C0 !important; background-image: none !important; color: rgba(0,0,0,0.28) !important; border-color: rgba(0,0,0,0.18) !important; }
+ div[style*="8C5473"], span[style*="8C5473"] { background-color: #D0CCC8 !important; background-image: none !important; color: rgba(0,0,0,0.28) !important; border-color: rgba(0,0,0,0.18) !important; }
+
+ /* 7. White/near-white card backgrounds → keep off-white so structure shows */
+ div[style*="FFFFFF"], div[style*="FAFAF7"] { background-color: #F5F4F2 !important; border-color: rgba(0,0,0,0.14) !important; }
+
+ /* 8. Text colour overrides — all branded text → muted grey */
+ [style*="color:#120DA6"], [style*="color: #120DA6"] { color: rgba(0,0,0,0.35) !important; }
+ [style*="color:#FFFFFF"], [style*="color: #FFFFFF"] { color: rgba(0,0,0,0.35) !important; }
+ [style*="color:#1A1A1A"], [style*="color: #1A1A1A"] { color: rgba(0,0,0,0.45) !important; }
+ [style*="color:#40062B"], [style*="color: #40062B"] { color: rgba(0,0,0,0.35) !important; }
+ [style*="color:#6B6568"], [style*="color: #6B6568"] { color: rgba(0,0,0,0.30) !important; }
+
+ /* 9. Zone boxes — wireframe dashed fills */
+ .zone { background: #DEDAD6 !important; border: 1.5px dashed rgba(0,0,0,0.22) !important; }
+ .zone-label, .screen-label, .flow-arrow { color: rgba(0,0,0,0.30) !important; background: transparent !important; }
+
+ /* 10. Screen/quiz cards — structural white containers with dashed border */
+ .screen-card { background: #F5F4F2 !important; border: 1.5px dashed rgba(0,0,0,0.18) !important; }
+ .quiz-card { background: #F5F4F2 !important; border: 1.5px dashed rgba(0,0,0,0.18) !important; }
+
+ /* 11. Step pips */
+ .step-pip { background: #E0DDD8 !important; border: 1.5px dashed rgba(0,0,0,0.18) !important; color: rgba(0,0,0,0.30) !important; }
+ .step-pip.active { background: #C8C4C0 !important; border-color: rgba(0,0,0,0.30) !important; color: rgba(0,0,0,0.40) !important; }
+ .step-line { background: rgba(0,0,0,0.15) !important; border-color: rgba(0,0,0,0.18) !important; }
+
+ /* ═══════════════════════════════════════════════════════════ */
+ /* SUPPLEMENTAL OVERRIDES — catching all remaining colour leaks */
+ /* ═══════════════════════════════════════════════════════════ */
+
+ /* Additional background colours not caught above */
+ [style*="background:#F2F8FD"], [style*="background: #F2F8FD"] { background-color: #E2E0DC !important; }
+ [style*="background:#F8F2ED"], [style*="background: #F8F2ED"] { background-color: #E8E6E2 !important; }
+ [style*="background:#F2F0EB"], [style*="background: #F2F0EB"] { background-color: #ECEBE8 !important; }
+ [style*="background:#F2F2F2"], [style*="background: #F2F2F2"] { background-color: #EBEBEA !important; }
+ [style*="background:#FAFAF7"], [style*="background: #FAFAF7"] { background-color: #F0EFEC !important; }
+ [style*="background:#F9F9F9"], [style*="background: #F9F9F9"] { background-color: #EEECEA !important; }
+ [style*="background:#FFFDE8"], [style*="background: #FFFDE8"] { background-color: #E5E3DF !important; border-color: rgba(0,0,0,0.12) !important; }
+ [style*="background:#F8E04A"] { background-color: #D4D0CA !important; border-color: rgba(0,0,0,0.15) !important; }
+ [style*="background:#F8E04A60"] { background-color: rgba(200,195,190,0.3) !important; }
+ [style*="background:#1A1A1A"], [style*="background: #1A1A1A"] { background-color: #C0BCBA !important; }
+ [style*="background:#2A2A2A"], [style*="background: #2A2A2A"] { background-color: #BEBAB6 !important; }
+ [style*="background:#E8E2D9"], [style*="background: #E8E2D9"] { background-color: #DDD9D3 !important; }
+
+ /* Kill box-shadows from ALL inline-styled elements */
+ [style*="box-shadow"] { box-shadow: none !important; }
+
+ /* Kill linear gradients from inline styles */
+ [style*="linear-gradient"] { background-image: none !important; background-color: #D8D4CC !important; }
+
+ /* All coloured text via inline style → neutral grey */
+ [style*="color:#120DA6"], [style*="color: #120DA6"] { color: rgba(0,0,0,0.38) !important; }
+ [style*="color:#40062B"], [style*="color: #40062B"] { color: rgba(0,0,0,0.35) !important; }
+ [style*="color:#8C5473"], [style*="color: #8C5473"] { color: rgba(0,0,0,0.30) !important; }
+ [style*="color:#032626"], [style*="color: #032626"] { color: rgba(0,0,0,0.30) !important; }
+ [style*="color:#F24405"], [style*="color: #F24405"] { color: rgba(0,0,0,0.30) !important; }
+ [style*="color:#FFFFFF"], [style*="color: #FFFFFF"] { color: rgba(0,0,0,0.40) !important; }
+ [style*="color:#6B6568"], [style*="color: #6B6568"] { color: rgba(0,0,0,0.30) !important; }
+ [style*="color:#C8C4BC"] { color: rgba(0,0,0,0.25) !important; }
+
+ /* Borders using brand colours → neutral */
+ [style*="border:2px solid #40062B"], [style*="border: 2px solid #40062B"] { border-color: rgba(0,0,0,0.22) !important; }
+ [style*="border:1.5px solid #120DA6"], [style*="border: 1.5px solid #120DA6"] { border-color: rgba(0,0,0,0.20) !important; }
+ [style*="border:1px solid #120DA6"], [style*="border: 1px solid #120DA6"] { border-color: rgba(0,0,0,0.18) !important; }
+ [style*="border:2px solid #120DA6"], [style*="border: 2px solid #120DA6"] { border-color: rgba(0,0,0,0.22) !important; }
+ [style*="border:1px solid #E8E2D9"], [style*="border: 1px solid #E8E2D9"] { border-color: rgba(0,0,0,0.14) !important; }
+ [style*="border-bottom:2px solid #F8E04A"] { border-bottom-color: rgba(0,0,0,0.18) !important; }
+ [style*="border-bottom:1px solid #E8E2D9"] { border-bottom-color: rgba(0,0,0,0.12) !important; }
+ [style*="border-left:2px solid #E8E2D9"] { border-left-color: rgba(0,0,0,0.12) !important; }
+ [style*="border-top:1px solid #E8E2D9"] { border-top-color: rgba(0,0,0,0.12) !important; }
+ [style*="border-right:1px solid #E8E2D9"] { border-right-color: rgba(0,0,0,0.12) !important; }
+
+ /* Word cloud coloured spans → uniform neutral */
+ span[style*="color:#120DA6"], span[style*="color:#40062B"],
+ span[style*="color:#032626"], span[style*="color:#8C5473"],
+ span[style*="color:#6B6568"], span[style*="color:#C8C4BC"] {
+ color: rgba(0,0,0,0.40) !important;
+ }
+ span[style*="background:#C4E5F2"] { background-color: #D8D4CC !important; }
+
+ /* ── Section name labels (outside wireframe, not part of design) ── */
+ .section-name {
+ position: absolute;
+ top: 12px;
+ left: 12px;
+ font-family: monospace;
+ font-size: 10px;
+ font-weight: 700;
+ text-transform: uppercase;
+ letter-spacing: 0.1em;
+ color: rgba(0,0,0,0.35);
+ background: rgba(255,255,255,0.85);
+ padding: 4px 10px;
+ border-radius: 4px;
+ border: 1px dashed rgba(0,0,0,0.18);
+ pointer-events: none;
+ z-index: 100;
+ user-select: none;
+ }
+ section { position: relative; }
+
+ 
+ </style>
+</head>
+<body>
+ <section style="background:#F2F0EB; min-height:auto;">
+ <div class="section-name">Curiosity Wall — Sorting</div>
+ <div class="wrap">
+ <div style="padding:clamp(64px,8vw,100px) 0; display:flex; flex-direction:column; align-items:center; gap:56px;">
+
+ <!-- Screen Builder note -->
+ <div style="background:#EAF4FB; border:1px solid #B8D8EC; border-radius:6px; padding:8px 12px; font-size:8px; color:#1A5276; line-height:1.6; width:100%;">
+  <strong>Screen Builder fields:</strong> prompt / heading text · category labels (default: factual · clarifying · application · challenge · what if — VA can rename) · allow anonymous posting (toggle) · allow upvotes (toggle) · max question length (characters) · show category counts in filter tabs (toggle)
+ </div>
+
+ <!-- concept note -->
+ <div style="width:min(680px,100%); text-align:center;">
+  <span style="font-size:8px; text-transform:uppercase; letter-spacing:0.08em; color:rgba(0,0,0,0.35);">students post questions · then assign a category · the wall shows what kinds of questions the group is asking · teaches students that questions do different jobs</span>
+ </div>
+
+ <!-- ══════════════════════════════════════ -->
+ <!-- VIEW A — FULL WALL (mixed, all categories) -->
+ <!-- ══════════════════════════════════════ -->
+ <div style="width:100%; display:flex; flex-direction:column; gap:16px;">
+
+  <div style="font-size:8px; text-transform:uppercase; letter-spacing:0.08em; color:rgba(0,0,0,0.40); padding-bottom:4px; border-bottom:1px dashed rgba(0,0,0,0.14);">view a — full wall · all categories · mixed</div>
+
+  <div style="border:1.5px dashed rgba(0,0,0,0.18); border-radius:16px; overflow:hidden; background:#FFFFFF;">
+
+   <!-- wall header -->
+   <div style="background:#DEDAD6; padding:16px 24px; display:flex; align-items:center; justify-content:space-between; border-bottom:1px dashed rgba(0,0,0,0.12); gap:16px;">
+    <div style="display:flex; flex-direction:column; gap:4px;">
+     <div style="height:16px; background:#B8B2A8; border-radius:3px; width:200px;"></div>
+     <span style="font-size:8px; text-transform:uppercase; letter-spacing:0.07em; color:rgba(0,0,0,0.30);">wall heading · e.g. "what are you curious about?"</span>
+    </div>
+    <div style="display:flex; align-items:center; gap:8px; flex-shrink:0;">
+     <span style="font-size:8px; text-transform:uppercase; letter-spacing:0.07em; color:rgba(0,0,0,0.40);">24 questions</span>
+     <!-- post button -->
+     <div style="height:36px; padding:0 16px; border-radius:8px; background:#120DA6; display:flex; align-items:center;">
+      <span style="font-size:8px; text-transform:uppercase; letter-spacing:0.07em; color:#FFFFFF; font-weight:700;">+ post a question</span>
+     </div>
+    </div>
+   </div>
+
+   <!-- filter tabs -->
+   <div style="padding:12px 24px; display:flex; align-items:center; gap:8px; border-bottom:1px solid #E8E2D9; flex-wrap:wrap;">
+
+    <!-- ALL — active -->
+    <div style="height:32px; padding:0 14px; border-radius:999px; background:#1A1A1A; display:flex; align-items:center;">
+     <span style="font-size:8px; text-transform:uppercase; letter-spacing:0.07em; color:#FFFFFF; font-weight:600;">all  24</span>
+    </div>
+
+    <!-- factual -->
+    <div style="height:32px; padding:0 14px; border-radius:999px; border:1.5px solid #E8E2D9; background:#FFFFFF; display:flex; align-items:center; gap:6px;">
+     <div style="width:8px; height:8px; border-radius:999px; background:#B8B2A8;"></div>
+     <span style="font-size:8px; text-transform:uppercase; letter-spacing:0.07em; color:rgba(0,0,0,0.55);">factual  6</span>
+    </div>
+
+    <!-- clarifying -->
+    <div style="height:32px; padding:0 14px; border-radius:999px; border:1.5px solid #E8E2D9; background:#FFFFFF; display:flex; align-items:center; gap:6px;">
+     <div style="width:8px; height:8px; border-radius:999px; background:#B8B2A8;"></div>
+     <span style="font-size:8px; text-transform:uppercase; letter-spacing:0.07em; color:rgba(0,0,0,0.55);">clarifying  5</span>
+    </div>
+
+    <!-- application -->
+    <div style="height:32px; padding:0 14px; border-radius:999px; border:1.5px solid #E8E2D9; background:#FFFFFF; display:flex; align-items:center; gap:6px;">
+     <div style="width:8px; height:8px; border-radius:999px; background:#B8B2A8;"></div>
+     <span style="font-size:8px; text-transform:uppercase; letter-spacing:0.07em; color:rgba(0,0,0,0.55);">application  7</span>
+    </div>
+
+    <!-- challenge -->
+    <div style="height:32px; padding:0 14px; border-radius:999px; border:1.5px solid #E8E2D9; background:#FFFFFF; display:flex; align-items:center; gap:6px;">
+     <div style="width:8px; height:8px; border-radius:999px; background:#B8B2A8;"></div>
+     <span style="font-size:8px; text-transform:uppercase; letter-spacing:0.07em; color:rgba(0,0,0,0.55);">challenge  3</span>
+    </div>
+
+    <!-- what if -->
+    <div style="height:32px; padding:0 14px; border-radius:999px; border:1.5px solid #E8E2D9; background:#FFFFFF; display:flex; align-items:center; gap:6px;">
+     <div style="width:8px; height:8px; border-radius:999px; background:#B8B2A8;"></div>
+     <span style="font-size:8px; text-transform:uppercase; letter-spacing:0.07em; color:rgba(0,0,0,0.55);">what if  3</span>
+    </div>
+
+    <span style="font-size:8px; text-transform:uppercase; letter-spacing:0.07em; color:rgba(0,0,0,0.28); margin-left:8px;">filter tabs · counts update live</span>
+
+   </div>
+
+   <!-- question card grid -->
+   <div style="padding:20px 24px; display:grid; grid-template-columns:repeat(3,1fr); gap:14px;">
+
+    <!-- card 1 — factual -->
+    <div style="background:#FAFAF7; border-radius:12px; border:1px solid #E8E2D9; padding:16px; display:flex; flex-direction:column; gap:10px;">
+     <!-- category tag -->
+     <div style="display:flex; align-items:center; gap:6px;">
+      <div style="height:22px; padding:0 10px; border-radius:999px; background:#DEDAD6; display:flex; align-items:center;">
+       <span style="font-size:7px; text-transform:uppercase; letter-spacing:0.07em; color:rgba(0,0,0,0.55); font-weight:600;">factual</span>
+      </div>
+      <span style="font-size:7px; text-transform:uppercase; letter-spacing:0.06em; color:rgba(0,0,0,0.28);">build: navy pill</span>
+     </div>
+     <!-- question text -->
+     <div style="display:flex; flex-direction:column; gap:5px;">
+      <div style="height:10px; background:#C8C4BC; border-radius:2px; width:100%;"></div>
+      <div style="height:10px; background:#C8C4BC; border-radius:2px; width:82%;"></div>
+     </div>
+     <!-- footer: student + upvote -->
+     <div style="display:flex; align-items:center; justify-content:space-between; margin-top:4px;">
+      <div style="height:9px; background:#D8D4CC; border-radius:2px; width:48px; opacity:0.6;"></div>
+      <div style="display:flex; align-items:center; gap:4px;">
+       <span style="font-size:8px; color:rgba(0,0,0,0.30);">&#9650; 4</span>
+      </div>
+     </div>
+    </div>
+
+    <!-- card 2 — application -->
+    <div style="background:#FAFAF7; border-radius:12px; border:1px solid #E8E2D9; padding:16px; display:flex; flex-direction:column; gap:10px;">
+     <div style="display:flex; align-items:center; gap:6px;">
+      <div style="height:22px; padding:0 10px; border-radius:999px; background:#DEDAD6; display:flex; align-items:center;">
+       <span style="font-size:7px; text-transform:uppercase; letter-spacing:0.07em; color:rgba(0,0,0,0.55); font-weight:600;">application</span>
+      </div>
+      <span style="font-size:7px; text-transform:uppercase; letter-spacing:0.06em; color:rgba(0,0,0,0.28);">build: plum pill</span>
+     </div>
+     <div style="display:flex; flex-direction:column; gap:5px;">
+      <div style="height:10px; background:#C8C4BC; border-radius:2px; width:100%;"></div>
+      <div style="height:10px; background:#C8C4BC; border-radius:2px; width:90%;"></div>
+      <div style="height:10px; background:#C8C4BC; border-radius:2px; width:68%;"></div>
+     </div>
+     <div style="display:flex; align-items:center; justify-content:space-between; margin-top:4px;">
+      <div style="height:9px; background:#D8D4CC; border-radius:2px; width:48px; opacity:0.6;"></div>
+      <span style="font-size:8px; color:rgba(0,0,0,0.30);">&#9650; 9</span>
+     </div>
+    </div>
+
+    <!-- card 3 — what if -->
+    <div style="background:#FAFAF7; border-radius:12px; border:1px solid #E8E2D9; padding:16px; display:flex; flex-direction:column; gap:10px;">
+     <div style="display:flex; align-items:center; gap:6px;">
+      <div style="height:22px; padding:0 10px; border-radius:999px; background:#DEDAD6; display:flex; align-items:center;">
+       <span style="font-size:7px; text-transform:uppercase; letter-spacing:0.07em; color:rgba(0,0,0,0.55); font-weight:600;">what if</span>
+      </div>
+      <span style="font-size:7px; text-transform:uppercase; letter-spacing:0.06em; color:rgba(0,0,0,0.28);">build: orange pill</span>
+     </div>
+     <div style="display:flex; flex-direction:column; gap:5px;">
+      <div style="height:10px; background:#C8C4BC; border-radius:2px; width:100%;"></div>
+      <div style="height:10px; background:#C8C4BC; border-radius:2px; width:74%;"></div>
+     </div>
+     <div style="display:flex; align-items:center; justify-content:space-between; margin-top:4px;">
+      <div style="height:9px; background:#D8D4CC; border-radius:2px; width:48px; opacity:0.6;"></div>
+      <span style="font-size:8px; color:rgba(0,0,0,0.30);">&#9650; 2</span>
+     </div>
+    </div>
+
+    <!-- card 4 — clarifying -->
+    <div style="background:#FAFAF7; border-radius:12px; border:1px solid #E8E2D9; padding:16px; display:flex; flex-direction:column; gap:10px;">
+     <div style="display:flex; align-items:center; gap:6px;">
+      <div style="height:22px; padding:0 10px; border-radius:999px; background:#DEDAD6; display:flex; align-items:center;">
+       <span style="font-size:7px; text-transform:uppercase; letter-spacing:0.07em; color:rgba(0,0,0,0.55); font-weight:600;">clarifying</span>
+      </div>
+      <span style="font-size:7px; text-transform:uppercase; letter-spacing:0.06em; color:rgba(0,0,0,0.28);">build: sky pill</span>
+     </div>
+     <div style="display:flex; flex-direction:column; gap:5px;">
+      <div style="height:10px; background:#C8C4BC; border-radius:2px; width:100%;"></div>
+      <div style="height:10px; background:#C8C4BC; border-radius:2px; width:55%;"></div>
+     </div>
+     <div style="display:flex; align-items:center; justify-content:space-between; margin-top:4px;">
+      <div style="height:9px; background:#D8D4CC; border-radius:2px; width:48px; opacity:0.6;"></div>
+      <span style="font-size:8px; color:rgba(0,0,0,0.30);">&#9650; 7</span>
+     </div>
+    </div>
+
+    <!-- card 5 — challenge -->
+    <div style="background:#FAFAF7; border-radius:12px; border:1px solid #E8E2D9; padding:16px; display:flex; flex-direction:column; gap:10px;">
+     <div style="display:flex; align-items:center; gap:6px;">
+      <div style="height:22px; padding:0 10px; border-radius:999px; background:#DEDAD6; display:flex; align-items:center;">
+       <span style="font-size:7px; text-transform:uppercase; letter-spacing:0.07em; color:rgba(0,0,0,0.55); font-weight:600;">challenge</span>
+      </div>
+      <span style="font-size:7px; text-transform:uppercase; letter-spacing:0.06em; color:rgba(0,0,0,0.28);">build: pink-mid pill</span>
+     </div>
+     <div style="display:flex; flex-direction:column; gap:5px;">
+      <div style="height:10px; background:#C8C4BC; border-radius:2px; width:100%;"></div>
+      <div style="height:10px; background:#C8C4BC; border-radius:2px; width:88%;"></div>
+      <div style="height:10px; background:#C8C4BC; border-radius:2px; width:60%;"></div>
+     </div>
+     <div style="display:flex; align-items:center; justify-content:space-between; margin-top:4px;">
+      <div style="height:9px; background:#D8D4CC; border-radius:2px; width:48px; opacity:0.6;"></div>
+      <span style="font-size:8px; color:rgba(0,0,0,0.30);">&#9650; 11</span>
+     </div>
+    </div>
+
+    <!-- card 6 — application (own question — highlighted) -->
+    <div style="background:#F2F8FD; border-radius:12px; border:1.5px solid #120DA6; padding:16px; display:flex; flex-direction:column; gap:10px; position:relative;">
+     <!-- own question badge -->
+     <div style="position:absolute; top:-1px; right:12px; background:#120DA6; border-radius:0 0 6px 6px; padding:3px 8px;">
+      <span style="font-size:7px; text-transform:uppercase; letter-spacing:0.07em; color:#FFFFFF; font-weight:600;">your question</span>
+     </div>
+     <div style="display:flex; align-items:center; gap:6px;">
+      <div style="height:22px; padding:0 10px; border-radius:999px; background:#DEDAD6; display:flex; align-items:center;">
+       <span style="font-size:7px; text-transform:uppercase; letter-spacing:0.07em; color:rgba(0,0,0,0.55); font-weight:600;">application</span>
+      </div>
+      <div style="height:22px; padding:0 10px; border-radius:999px; border:1.5px dashed rgba(0,0,0,0.20); display:flex; align-items:center; cursor:pointer;">
+       <span style="font-size:7px; text-transform:uppercase; letter-spacing:0.07em; color:rgba(0,0,0,0.40);">re-sort</span>
+      </div>
+     </div>
+     <div style="display:flex; flex-direction:column; gap:5px;">
+      <div style="height:10px; background:#B8D8EC; border-radius:2px; width:100%;"></div>
+      <div style="height:10px; background:#B8D8EC; border-radius:2px; width:77%;"></div>
+     </div>
+     <div style="display:flex; align-items:center; justify-content:space-between; margin-top:4px;">
+      <span style="font-size:8px; text-transform:uppercase; letter-spacing:0.06em; color:#120DA6;">you</span>
+      <span style="font-size:8px; color:rgba(0,0,0,0.30);">&#9650; 3</span>
+     </div>
+    </div>
+
+   </div>
+
+   <div style="padding:0 24px 16px;">
+    <span style="font-size:8px; text-transform:uppercase; letter-spacing:0.07em; color:rgba(0,0,0,0.28);">own question highlighted with navy border · "re-sort" lets learner change their category after posting · upvotes surface most-agreed questions · facilitator can pin or respond inline</span>
+   </div>
+
+  </div>
+ </div>
+
+ <!-- ══════════════════════════════════════ -->
+ <!-- VIEW B — FILTERED (application only) -->
+ <!-- ══════════════════════════════════════ -->
+ <div style="width:100%; display:flex; flex-direction:column; gap:16px;">
+
+  <div style="font-size:8px; text-transform:uppercase; letter-spacing:0.08em; color:rgba(0,0,0,0.40); padding-bottom:4px; border-bottom:1px dashed rgba(0,0,0,0.14);">view b — filtered · "application" selected · 7 shown</div>
+
+  <div style="border:1.5px dashed rgba(0,0,0,0.18); border-radius:16px; overflow:hidden; background:#FFFFFF;">
+
+   <!-- filter tabs — application active -->
+   <div style="padding:12px 24px; display:flex; align-items:center; gap:8px; border-bottom:1px solid #E8E2D9; background:#DEDAD6; flex-wrap:wrap;">
+
+    <div style="height:32px; padding:0 14px; border-radius:999px; border:1.5px solid #E8E2D9; background:#FFFFFF; display:flex; align-items:center; gap:6px;">
+     <span style="font-size:8px; text-transform:uppercase; letter-spacing:0.07em; color:rgba(0,0,0,0.50);">all  24</span>
+    </div>
+    <div style="height:32px; padding:0 14px; border-radius:999px; border:1.5px solid #E8E2D9; background:#FFFFFF; display:flex; align-items:center;">
+     <span style="font-size:8px; text-transform:uppercase; letter-spacing:0.07em; color:rgba(0,0,0,0.50);">factual  6</span>
+    </div>
+    <div style="height:32px; padding:0 14px; border-radius:999px; border:1.5px solid #E8E2D9; background:#FFFFFF; display:flex; align-items:center;">
+     <span style="font-size:8px; text-transform:uppercase; letter-spacing:0.07em; color:rgba(0,0,0,0.50);">clarifying  5</span>
+    </div>
+    <!-- application — active -->
+    <div style="height:32px; padding:0 14px; border-radius:999px; background:#1A1A1A; display:flex; align-items:center;">
+     <span style="font-size:8px; text-transform:uppercase; letter-spacing:0.07em; color:#FFFFFF; font-weight:600;">application  7</span>
+    </div>
+    <div style="height:32px; padding:0 14px; border-radius:999px; border:1.5px solid #E8E2D9; background:#FFFFFF; display:flex; align-items:center;">
+     <span style="font-size:8px; text-transform:uppercase; letter-spacing:0.07em; color:rgba(0,0,0,0.50);">challenge  3</span>
+    </div>
+    <div style="height:32px; padding:0 14px; border-radius:999px; border:1.5px solid #E8E2D9; background:#FFFFFF; display:flex; align-items:center;">
+     <span style="font-size:8px; text-transform:uppercase; letter-spacing:0.07em; color:rgba(0,0,0,0.50);">what if  3</span>
+    </div>
+
+   </div>
+
+   <!-- filtered cards — application only, 3 shown -->
+   <div style="padding:20px 24px; display:grid; grid-template-columns:repeat(3,1fr); gap:14px;">
+
+    <div style="background:#FAFAF7; border-radius:12px; border:1px solid #E8E2D9; padding:16px; display:flex; flex-direction:column; gap:10px;">
+     <div style="height:22px; padding:0 10px; border-radius:999px; background:#DEDAD6; display:inline-flex; align-items:center; align-self:flex-start;">
+      <span style="font-size:7px; text-transform:uppercase; letter-spacing:0.07em; color:rgba(0,0,0,0.55); font-weight:600;">application</span>
+     </div>
+     <div style="display:flex; flex-direction:column; gap:5px;">
+      <div style="height:10px; background:#C8C4BC; border-radius:2px; width:100%;"></div>
+      <div style="height:10px; background:#C8C4BC; border-radius:2px; width:70%;"></div>
+     </div>
+     <div style="display:flex; align-items:center; justify-content:space-between; margin-top:4px;">
+      <div style="height:9px; background:#D8D4CC; border-radius:2px; width:48px; opacity:0.6;"></div>
+      <span style="font-size:8px; color:rgba(0,0,0,0.30);">&#9650; 9</span>
+     </div>
+    </div>
+
+    <div style="background:#F2F8FD; border-radius:12px; border:1.5px solid #120DA6; padding:16px; display:flex; flex-direction:column; gap:10px; position:relative;">
+     <div style="position:absolute; top:-1px; right:12px; background:#120DA6; border-radius:0 0 6px 6px; padding:3px 8px;">
+      <span style="font-size:7px; text-transform:uppercase; letter-spacing:0.07em; color:#FFFFFF; font-weight:600;">your question</span>
+     </div>
+     <div style="height:22px; padding:0 10px; border-radius:999px; background:#DEDAD6; display:inline-flex; align-items:center; align-self:flex-start;">
+      <span style="font-size:7px; text-transform:uppercase; letter-spacing:0.07em; color:rgba(0,0,0,0.55); font-weight:600;">application</span>
+     </div>
+     <div style="display:flex; flex-direction:column; gap:5px;">
+      <div style="height:10px; background:#B8D8EC; border-radius:2px; width:100%;"></div>
+      <div style="height:10px; background:#B8D8EC; border-radius:2px; width:77%;"></div>
+     </div>
+     <div style="display:flex; align-items:center; justify-content:space-between; margin-top:4px;">
+      <span style="font-size:8px; text-transform:uppercase; letter-spacing:0.06em; color:#120DA6;">you</span>
+      <span style="font-size:8px; color:rgba(0,0,0,0.30);">&#9650; 3</span>
+     </div>
+    </div>
+
+    <div style="background:#FAFAF7; border-radius:12px; border:1px solid #E8E2D9; padding:16px; display:flex; flex-direction:column; gap:10px;">
+     <div style="height:22px; padding:0 10px; border-radius:999px; background:#DEDAD6; display:inline-flex; align-items:center; align-self:flex-start;">
+      <span style="font-size:7px; text-transform:uppercase; letter-spacing:0.07em; color:rgba(0,0,0,0.55); font-weight:600;">application</span>
+     </div>
+     <div style="display:flex; flex-direction:column; gap:5px;">
+      <div style="height:10px; background:#C8C4BC; border-radius:2px; width:100%;"></div>
+      <div style="height:10px; background:#C8C4BC; border-radius:2px; width:85%;"></div>
+      <div style="height:10px; background:#C8C4BC; border-radius:2px; width:58%;"></div>
+     </div>
+     <div style="display:flex; align-items:center; justify-content:space-between; margin-top:4px;">
+      <div style="height:9px; background:#D8D4CC; border-radius:2px; width:48px; opacity:0.6;"></div>
+      <span style="font-size:8px; color:rgba(0,0,0,0.30);">&#9650; 5</span>
+     </div>
+    </div>
+
+   </div>
+
+   <div style="padding:0 24px 16px;">
+    <span style="font-size:8px; text-transform:uppercase; letter-spacing:0.07em; color:rgba(0,0,0,0.28);">filtered view · only application questions shown · count updates in tab · other tabs stay visible for easy switching · helps facilitator address one question type at a time</span>
+   </div>
+
+  </div>
+ </div>
+
+ <!-- ══════════════════════════════════════ -->
+ <!-- POST + SORT FLOW -->
+ <!-- ══════════════════════════════════════ -->
+ <div style="width:100%; display:flex; flex-direction:column; gap:16px;">
+
+  <div style="font-size:8px; text-transform:uppercase; letter-spacing:0.08em; color:rgba(0,0,0,0.40); padding-bottom:4px; border-bottom:1px dashed rgba(0,0,0,0.14);">post + sort flow — two steps, inline panel</div>
+
+  <div style="display:grid; grid-template-columns:1fr 1fr; gap:24px; align-items:start;">
+
+   <!-- STEP 1: write the question -->
+   <div style="display:flex; flex-direction:column; gap:12px;">
+    <div style="font-size:8px; text-transform:uppercase; letter-spacing:0.08em; color:rgba(0,0,0,0.40); text-align:center;">step 1 — write your question</div>
+
+    <div style="border:1.5px dashed rgba(0,0,0,0.20); border-radius:12px; background:#FFFFFF; padding:20px; display:flex; flex-direction:column; gap:14px;">
+
+     <div style="display:flex; align-items:center; justify-content:space-between;">
+      <span style="font-size:9px; text-transform:uppercase; letter-spacing:0.07em; color:rgba(0,0,0,0.50); font-weight:600;">ask a question</span>
+      <span style="font-size:8px; color:rgba(0,0,0,0.30);">&#10005; cancel</span>
+     </div>
+
+     <!-- textarea -->
+     <div style="border:1.5px solid #E8E2D9; border-radius:8px; background:#FAFAF7; height:80px; padding:10px 14px; display:flex; align-items:flex-start;">
+      <div style="display:flex; flex-direction:column; gap:6px; width:100%;">
+       <div style="height:10px; background:#C8C4BC; border-radius:2px; width:90%; opacity:0.7;"></div>
+       <div style="height:10px; background:#C8C4BC; border-radius:2px; width:62%; opacity:0.5;"></div>
+      </div>
+     </div>
+     <span style="font-size:8px; color:rgba(0,0,0,0.28); text-align:right;">0 / 160 characters</span>
+
+     <!-- category pick prompt -->
+     <div style="display:flex; flex-direction:column; gap:8px;">
+      <span style="font-size:8px; text-transform:uppercase; letter-spacing:0.07em; color:rgba(0,0,0,0.45);">what kind of question is this?</span>
+      <!-- category options — none selected yet -->
+      <div style="display:flex; flex-wrap:wrap; gap:8px;">
+       <div style="height:30px; padding:0 12px; border-radius:999px; border:1.5px solid #E8E2D9; background:#FFFFFF; display:flex; align-items:center;">
+        <span style="font-size:8px; color:rgba(0,0,0,0.55);">factual</span>
+       </div>
+       <div style="height:30px; padding:0 12px; border-radius:999px; border:1.5px solid #E8E2D9; background:#FFFFFF; display:flex; align-items:center;">
+        <span style="font-size:8px; color:rgba(0,0,0,0.55);">clarifying</span>
+       </div>
+       <div style="height:30px; padding:0 12px; border-radius:999px; border:1.5px solid #E8E2D9; background:#FFFFFF; display:flex; align-items:center;">
+        <span style="font-size:8px; color:rgba(0,0,0,0.55);">application</span>
+       </div>
+       <div style="height:30px; padding:0 12px; border-radius:999px; border:1.5px solid #E8E2D9; background:#FFFFFF; display:flex; align-items:center;">
+        <span style="font-size:8px; color:rgba(0,0,0,0.55);">challenge</span>
+       </div>
+       <div style="height:30px; padding:0 12px; border-radius:999px; border:1.5px solid #E8E2D9; background:#FFFFFF; display:flex; align-items:center;">
+        <span style="font-size:8px; color:rgba(0,0,0,0.55);">what if</span>
+       </div>
+      </div>
+     </div>
+
+     <!-- post button — inactive (no text + no category) -->
+     <div style="height:48px; border-radius:10px; background:#D8D4CC; display:flex; align-items:center; justify-content:center; opacity:0.5;">
+      <span style="font-size:9px; text-transform:uppercase; letter-spacing:0.08em; color:#FFFFFF; font-weight:700;">post question</span>
+     </div>
+     <span style="font-size:8px; color:rgba(0,0,0,0.28); text-align:center;">post active only when text written + category selected</span>
+
+    </div>
+   </div>
+
+   <!-- STEP 2: category selected, post active -->
+   <div style="display:flex; flex-direction:column; gap:12px;">
+    <div style="font-size:8px; text-transform:uppercase; letter-spacing:0.08em; color:rgba(0,0,0,0.40); text-align:center;">step 2 — category selected · ready to post</div>
+
+    <div style="border:1.5px dashed rgba(0,0,0,0.20); border-radius:12px; background:#FFFFFF; padding:20px; display:flex; flex-direction:column; gap:14px;">
+
+     <div style="display:flex; align-items:center; justify-content:space-between;">
+      <span style="font-size:9px; text-transform:uppercase; letter-spacing:0.07em; color:rgba(0,0,0,0.50); font-weight:600;">ask a question</span>
+      <span style="font-size:8px; color:rgba(0,0,0,0.30);">&#10005; cancel</span>
+     </div>
+
+     <!-- textarea with text -->
+     <div style="border:1.5px solid #120DA6; border-radius:8px; background:#FAFAF7; height:80px; padding:10px 14px; display:flex; align-items:flex-start;">
+      <div style="display:flex; flex-direction:column; gap:6px; width:100%;">
+       <div style="height:10px; background:#1A1A1A; border-radius:2px; width:95%; opacity:0.55;"></div>
+       <div style="height:10px; background:#1A1A1A; border-radius:2px; width:70%; opacity:0.40;"></div>
+      </div>
+     </div>
+     <span style="font-size:8px; color:rgba(0,0,0,0.28); text-align:right;">84 / 160 characters</span>
+
+     <!-- category options — "application" selected -->
+     <div style="display:flex; flex-direction:column; gap:8px;">
+      <span style="font-size:8px; text-transform:uppercase; letter-spacing:0.07em; color:rgba(0,0,0,0.45);">what kind of question is this?</span>
+      <div style="display:flex; flex-wrap:wrap; gap:8px;">
+       <div style="height:30px; padding:0 12px; border-radius:999px; border:1.5px solid #E8E2D9; background:#FFFFFF; display:flex; align-items:center; opacity:0.5;">
+        <span style="font-size:8px; color:rgba(0,0,0,0.55);">factual</span>
+       </div>
+       <div style="height:30px; padding:0 12px; border-radius:999px; border:1.5px solid #E8E2D9; background:#FFFFFF; display:flex; align-items:center; opacity:0.5;">
+        <span style="font-size:8px; color:rgba(0,0,0,0.55);">clarifying</span>
+       </div>
+       <!-- selected -->
+       <div style="height:30px; padding:0 12px; border-radius:999px; border:2px solid #120DA6; background:#F2F8FD; display:flex; align-items:center; gap:6px;">
+        <div style="width:8px; height:8px; border-radius:999px; background:#120DA6;"></div>
+        <span style="font-size:8px; color:#120DA6; font-weight:600;">application</span>
+       </div>
+       <div style="height:30px; padding:0 12px; border-radius:999px; border:1.5px solid #E8E2D9; background:#FFFFFF; display:flex; align-items:center; opacity:0.5;">
+        <span style="font-size:8px; color:rgba(0,0,0,0.55);">challenge</span>
+       </div>
+       <div style="height:30px; padding:0 12px; border-radius:999px; border:1.5px solid #E8E2D9; background:#FFFFFF; display:flex; align-items:center; opacity:0.5;">
+        <span style="font-size:8px; color:rgba(0,0,0,0.55);">what if</span>
+       </div>
+      </div>
+     </div>
+
+     <!-- post button — active -->
+     <div style="height:48px; border-radius:10px; background:#120DA6; display:flex; align-items:center; justify-content:center;">
+      <span style="font-size:9px; text-transform:uppercase; letter-spacing:0.08em; color:#FFFFFF; font-weight:700;">post question &#8594;</span>
+     </div>
+
+    </div>
+   </div>
+
+  </div>
+ </div>
+
+ <!-- ══════════════════════════════════════ -->
+ <!-- CATEGORY + COLOUR SPEC -->
+ <!-- ══════════════════════════════════════ -->
+ <div style="width:100%; display:flex; flex-direction:column; gap:12px;">
+
+  <div style="font-size:8px; text-transform:uppercase; letter-spacing:0.08em; color:rgba(0,0,0,0.40); padding-bottom:4px; border-bottom:1px dashed rgba(0,0,0,0.14);">category colour spec (build)</div>
+
+  <div style="display:grid; grid-template-columns:repeat(5,1fr); gap:12px;">
+
+   <!-- factual -->
+   <div style="display:flex; flex-direction:column; gap:6px; align-items:flex-start;">
+    <div style="height:28px; padding:0 12px; border-radius:999px; background:#120DA6; display:flex; align-items:center;">
+     <span style="font-size:8px; text-transform:uppercase; letter-spacing:0.07em; color:#FFFFFF; font-weight:600;">factual</span>
+    </div>
+    <span style="font-size:7px; color:rgba(0,0,0,0.50);">bg: navy #120DA6 · text: white</span>
+    <span style="font-size:7px; color:rgba(0,0,0,0.40); font-style:italic;">what is it? does it exist? when?</span>
+   </div>
+
+   <!-- clarifying -->
+   <div style="display:flex; flex-direction:column; gap:6px; align-items:flex-start;">
+    <div style="height:28px; padding:0 12px; border-radius:999px; background:#C4E5F2; border:1px solid #120DA6; display:flex; align-items:center;">
+     <span style="font-size:8px; text-transform:uppercase; letter-spacing:0.07em; color:#120DA6; font-weight:600;">clarifying</span>
+    </div>
+    <span style="font-size:7px; color:rgba(0,0,0,0.50);">bg: sky #C4E5F2 · text: navy</span>
+    <span style="font-size:7px; color:rgba(0,0,0,0.40); font-style:italic;">can you explain? what did you mean?</span>
+   </div>
+
+   <!-- application -->
+   <div style="display:flex; flex-direction:column; gap:6px; align-items:flex-start;">
+    <div style="height:28px; padding:0 12px; border-radius:999px; background:#40062B; display:flex; align-items:center;">
+     <span style="font-size:8px; text-transform:uppercase; letter-spacing:0.07em; color:#FFFFFF; font-weight:600;">application</span>
+    </div>
+    <span style="font-size:7px; color:rgba(0,0,0,0.50);">bg: plum #40062B · text: white</span>
+    <span style="font-size:7px; color:rgba(0,0,0,0.40); font-style:italic;">how do I use this? what if I tried?</span>
+   </div>
+
+   <!-- challenge -->
+   <div style="display:flex; flex-direction:column; gap:6px; align-items:flex-start;">
+    <div style="height:28px; padding:0 12px; border-radius:999px; background:#F2BDD6; display:flex; align-items:center;">
+     <span style="font-size:8px; text-transform:uppercase; letter-spacing:0.07em; color:#40062B; font-weight:600;">challenge</span>
+    </div>
+    <span style="font-size:7px; color:rgba(0,0,0,0.50);">bg: pink-light #F2BDD6 · text: plum</span>
+    <span style="font-size:7px; color:rgba(0,0,0,0.40); font-style:italic;">but what about? doesn't this contradict?</span>
+   </div>
+
+   <!-- what if -->
+   <div style="display:flex; flex-direction:column; gap:6px; align-items:flex-start;">
+    <div style="height:28px; padding:0 12px; border-radius:999px; background:#F24405; display:flex; align-items:center;">
+     <span style="font-size:8px; text-transform:uppercase; letter-spacing:0.07em; color:#FFFFFF; font-weight:600;">what if</span>
+    </div>
+    <span style="font-size:7px; color:rgba(0,0,0,0.50);">bg: orange #F24405 · text: white</span>
+    <span style="font-size:7px; color:rgba(0,0,0,0.40); font-style:italic;">speculative · extends the idea</span>
+   </div>
+
+  </div>
+ </div>
+
+ <!-- design notes -->
+ <div style="width:min(680px,100%); display:flex; flex-direction:column; gap:6px;">
+  <div style="font-size:8px; text-transform:uppercase; letter-spacing:0.08em; color:rgba(0,0,0,0.40); padding-bottom:4px; border-bottom:1px dashed rgba(0,0,0,0.14); width:100%;">design notes</div>
+  <div style="display:flex; flex-direction:column; gap:5px; font-size:8px; color:rgba(0,0,0,0.50); line-height:1.7;">
+   <span>· sorting happens at post time — learner categorises their own question, not others</span>
+   <span>· "re-sort" available on own question card — learner can reconsider after seeing how others categorised</span>
+   <span>· upvotes surface questions the group most wants answered — not tied to category</span>
+   <span>· filter tabs let the facilitator (or learner) isolate one question type — useful for live discussion</span>
+   <span>· "challenge" + "what if" questions are rare by nature — orange + pink flags them as high-value</span>
+   <span>· anonymous posting toggle available — on by default to lower stakes of asking</span>
+   <span>· pairs with discussion forum: facilitator can pick top questions from each category and open a thread</span>
+  </div>
+ </div>
+
+ </div>
+ </div>
+ </section>
+</body>
+</html>

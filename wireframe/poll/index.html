@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wireframe — Poll</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+ *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+ body { font-family: monospace; min-width: 1280px; }
+
+ /* ── shared ── */
+ section { min-height: 85vh; position: relative; }
+
+ .wrap {
+ max-width: 1280px;
+ margin: 0 auto;
+ padding: 0 clamp(80px, 12vw, 180px);
+ height: 100%;
+ }
+
+ .zone {
+ border: 1.5px dashed rgba(0,0,0,0.18);
+ border-radius: 4px;
+ position: relative;
+ }
+
+ .zone-label {
+ position: absolute;
+ top: 8px;
+ left: 12px;
+ font-size: 10px;
+ letter-spacing: 0.08em;
+ text-transform: uppercase;
+ color: rgba(0,0,0,0.3);
+ pointer-events: none;
+ }
+
+ /* dark section labels */
+ .dark-label { color: rgba(255,255,255,0.3); }
+
+ /* ── layout helpers ── */
+ .col-2 {
+ display: grid;
+ grid-template-columns: 1fr 1fr;
+ gap: clamp(24px, 4vw, 64px);
+ height: 100%;
+ }
+
+ .col-3 {
+ display: grid;
+ grid-template-columns: repeat(3, 1fr);
+ gap: 24px;
+ }
+
+ .col-2-narrow {
+ display: grid;
+ grid-template-columns: repeat(2, 1fr);
+ gap: 24px;
+ }
+
+ .section-layout {
+ display: flex;
+ flex-direction: column;
+ gap: 24px;
+ padding: clamp(64px, 8vw, 100px) 0;
+ }
+
+ /* ─────────────────────────────────────── */
+ /* HERO #F2F0EB */
+ /* ─────────────────────────────────────── */
+ .s1 { background: #F2F0EB; }
+
+ .s1 .section-layout { padding: clamp(48px, 10vw, 140px) 0; }
+
+ .s1 .col-2 { align-items: center; }
+
+ .s1-left {
+ display: flex;
+ flex-direction: column;
+ gap: 16px;
+ height: 100%;
+ min-height: clamp(320px, 50vh, 480px);
+ }
+
+ .zone-h1 { flex: 0 0 clamp(80px, 14vh, 140px); }
+ .zone-body { flex: 0 0 60px; }
+ .zone-buttons { flex: 0 0 56px; }
+ .zone-image { flex: 1; min-height: clamp(240px, 40vh, 400px); }
+
+ /* ─────────────────────────────────────── */
+ /* FEATURES #F2F2F2 */
+ /* ─────────────────────────────────────── */
+ .s2 { background: #F2F2F2; min-height: auto; }
+
+ .zone-section-head { height: clamp(80px, 12vh, 120px); }
+
+ .zone-card { height: clamp(200px, 28vh, 280px); }
+
+ /* ─────────────────────────────────────── */
+ /* HOW IT WORKS #F2F0EB */
+ /* ─────────────────────────────────────── */
+ .s3 { background: #F2F0EB; }
+
+ .s3 .col-2 { align-items: center; }
+
+ .zone-media { min-height: clamp(260px, 42vh, 440px); }
+
+ .s3-right {
+ display: flex;
+ flex-direction: column;
+ gap: 16px;
+ height: 100%;
+ }
+
+ .zone-h2-block { height: clamp(60px, 10vh, 100px); }
+ .zone-step { height: clamp(56px, 8vh, 72px); }
+
+ /* ─────────────────────────────────────── */
+ /* SOCIAL PROOF #F8F2ED */
+ /* ─────────────────────────────────────── */
+ .s4 { background: #F8F2ED; }
+
+ .zone-stat { height: clamp(100px, 14vh, 140px); }
+ .zone-quote { height: clamp(160px, 22vh, 220px); }
+
+ /* ─────────────────────────────────────── */
+ /* CTA #032626 */
+ /* ─────────────────────────────────────── */
+ .s5 { background: #032626; min-height: 50vh; }
+
+ .s5 .zone {
+ border-color: rgba(255,255,255,0.2);
+ }
+
+ .s5 .section-layout {
+ align-items: center;
+ justify-content: center;
+ min-height: 50vh;
+ }
+
+ .s5-centre {
+ display: flex;
+ flex-direction: column;
+ gap: 16px;
+ width: min(640px, 100%);
+ }
+
+ .zone-cta-h2 { height: clamp(60px, 10vh, 100px); }
+ .zone-cta-body { height: 40px; }
+ .zone-cta-buttons { height: 56px; }
+
+ /* ─────────────────────────────────────── */
+ /* QUIZ #F2F2F2 */
+ /* ─────────────────────────────────────── */
+ .s-quiz { background: #F2F2F2; }
+
+ .quiz-layout {
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+ gap: 24px;
+ padding: clamp(64px, 8vw, 100px) 0;
+ }
+
+ .quiz-card {
+ width: min(640px, 100%);
+ border: 1.5px dashed rgba(0,0,0,0.18);
+ border-radius: 16px;
+ padding: 40px;
+ display: flex;
+ flex-direction: column;
+ gap: 16px;
+ background: #FAFAF7;
+ position: relative;
+ }
+
+ .zone-dots { height: 20px; width: 120px; align-self: flex-end; }
+ .zone-question { height: clamp(56px, 8vh, 80px); }
+ .zone-option { height: 52px; }
+ .zone-feedback { height: 64px; }
+ .zone-next-btn { height: 52px; width: 160px; align-self: flex-end; }
+
+ /* result feedback options — pill style, visually distinct from quiz options */
+ .zone-feedback-option {
+ height: 48px;
+ border-radius: 999px;
+ border: 1.5px dashed rgba(0,0,0,0.15);
+ background: #F2F8FD;
+ position: relative;
+ }
+
+ /* ─────────────────────────────────────── */
+ /* BRANCHING #F8F2ED */
+ /* ─────────────────────────────────────── */
+ .s-branch { background: #F8F2ED; }
+
+ .branch-layout {
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+ gap: 48px;
+ padding: clamp(64px, 8vw, 100px) 0;
+ }
+
+ /* section heading */
+ .branch-head {
+ text-align: center;
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+ gap: 12px;
+ width: 100%;
+ }
+
+ /* step progress strip — floats above card centre */
+ .step-strip {
+ display: flex;
+ align-items: center;
+ gap: 0;
+ position: absolute;
+ top: 0;
+ left: 50%;
+ transform: translate(-50%, -50%);
+ background: #FFFFFF;
+ padding: 4px 12px;
+ border-radius: 999px;
+ border: 1.5px dashed rgba(0,0,0,0.18);
+ white-space: nowrap;
+ z-index: 2;
+ }
+ .step-pip {
+ width: 24px; height: 24px;
+ border-radius: 999px;
+ background: #E8E4DE;
+ border: 1.5px dashed rgba(0,0,0,0.18);
+ display: flex; align-items: center; justify-content: center;
+ font-size: 9px; color: rgba(0,0,0,0.3); letter-spacing: 0;
+ }
+ .step-pip.active { background: #120DA620; border-color: #120DA6; color: #120DA6; }
+ .step-pip.done { background: #C8C4BC; border-color: rgba(0,0,0,0.25); color: rgba(0,0,0,0.4); }
+ .step-line {
+ width: 20px; height: 1.5px;
+ background: rgba(0,0,0,0.15);
+ border-top: 1.5px dashed rgba(0,0,0,0.18);
+ }
+
+ /* shared screen card */
+ .screen-card {
+ width: min(680px, 100%);
+ background: #FFFFFF;
+ border: 1.5px dashed rgba(0,0,0,0.15);
+ border-radius: 16px;
+ padding: 36px;
+ padding-top: 48px;
+ display: flex;
+ flex-direction: column;
+ gap: 16px;
+ position: relative;
+ margin-top: 20px;
+ }
+
+ .screen-label {
+ font-size: 10px;
+ letter-spacing: 0.08em;
+ text-transform: uppercase;
+ color: rgba(0,0,0,0.3);
+ }
+
+ .zone-sc-heading { height: 32px; }
+ .zone-sc-body { height: 72px; }
+ .zone-sc-next { height: 48px; width: 120px; align-self: flex-end; }
+
+ /* branching activity card — wider */
+ .screen-card-wide {
+ width: min(680px, 100%);
+ background: #FFFFFF;
+ border: 1.5px dashed rgba(0,0,0,0.15);
+ border-radius: 16px;
+ padding: 36px;
+ padding-top: 48px;
+ display: flex;
+ flex-direction: column;
+ gap: 20px;
+ position: relative;
+ margin-top: 20px;
+ }
+
+ .zone-scenario { height: 80px; }
+ .three-options { display: flex; flex-direction: column; gap: 12px; }
+ .zone-option-card { padding: 14px 16px; display: flex; flex-direction: column; gap: 8px; }
+
+ /* down arrow connector */
+ .flow-arrow {
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+ gap: 0;
+ color: rgba(0,0,0,0.2);
+ font-size: 18px;
+ }
+ .flow-arrow::before {
+ content: '';
+ display: block;
+ width: 1.5px;
+ height: 24px;
+ border-left: 1.5px dashed rgba(0,0,0,0.2);
+ }
+
+ /* summary screen */
+ .summary-chain {
+ display: flex;
+ flex-direction: column;
+ gap: 12px;
+ width: 100%;
+ }
+ .chain-row {
+ display: grid;
+ grid-template-columns: 1fr 1fr;
+ gap: 12px;
+ }
+ .zone-chain-scenario { height: 52px; }
+ .zone-chain-choice { height: 52px; background: #F2F8FD; }
+
+ /* editable text area */
+ .text-area-wrap {
+ display: flex;
+ flex-direction: column;
+ gap: 0;
+ border: 1.5px dashed rgba(0,0,0,0.18);
+ border-radius: 8px;
+ overflow: hidden;
+ }
+ .text-toolbar {
+ display: flex;
+ align-items: center;
+ gap: 8px;
+ padding: 6px 10px;
+ background: #F5F5F5;
+ border-bottom: 1px solid rgba(0,0,0,0.08);
+ }
+ .zone-font-size {
+ height: 22px;
+ width: 64px;
+ border-radius: 4px;
+ border: 1.5px dashed rgba(0,0,0,0.18);
+ background: #fff;
+ position: relative;
+ }
+ .toolbar-label {
+ font-size: 9px;
+ text-transform: uppercase;
+ letter-spacing: 0.07em;
+ color: rgba(0,0,0,0.25);
+ }
+ .text-body {
+ min-height: 120px;
+ background: #fff;
+ border: none;
+ position: relative;
+ }
+
+ /* ai suggestion pills */
+ .ai-pills {
+ display: flex;
+ flex-wrap: wrap;
+ gap: 8px;
+ }
+ .ai-pill {
+ height: 32px;
+ border-radius: 999px;
+ border: 1.5px dashed rgba(0,0,0,0.18);
+ background: #F2F8FD;
+ position: relative;
+ display: flex;
+ align-items: center;
+ padding: 0 14px;
+ }
+ .ai-pill::after {
+ content: '';
+ display: block;
+ height: 8px;
+ background: rgba(0,0,0,0.18);
+ border-radius: 3px;
+ width: 100%;
+ }
+ .ai-pill:nth-child(1) { width: 140px; }
+ .ai-pill:nth-child(2) { width: 110px; }
+ .ai-pill:nth-child(3) { width: 160px; }
+ .ai-pills-label {
+ font-size: 9px;
+ letter-spacing: 0.08em;
+ text-transform: uppercase;
+ color: rgba(0,0,0,0.25);
+ margin-bottom: 2px;
+ }
+
+ /* slider zone */
+ .zone-slider-q { height: 32px; }
+ .zone-slider-bar { height: 40px; border-radius: 999px; }
+
+ /* 5-point slider */
+ .slider-section-wrap {
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+ gap: 48px;
+ padding: clamp(64px, 8vw, 100px) 0;
+ }
+
+ .slider-card {
+ width: min(680px, 100%);
+ background: #FFFFFF;
+ border: 1.5px dashed rgba(0,0,0,0.15);
+ border-radius: 16px;
+ padding: 40px;
+ display: flex;
+ flex-direction: column;
+ gap: 32px;
+ }
+
+ .slider-track-wrap {
+ display: flex;
+ flex-direction: column;
+ gap: 12px;
+ }
+
+ .slider-track {
+ position: relative;
+ display: flex;
+ align-items: center;
+ justify-content: space-between;
+ height: 48px;
+ }
+
+ /* the line */
+ .slider-track::before {
+ content: '';
+ position: absolute;
+ top: 50%;
+ left: 0;
+ right: 0;
+ transform: translateY(-50%);
+ height: 4px;
+ border-radius: 999px;
+ background: #E8E2D9;
+ border: 1.5px dashed rgba(0,0,0,0.15);
+ }
+
+ .slider-point {
+ width: 28px;
+ height: 28px;
+ border-radius: 999px;
+ background: #E8E2D9;
+ border: 1.5px dashed rgba(0,0,0,0.2);
+ position: relative;
+ z-index: 1;
+ flex-shrink: 0;
+ }
+
+ /* thumb — shown at rest (unused state) */
+ .slider-thumb {
+ position: absolute;
+ left: 0;
+ top: 50%;
+ transform: translate(-50%, -50%);
+ width: 40px;
+ height: 40px;
+ border-radius: 999px;
+ background: #D8D4CC;
+ border: 2px dashed rgba(0,0,0,0.2);
+ z-index: 2;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ }
+
+ .slider-nudge {
+ font-size: 9px;
+ text-transform: uppercase;
+ letter-spacing: 0.08em;
+ color: rgba(0,0,0,0.25);
+ text-align: center;
+ }
+
+ /* colour-changed state label */
+ .slider-state-row {
+ display: flex;
+ gap: 16px;
+ align-items: center;
+ justify-content: center;
+ }
+ .slider-state {
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+ gap: 6px;
+ font-size: 9px;
+ text-transform: uppercase;
+ letter-spacing: 0.07em;
+ color: rgba(0,0,0,0.3);
+ }
+ .slider-state-dot {
+ width: 28px; height: 28px;
+ border-radius: 999px;
+ border: 1.5px dashed;
+ }
+ .state-unused { background: #E8E2D9; border-color: rgba(0,0,0,0.2); }
+ .state-active { background: #120DA620; border-color: #120DA6; }
+
+ .slider-labels {
+ display: flex;
+ justify-content: space-between;
+ }
+ .slider-point-label {
+ font-size: 9px;
+ text-transform: uppercase;
+ letter-spacing: 0.06em;
+ color: rgba(0,0,0,0.3);
+ width: 28px;
+ text-align: center;
+ }
+
+ .col-3-branch { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; }
+
+ /* ── responsive ── */
+ @media (max-width: 768px) {
+ .col-2 { grid-template-columns: 1fr; }
+ .col-3 { grid-template-columns: 1fr; }
+ .col-2-narrow { grid-template-columns: 1fr; }
+ .col-3-branch { grid-template-columns: 1fr; }
+ }
+
+ /* ══════════════════════════════════════════════════════ */
+ /* WIREFRAME OVERRIDE — zero colour, outlines & fills */
+ /* ══════════════════════════════════════════════════════ */
+
+ /* 1. Strip shadows and gradients globally */
+ * { box-shadow: none !important; text-shadow: none !important; }
+ div[style*="linear-gradient"], section[style*="linear-gradient"] { background-image: none !important; }
+
+ /* 2. All sections → flat alternating grey regardless of inline colour */
+ section,
+ section[style] { background: #F0EFED !important; }
+ section:nth-of-type(even),
+ section:nth-of-type(even)[style] { background: #E8E7E5 !important; }
+
+ /* 3. Headings → solid grey placeholder bars */
+ h1 { background: #A8A5A2 !important; color: transparent !important; border-radius: 6px !important; display: block !important; }
+ h2 { background: #B2AFAC !important; color: transparent !important; border-radius: 6px !important; display: block !important; }
+ h3 { background: #BCBAB6 !important; color: transparent !important; border-radius: 6px !important; display: block !important; }
+ h4 { background: #C4C2BE !important; color: transparent !important; border-radius: 6px !important; display: block !important; }
+
+ /* 4. Paragraphs → grey placeholder lines */
+ p { background: #D0CCC8 !important; color: transparent !important; border-radius: 4px !important; }
+
+ /* 5. Links → wireframe button outlines */
+ a { background: transparent !important; background-image: none !important; color: transparent !important;
+ border: 1.5px dashed rgba(0,0,0,0.22) !important; border-radius: 8px !important; }
+ a * { color: transparent !important; background: transparent !important; background-image: none !important; }
+
+ /* 6. Brand colours on divs/spans → neutral wireframe grey
+ Targets colour values in inline style attributes */
+ div[style*="120DA6"], span[style*="120DA6"] { background-color: #C0BCBA !important; background-image: none !important; color: rgba(0,0,0,0.28) !important; border-color: rgba(0,0,0,0.18) !important; }
+ div[style*="032626"], span[style*="032626"] { background-color: #C8C4C0 !important; background-image: none !important; color: rgba(0,0,0,0.28) !important; border-color: rgba(0,0,0,0.18) !important; }
+ div[style*="40062B"], span[style*="40062B"] { background-color: #D0CCC8 !important; background-image: none !important; color: rgba(0,0,0,0.28) !important; border-color: rgba(0,0,0,0.18) !important; }
+ div[style*="F2BDD6"], span[style*="F2BDD6"] { background-color: #DEDAD6 !important; background-image: none !important; color: rgba(0,0,0,0.28) !important; border-color: rgba(0,0,0,0.15) !important; }
+ div[style*="C4E5F2"], span[style*="C4E5F2"] { background-color: #DDDAD5 !important; background-image: none !important; color: rgba(0,0,0,0.28) !important; border-color: rgba(0,0,0,0.15) !important; }
+ div[style*="F24405"], span[style*="F24405"] { background-color: #C8C4C0 !important; background-image: none !important; color: rgba(0,0,0,0.28) !important; border-color: rgba(0,0,0,0.18) !important; }
+ div[style*="8C5473"], span[style*="8C5473"] { background-color: #D0CCC8 !important; background-image: none !important; color: rgba(0,0,0,0.28) !important; border-color: rgba(0,0,0,0.18) !important; }
+
+ /* 7. White/near-white card backgrounds → keep off-white so structure shows */
+ div[style*="FFFFFF"], div[style*="FAFAF7"] { background-color: #F5F4F2 !important; border-color: rgba(0,0,0,0.14) !important; }
+
+ /* 8. Text colour overrides — all branded text → muted grey */
+ [style*="color:#120DA6"], [style*="color: #120DA6"] { color: rgba(0,0,0,0.35) !important; }
+ [style*="color:#FFFFFF"], [style*="color: #FFFFFF"] { color: rgba(0,0,0,0.35) !important; }
+ [style*="color:#1A1A1A"], [style*="color: #1A1A1A"] { color: rgba(0,0,0,0.45) !important; }
+ [style*="color:#40062B"], [style*="color: #40062B"] { color: rgba(0,0,0,0.35) !important; }
+ [style*="color:#6B6568"], [style*="color: #6B6568"] { color: rgba(0,0,0,0.30) !important; }
+
+ /* 9. Zone boxes — wireframe dashed fills */
+ .zone { background: #DEDAD6 !important; border: 1.5px dashed rgba(0,0,0,0.22) !important; }
+ .zone-label, .screen-label, .flow-arrow { color: rgba(0,0,0,0.30) !important; background: transparent !important; }
+
+ /* 10. Screen/quiz cards — structural white containers with dashed border */
+ .screen-card { background: #F5F4F2 !important; border: 1.5px dashed rgba(0,0,0,0.18) !important; }
+ .quiz-card { background: #F5F4F2 !important; border: 1.5px dashed rgba(0,0,0,0.18) !important; }
+
+ /* 11. Step pips */
+ .step-pip { background: #E0DDD8 !important; border: 1.5px dashed rgba(0,0,0,0.18) !important; color: rgba(0,0,0,0.30) !important; }
+ .step-pip.active { background: #C8C4C0 !important; border-color: rgba(0,0,0,0.30) !important; color: rgba(0,0,0,0.40) !important; }
+ .step-line { background: rgba(0,0,0,0.15) !important; border-color: rgba(0,0,0,0.18) !important; }
+
+ /* ═══════════════════════════════════════════════════════════ */
+ /* SUPPLEMENTAL OVERRIDES — catching all remaining colour leaks */
+ /* ═══════════════════════════════════════════════════════════ */
+
+ /* Additional background colours not caught above */
+ [style*="background:#F2F8FD"], [style*="background: #F2F8FD"] { background-color: #E2E0DC !important; }
+ [style*="background:#F8F2ED"], [style*="background: #F8F2ED"] { background-color: #E8E6E2 !important; }
+ [style*="background:#F2F0EB"], [style*="background: #F2F0EB"] { background-color: #ECEBE8 !important; }
+ [style*="background:#F2F2F2"], [style*="background: #F2F2F2"] { background-color: #EBEBEA !important; }
+ [style*="background:#FAFAF7"], [style*="background: #FAFAF7"] { background-color: #F0EFEC !important; }
+ [style*="background:#F9F9F9"], [style*="background: #F9F9F9"] { background-color: #EEECEA !important; }
+ [style*="background:#FFFDE8"], [style*="background: #FFFDE8"] { background-color: #E5E3DF !important; border-color: rgba(0,0,0,0.12) !important; }
+ [style*="background:#F8E04A"] { background-color: #D4D0CA !important; border-color: rgba(0,0,0,0.15) !important; }
+ [style*="background:#F8E04A60"] { background-color: rgba(200,195,190,0.3) !important; }
+ [style*="background:#1A1A1A"], [style*="background: #1A1A1A"] { background-color: #C0BCBA !important; }
+ [style*="background:#2A2A2A"], [style*="background: #2A2A2A"] { background-color: #BEBAB6 !important; }
+ [style*="background:#E8E2D9"], [style*="background: #E8E2D9"] { background-color: #DDD9D3 !important; }
+
+ /* Kill box-shadows from ALL inline-styled elements */
+ [style*="box-shadow"] { box-shadow: none !important; }
+
+ /* Kill linear gradients from inline styles */
+ [style*="linear-gradient"] { background-image: none !important; background-color: #D8D4CC !important; }
+
+ /* All coloured text via inline style → neutral grey */
+ [style*="color:#120DA6"], [style*="color: #120DA6"] { color: rgba(0,0,0,0.38) !important; }
+ [style*="color:#40062B"], [style*="color: #40062B"] { color: rgba(0,0,0,0.35) !important; }
+ [style*="color:#8C5473"], [style*="color: #8C5473"] { color: rgba(0,0,0,0.30) !important; }
+ [style*="color:#032626"], [style*="color: #032626"] { color: rgba(0,0,0,0.30) !important; }
+ [style*="color:#F24405"], [style*="color: #F24405"] { color: rgba(0,0,0,0.30) !important; }
+ [style*="color:#FFFFFF"], [style*="color: #FFFFFF"] { color: rgba(0,0,0,0.40) !important; }
+ [style*="color:#6B6568"], [style*="color: #6B6568"] { color: rgba(0,0,0,0.30) !important; }
+ [style*="color:#C8C4BC"] { color: rgba(0,0,0,0.25) !important; }
+
+ /* Borders using brand colours → neutral */
+ [style*="border:2px solid #40062B"], [style*="border: 2px solid #40062B"] { border-color: rgba(0,0,0,0.22) !important; }
+ [style*="border:1.5px solid #120DA6"], [style*="border: 1.5px solid #120DA6"] { border-color: rgba(0,0,0,0.20) !important; }
+ [style*="border:1px solid #120DA6"], [style*="border: 1px solid #120DA6"] { border-color: rgba(0,0,0,0.18) !important; }
+ [style*="border:2px solid #120DA6"], [style*="border: 2px solid #120DA6"] { border-color: rgba(0,0,0,0.22) !important; }
+ [style*="border:1px solid #E8E2D9"], [style*="border: 1px solid #E8E2D9"] { border-color: rgba(0,0,0,0.14) !important; }
+ [style*="border-bottom:2px solid #F8E04A"] { border-bottom-color: rgba(0,0,0,0.18) !important; }
+ [style*="border-bottom:1px solid #E8E2D9"] { border-bottom-color: rgba(0,0,0,0.12) !important; }
+ [style*="border-left:2px solid #E8E2D9"] { border-left-color: rgba(0,0,0,0.12) !important; }
+ [style*="border-top:1px solid #E8E2D9"] { border-top-color: rgba(0,0,0,0.12) !important; }
+ [style*="border-right:1px solid #E8E2D9"] { border-right-color: rgba(0,0,0,0.12) !important; }
+
+ /* Word cloud coloured spans → uniform neutral */
+ span[style*="color:#120DA6"], span[style*="color:#40062B"],
+ span[style*="color:#032626"], span[style*="color:#8C5473"],
+ span[style*="color:#6B6568"], span[style*="color:#C8C4BC"] {
+ color: rgba(0,0,0,0.40) !important;
+ }
+ span[style*="background:#C4E5F2"] { background-color: #D8D4CC !important; }
+
+ /* ── Section name labels (outside wireframe, not part of design) ── */
+ .section-name {
+ position: absolute;
+ top: 12px;
+ left: 12px;
+ font-family: monospace;
+ font-size: 10px;
+ font-weight: 700;
+ text-transform: uppercase;
+ letter-spacing: 0.1em;
+ color: rgba(0,0,0,0.35);
+ background: rgba(255,255,255,0.85);
+ padding: 4px 10px;
+ border-radius: 4px;
+ border: 1px dashed rgba(0,0,0,0.18);
+ pointer-events: none;
+ z-index: 100;
+ user-select: none;
+ }
+ section { position: relative; }
+
+ </style>
+</head>
+<body>
+ <section style="background:#F2F0EB; min-height:85vh;">
+ <div class="section-name">Poll</div>
+ <div class="wrap">
+ <div style="display:flex; flex-direction:column; align-items:center; padding:clamp(64px,8vw,100px) 0; gap:40px;">
+
+ <!-- Screen Builder field note -->
+ <div style="background:#EAF4FB; border:1px solid #B8D8EC; border-radius:6px; padding:8px 12px; font-size:8px; color:#1A5276; line-height:1.5; width:min(580px,100%); box-sizing:border-box;">
+ <strong>Screen Builder fields:</strong> Question — VA authors the poll question · Options — VA adds 1 to N options (4 recommended) · Results — revealed immediately after voting · hidden before · Vote is final — cannot be changed after submission · Result visualisation — VA selects bubble chart, people pictograph, or segmented bar
+ </div>
+
+ <!-- ── SCREEN 1: poll question ── -->
+ <div style="width:min(580px,100%); border-radius:16px; overflow:visible; box-shadow:0 4px 24px rgba(0,0,0,0.08); border:2px solid #40062B; position:relative; margin-bottom:20px;">
+
+ <!-- question — pink-light header -->
+ <div style="background:#F2BDD6; padding:24px 28px; display:flex; flex-direction:column; gap:10px; border-radius:14px 14px 0 0;">
+ <div style="height:44px; background:#40062B15; border-radius:8px; position:relative; border:1px solid #40062B30;">
+ <span class="zone-label" style="color:#40062B80;">poll question</span>
+ </div>
+ </div>
+
+ <!-- radio options — white body -->
+ <div style="background:#FFFFFF; padding:20px 28px 32px; border-radius:0 0 14px 14px; display:flex; flex-direction:column; gap:10px;">
+
+ <!-- option selected -->
+ <div style="display:flex; align-items:center; gap:12px; padding:14px 16px; border-radius:10px; background:#F2F8FD; border:1.5px solid #120DA6;">
+ <div style="width:18px; height:18px; border-radius:999px; border:2px solid #120DA6; background:#120DA6; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+ <div style="width:6px; height:6px; border-radius:999px; background:#FFFFFF;"></div>
+ </div>
+ <div style="height:13px; flex:1; background:#120DA6; border-radius:4px; opacity:0.2;"></div>
+ </div>
+
+ <!-- options unselected -->
+ <div style="display:flex; align-items:center; gap:12px; padding:14px 16px; border-radius:10px; background:#FFFFFF; border:1.5px solid #E8E2D9;">
+ <div style="width:18px; height:18px; border-radius:999px; border:2px solid #E8E2D9; flex-shrink:0;"></div>
+ <div style="height:13px; flex:1; background:#D8D4CC; border-radius:4px;"></div>
+ </div>
+ <div style="display:flex; align-items:center; gap:12px; padding:14px 16px; border-radius:10px; background:#FFFFFF; border:1.5px solid #E8E2D9;">
+ <div style="width:18px; height:18px; border-radius:999px; border:2px solid #E8E2D9; flex-shrink:0;"></div>
+ <div style="height:13px; flex:1; background:#D8D4CC; border-radius:4px; width:80%;"></div>
+ </div>
+ <div style="display:flex; align-items:center; gap:12px; padding:14px 16px; border-radius:10px; background:#FFFFFF; border:1.5px solid #E8E2D9;">
+ <div style="width:18px; height:18px; border-radius:999px; border:2px solid #E8E2D9; flex-shrink:0;"></div>
+ <div style="height:13px; flex:1; background:#D8D4CC; border-radius:4px; width:90%;"></div>
+ </div>
+
+ </div>
+
+ <!-- submit pill on border -->
+ <div style="position:absolute; bottom:0; left:50%; transform:translate(-50%, 50%); z-index:2;">
+ <div style="height:40px; padding:0 28px; border-radius:999px; border:2px solid #40062B; background:#40062B; display:flex; align-items:center; box-shadow:0 2px 8px rgba(0,0,0,0.15); white-space:nowrap;">
+ <span style="font-size:10px; text-transform:uppercase; letter-spacing:0.08em; color:#FFFFFF;">vote →</span>
+ </div>
+ </div>
+
+ </div>
+
+ <!-- fix 1 & 2: button states + permanence annotation -->
+ <div style="display:flex; flex-direction:column; align-items:center; gap:6px; margin-top:-8px;">
+ <span style="font-size:8px; text-transform:uppercase; letter-spacing:0.07em; color:rgba(0,0,0,0.3); text-align:center;">↑ state b shown — option selected, pill active · state a: 'vote →' greyed + disabled until learner selects an option · vote is final — cannot be changed after submission</span>
+ </div>
+
+ <!-- fix 4: flow arrow with timing annotation -->
+ <div style="display:flex; flex-direction:column; align-items:center; gap:4px; color:rgba(0,0,0,0.2); font-size:11px;">
+ <div style="width:1.5px; height:20px; background:rgba(0,0,0,0.15);"></div>
+ <span>results reveal immediately after voting · hidden before</span>
+ <div style="width:1.5px; height:20px; background:rgba(0,0,0,0.15);"></div>
+ <span style="font-size:14px; line-height:1;">↓</span>
+ </div>
+
+ <!-- ── SCREEN 2: results — proportional bubble chart ── -->
+ <div style="width:min(680px,100%); background:#FFFFFF; border:1px solid #E8E2D9; border-radius:16px; padding:36px 32px 40px; box-shadow:0 2px 8px rgba(0,0,0,0.06); display:flex; flex-direction:column; gap:28px;">
+
+ <!-- fix 3: design option label -->
+ <div style="background:#F2F8FD; border-radius:8px; padding:4px 12px; align-self:center;">
+ <span style="font-size:8px; text-transform:uppercase; letter-spacing:0.07em; color:#120DA6;">design option A — bubble chart</span>
+ </div>
+
+ <!-- result heading -->
+ <div style="text-align:center; display:flex; flex-direction:column; align-items:center; gap:8px;">
+ <div style="height:11px; width:120px; background:#C8C4BC; border-radius:4px;"></div>
+ <span style="font-size:9px; text-transform:uppercase; letter-spacing:0.08em; color:#6B6568;">how [n] others answered</span>
+ </div>
+
+ <!-- bubble chart — 4 circles proportional to vote % -->
+ <div style="display:flex; align-items:flex-end; justify-content:center; gap:24px; padding:16px 0 8px;">
+
+ <!-- option A — user's pick, 42%, largest, navy -->
+ <div style="display:flex; flex-direction:column; align-items:center; gap:12px;">
+ <div style="width:120px; height:120px; border-radius:999px; background:#120DA6; display:flex; flex-direction:column; align-items:center; justify-content:center; box-shadow:0 4px 20px rgba(18,13,166,0.25);">
+ <span style="font-size:22px; font-weight:700; color:#FFFFFF; line-height:1;">42%</span>
+ </div>
+ <div style="height:11px; width:80px; background:#120DA6; border-radius:4px; opacity:0.2; position:relative;"><span class="zone-label" style="font-size:8px; color:#120DA6;">your answer</span></div>
+ </div>
+
+ <!-- option B — 28%, mid, sky -->
+ <div style="display:flex; flex-direction:column; align-items:center; gap:12px;">
+ <div style="width:86px; height:86px; border-radius:999px; background:#C4E5F2; display:flex; flex-direction:column; align-items:center; justify-content:center;">
+ <span style="font-size:16px; font-weight:700; color:#120DA6; line-height:1;">28%</span>
+ </div>
+ <div style="height:11px; width:70px; background:#C8C4BC; border-radius:4px;"></div>
+ </div>
+
+ <!-- option C — 18%, smaller, pink-light -->
+ <div style="display:flex; flex-direction:column; align-items:center; gap:12px;">
+ <div style="width:66px; height:66px; border-radius:999px; background:#F2BDD6; display:flex; flex-direction:column; align-items:center; justify-content:center;">
+ <span style="font-size:13px; font-weight:700; color:#40062B; line-height:1;">18%</span>
+ </div>
+ <div style="height:11px; width:60px; background:#C8C4BC; border-radius:4px;"></div>
+ </div>
+
+ <!-- option D — 12%, smallest, neutral -->
+ <div style="display:flex; flex-direction:column; align-items:center; gap:12px;">
+ <div style="width:50px; height:50px; border-radius:999px; background:#E8E2D9; display:flex; flex-direction:column; align-items:center; justify-content:center;">
+ <span style="font-size:11px; font-weight:700; color:#6B6568; line-height:1;">12%</span>
+ </div>
+ <div style="height:11px; width:55px; background:#C8C4BC; border-radius:4px;"></div>
+ </div>
+
+ </div>
+
+ <!-- insight line — auto-generated observation -->
+ <div style="background:#F2F8FD; border-radius:10px; padding:14px 18px; display:flex; align-items:center; gap:10px;">
+ <span style="font-size:11px; color:#120DA6;">✦</span>
+ <div style="display:flex; flex-direction:column; gap:4px; flex:1;">
+ <div style="height:10px; background:#C4E5F2; border-radius:3px; opacity:0.8;"></div>
+ <div style="height:10px; width:72%; background:#C4E5F2; border-radius:3px; opacity:0.6;"></div>
+ <span style="font-size:8px; text-transform:uppercase; letter-spacing:0.06em; color:rgba(18,13,166,0.5); margin-top:2px;">e.g. "most students chose option A — explore why in the discussion below" · system-generated · updates live as responses arrive</span>
+ </div>
+ </div>
+
+ </div>
+
+ <!-- ── OR label ── -->
+ <div style="display:flex; align-items:center; gap:16px; width:min(680px,100%);">
+ <div style="flex:1; height:1px; background:#E8E2D9;"></div>
+ <span style="font-size:9px; text-transform:uppercase; letter-spacing:0.1em; color:#C8C4BC;">or</span>
+ <div style="flex:1; height:1px; background:#E8E2D9;"></div>
+ </div>
+
+ <!-- ── RESULT STYLE 2: people grid pictograph ── -->
+ <div style="width:min(680px,100%); background:#FFFFFF; border:1px solid #E8E2D9; border-radius:16px; padding:36px 32px 40px; box-shadow:0 2px 8px rgba(0,0,0,0.06); display:flex; flex-direction:column; gap:24px;">
+
+ <!-- fix 3: design option label -->
+ <div style="background:#F2F8FD; border-radius:8px; padding:4px 12px; align-self:center;">
+ <span style="font-size:8px; text-transform:uppercase; letter-spacing:0.07em; color:#120DA6;">design option B — people pictograph</span>
+ </div>
+
+ <div style="text-align:center; display:flex; flex-direction:column; align-items:center; gap:8px;">
+ <div style="height:11px; width:120px; background:#C8C4BC; border-radius:4px;"></div>
+ <span style="font-size:9px; text-transform:uppercase; letter-spacing:0.08em; color:#6B6568;">every dot = 1 person · [n] responses</span>
+ </div>
+
+ <!-- dot grid — people pictograph -->
+ <div style="display:flex; flex-wrap:wrap; gap:5px; padding:8px 0;">
+ <!-- navy dots — option A, user's pick, 42% = ~90 dots -->
+ <script>/* placeholder — rendered as coloured dot grid */</script>
+ <!-- Row approach: 15 cols × ~14 rows = 210 dots -->
+ <!-- A = navy (42%) B = sky (28%) C = pink (18%) D = neutral (12%) -->
+ <!-- Doing 5 rows of 15 for visual representation -->
+
+ <!-- Row 1 — all navy (user's answer dominates) -->
+ <div style="width:100%; display:flex; gap:5px;">
+ <div style="width:14px;height:14px;border-radius:999px;background:#120DA6;flex-shrink:0;"></div><div style="width:14px;height:14px;border-radius:999px;background:#120DA6;flex-shrink:0;"></div><div style="width:14px;height:14px;border-radius:999px;background:#120DA6;flex-shrink:0;"></div><div style="width:14px;height:14px;border-radius:999px;background:#120DA6;flex-shrink:0;"></div><div style="width:14px;height:14px;border-radius:999px;background:#120DA6;flex-shrink:0;"></div><div style="width:14px;height:14px;border-radius:999px;background:#120DA6;flex-shrink:0;"></div><div style="width:14px;height:14px;border-radius:999px;background:#120DA6;flex-shrink:0;"></div><div style="width:14px;height:14px;border-radius:999px;background:#120DA6;flex-shrink:0;"></div><div style="width:14px;height:14px;border-radius:999px;background:#120DA6;flex-shrink:0;"></div><div style="width:14px;height:14px;border-radius:999px;background:#120DA6;flex-shrink:0;"></div><div style="width:14px;height:14px;border-radius:999px;background:#120DA6;flex-shrink:0;"></div><div style="width:14px;height:14px;border-radius:999px;background:#120DA6;flex-shrink:0;"></div><div style="width:14px;height:14px;border-radius:999px;background:#120DA6;flex-shrink:0;"></div><div style="width:14px;height:14px;border-radius:999px;background:#120DA6;flex-shrink:0;"></div><div style="width:14px;height:14px;border-radius:999px;background:#120DA6;flex-shrink:0;"></div>
+ </div>
+ <!-- Row 2 — navy then sky -->
+ <div style="width:100%; display:flex; gap:5px;">
+ <div style="width:14px;height:14px;border-radius:999px;background:#120DA6;flex-shrink:0;"></div><div style="width:14px;height:14px;border-radius:999px;background:#120DA6;flex-shrink:0;"></div><div style="width:14px;height:14px;border-radius:999px;background:#120DA6;flex-shrink:0;"></div><div style="width:14px;height:14px;border-radius:999px;background:#120DA6;flex-shrink:0;"></div><div style="width:14px;height:14px;border-radius:999px;background:#120DA6;flex-shrink:0;"></div><div style="width:14px;height:14px;border-radius:999px;background:#120DA6;flex-shrink:0;"></div><div style="width:14px;height:14px;border-radius:999px;background:#C4E5F2;flex-shrink:0;"></div><div style="width:14px;height:14px;border-radius:999px;background:#C4E5F2;flex-shrink:0;"></div><div style="width:14px;height:14px;border-radius:999px;background:#C4E5F2;flex-shrink:0;"></div><div style="width:14px;height:14px;border-radius:999px;background:#C4E5F2;flex-shrink:0;"></div><div style="width:14px;height:14px;border-radius:999px;background:#C4E5F2;flex-shrink:0;"></div><div style="width:14px;height:14px;border-radius:999px;background:#C4E5F2;flex-shrink:0;"></div><div style="width:14px;height:14px;border-radius:999px;background:#C4E5F2;flex-shrink:0;"></div><div style="width:14px;height:14px;border-radius:999px;background:#C4E5F2;flex-shrink:0;"></div><div style="width:14px;height:14px;border-radius:999px;background:#C4E5F2;flex-shrink:0;"></div>
+ </div>
+ <!-- Row 3 — sky then pink -->
+ <div style="width:100%; display:flex; gap:5px;">
+ <div style="width:14px;height:14px;border-radius:999px;background:#C4E5F2;flex-shrink:0;"></div><div style="width:14px;height:14px;border-radius:999px;background:#C4E5F2;flex-shrink:0;"></div><div style="width:14px;height:14px;border-radius:999px;background:#C4E5F2;flex-shrink:0;"></div><div style="width:14px;height:14px;border-radius:999px;background:#C4E5F2;flex-shrink:0;"></div><div style="width:14px;height:14px;border-radius:999px;background:#C4E5F2;flex-shrink:0;"></div><div style="width:14px;height:14px;border-radius:999px;background:#F2BDD6;flex-shrink:0;"></div><div style="width:14px;height:14px;border-radius:999px;background:#F2BDD6;flex-shrink:0;"></div><div style="width:14px;height:14px;border-radius:999px;background:#F2BDD6;flex-shrink:0;"></div><div style="width:14px;height:14px;border-radius:999px;background:#F2BDD6;flex-shrink:0;"></div><div style="width:14px;height:14px;border-radius:999px;background:#F2BDD6;flex-shrink:0;"></div><div style="width:14px;height:14px;border-radius:999px;background:#F2BDD6;flex-shrink:0;"></div><div style="width:14px;height:14px;border-radius:999px;background:#E8E2D9;flex-shrink:0;"></div><div style="width:14px;height:14px;border-radius:999px;background:#E8E2D9;flex-shrink:0;"></div><div style="width:14px;height:14px;border-radius:999px;background:#E8E2D9;flex-shrink:0;"></div><div style="width:14px;height:14px;border-radius:999px;background:#E8E2D9;flex-shrink:0;"></div>
+ </div>
+ </div>
+
+ <!-- legend -->
+ <div style="display:flex; flex-wrap:wrap; gap:16px;">
+ <div style="display:flex; align-items:center; gap:6px;">
+ <div style="width:12px;height:12px;border-radius:999px;background:#120DA6;"></div>
+ <span style="font-size:9px; text-transform:uppercase; letter-spacing:0.07em; color:#1A1A1A;">option a — 42% · your answer</span>
+ </div>
+ <div style="display:flex; align-items:center; gap:6px;">
+ <div style="width:12px;height:12px;border-radius:999px;background:#C4E5F2;"></div>
+ <span style="font-size:9px; text-transform:uppercase; letter-spacing:0.07em; color:#6B6568;">option b — 28%</span>
+ </div>
+ <div style="display:flex; align-items:center; gap:6px;">
+ <div style="width:12px;height:12px;border-radius:999px;background:#F2BDD6;"></div>
+ <span style="font-size:9px; text-transform:uppercase; letter-spacing:0.07em; color:#6B6568;">option c — 18%</span>
+ </div>
+ <div style="display:flex; align-items:center; gap:6px;">
+ <div style="width:12px;height:12px;border-radius:999px;background:#E8E2D9;"></div>
+ <span style="font-size:9px; text-transform:uppercase; letter-spacing:0.07em; color:#6B6568;">option d — 12%</span>
+ </div>
+ </div>
+
+ <!-- insight -->
+ <div style="background:#F2F8FD; border-radius:10px; padding:14px 18px; display:flex; align-items:center; gap:10px;">
+ <span style="font-size:11px; color:#120DA6;">✦</span>
+ <div style="display:flex; flex-direction:column; gap:4px; flex:1;">
+ <div style="height:10px; background:#C4E5F2; border-radius:3px; opacity:0.8;"></div>
+ <div style="height:10px; width:72%; background:#C4E5F2; border-radius:3px; opacity:0.6;"></div>
+ <span style="font-size:8px; text-transform:uppercase; letter-spacing:0.06em; color:rgba(18,13,166,0.5); margin-top:2px;">e.g. "most students chose option A — explore why in the discussion below" · system-generated · updates live as responses arrive</span>
+ </div>
+ </div>
+
+ </div>
+
+ <!-- ── OR label ── -->
+ <div style="display:flex; align-items:center; gap:16px; width:min(680px,100%);">
+ <div style="flex:1; height:1px; background:#E8E2D9;"></div>
+ <span style="font-size:9px; text-transform:uppercase; letter-spacing:0.1em; color:#C8C4BC;">or</span>
+ <div style="flex:1; height:1px; background:#E8E2D9;"></div>
+ </div>
+
+ <!-- ── RESULT STYLE 3: segmented single bar ── -->
+ <div style="width:min(680px,100%); background:#FFFFFF; border:1.5px solid #120DA6; border-radius:16px; padding:36px 32px 40px; box-shadow:0 2px 8px rgba(0,0,0,0.06); display:flex; flex-direction:column; gap:24px;">
+
+ <!-- fix 3: primary design label -->
+ <div style="background:#120DA6; border-radius:8px; padding:4px 12px; align-self:center;">
+ <span style="font-size:8px; text-transform:uppercase; letter-spacing:0.07em; color:#FFFFFF;">★ primary design — segmented bar</span>
+ </div>
+
+ <div style="text-align:center; display:flex; flex-direction:column; align-items:center; gap:8px;">
+ <div style="height:11px; width:120px; background:#C8C4BC; border-radius:4px;"></div>
+ <span style="font-size:9px; text-transform:uppercase; letter-spacing:0.08em; color:#6B6568;">how [n] others answered</span>
+ </div>
+
+ <!-- single segmented bar -->
+ <div style="display:flex; flex-direction:column; gap:20px;">
+
+ <!-- the bar -->
+ <div style="position:relative;">
+ <div style="display:flex; height:48px; border-radius:999px; overflow:hidden; box-shadow:0 2px 8px rgba(0,0,0,0.08);">
+ <div style="width:42%; background:#120DA6; display:flex; align-items:center; justify-content:center;">
+ <span style="font-size:13px; font-weight:700; color:#FFFFFF;">42%</span>
+ </div>
+ <div style="width:28%; background:#C4E5F2; display:flex; align-items:center; justify-content:center;">
+ <span style="font-size:12px; font-weight:600; color:#120DA6;">28%</span>
+ </div>
+ <div style="width:18%; background:#F2BDD6; display:flex; align-items:center; justify-content:center;">
+ <span style="font-size:11px; font-weight:600; color:#40062B;">18%</span>
+ </div>
+ <div style="width:12%; background:#E8E2D9; display:flex; align-items:center; justify-content:center;">
+ <span style="font-size:10px; font-weight:600; color:#6B6568;">12%</span>
+ </div>
+ </div>
+ <!-- "you" pointer on the bar -->
+ <div style="position:absolute; top:-24px; left:21%; transform:translateX(-50%); display:flex; flex-direction:column; align-items:center; gap:2px;">
+ <span style="font-size:8px; text-transform:uppercase; letter-spacing:0.08em; color:#120DA6; font-weight:600;">you</span>
+ <div style="width:1.5px; height:10px; background:#120DA6;"></div>
+ </div>
+ </div>
+
+ <!-- option labels below bar -->
+ <div style="display:flex;">
+ <div style="width:42%; padding-right:8px;"><div style="height:11px; background:#120DA6; border-radius:4px; opacity:0.2; position:relative;"><span class="zone-label" style="font-size:8px; color:#120DA6;">option a</span></div></div>
+ <div style="width:28%; padding-right:8px;"><div style="height:11px; background:#C8C4BC; border-radius:4px; position:relative;"><span class="zone-label" style="font-size:8px;">option b</span></div></div>
+ <div style="width:18%; padding-right:8px;"><div style="height:11px; background:#C8C4BC; border-radius:4px; position:relative;"><span class="zone-label" style="font-size:8px;">option c</span></div></div>
+ <div style="width:12%;"><div style="height:11px; background:#C8C4BC; border-radius:4px; position:relative;"><span class="zone-label" style="font-size:8px;">option d</span></div></div>
+ </div>
+
+ </div>
+
+ <!-- insight -->
+ <div style="background:#F2F8FD; border-radius:10px; padding:14px 18px; display:flex; align-items:center; gap:10px;">
+ <span style="font-size:11px; color:#120DA6;">✦</span>
+ <div style="display:flex; flex-direction:column; gap:4px; flex:1;">
+ <div style="height:10px; background:#C4E5F2; border-radius:3px; opacity:0.8;"></div>
+ <div style="height:10px; width:72%; background:#C4E5F2; border-radius:3px; opacity:0.6;"></div>
+ <span style="font-size:8px; text-transform:uppercase; letter-spacing:0.06em; color:rgba(18,13,166,0.5); margin-top:2px;">e.g. "most students chose option A — explore why in the discussion below" · system-generated · updates live as responses arrive</span>
+ </div>
+ </div>
+
+ </div>
+
+ <!-- continue button — two states · tap scrolls to next section -->
+ <div style="display:flex; flex-direction:column; align-items:center; gap:6px; margin-top:8px;">
+ <div style="font-size:8px; text-transform:uppercase; letter-spacing:0.07em; color:rgba(0,0,0,0.28);">state a — active · all content on screen, scrolls to next section</div>
+ <div class="zone zone-sc-next" style="width:180px;"><span class="zone-label">continue →</span></div>
+ <div style="font-size:8px; text-transform:uppercase; letter-spacing:0.07em; color:rgba(0,0,0,0.28); margin-top:4px;">state b — after tap · greys out · learner scrolls to continue</div>
+ <div style="height:44px; width:180px; border-radius:10px; background:#D8D4CC; opacity:0.5; display:flex; align-items:center; justify-content:center;">
+ <span style="font-size:8px; color:rgba(0,0,0,0.30); text-transform:uppercase; letter-spacing:0.06em;">done ✓</span>
+ </div>
+ </div>
+
+ </div>
+ </div>
+ </section>
+</body>
+</html>

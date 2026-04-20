@@ -1,0 +1,1134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>First Forum Post — Wireframe</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+<style>
+ *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+ body { font-family: monospace; min-width: 1280px; }
+
+ /* ── shared ── */
+ section { min-height: 85vh; position: relative; }
+
+ .wrap {
+ max-width: 1280px;
+ margin: 0 auto;
+ padding: 0 clamp(80px, 12vw, 180px);
+ height: 100%;
+ }
+
+ .zone {
+ border: 1.5px dashed rgba(0,0,0,0.18);
+ border-radius: 4px;
+ position: relative;
+ }
+
+ .zone-label {
+ position: absolute;
+ top: 8px;
+ left: 12px;
+ font-size: 10px;
+ letter-spacing: 0.08em;
+ text-transform: uppercase;
+ color: rgba(0,0,0,0.3);
+ pointer-events: none;
+ }
+
+ /* dark section labels */
+ .dark-label { color: rgba(255,255,255,0.3); }
+
+ /* ── layout helpers ── */
+ .col-2 {
+ display: grid;
+ grid-template-columns: 1fr 1fr;
+ gap: clamp(24px, 4vw, 64px);
+ height: 100%;
+ }
+
+ .col-3 {
+ display: grid;
+ grid-template-columns: repeat(3, 1fr);
+ gap: 24px;
+ }
+
+ .col-2-narrow {
+ display: grid;
+ grid-template-columns: repeat(2, 1fr);
+ gap: 24px;
+ }
+
+ .section-layout {
+ display: flex;
+ flex-direction: column;
+ gap: 24px;
+ padding: clamp(64px, 8vw, 100px) 0;
+ }
+
+ /* ─────────────────────────────────────── */
+ /* HERO #F2F0EB */
+ /* ─────────────────────────────────────── */
+ .s1 { background: #F2F0EB; }
+
+ .s1 .section-layout { padding: clamp(48px, 10vw, 140px) 0; }
+
+ .s1 .col-2 { align-items: center; }
+
+ .s1-left {
+ display: flex;
+ flex-direction: column;
+ gap: 16px;
+ height: 100%;
+ min-height: clamp(320px, 50vh, 480px);
+ }
+
+ .zone-h1 { flex: 0 0 clamp(80px, 14vh, 140px); }
+ .zone-body { flex: 0 0 60px; }
+ .zone-buttons { flex: 0 0 56px; }
+ .zone-image { flex: 1; min-height: clamp(240px, 40vh, 400px); }
+
+ /* ─────────────────────────────────────── */
+ /* FEATURES #F2F2F2 */
+ /* ─────────────────────────────────────── */
+ .s2 { background: #F2F2F2; min-height: auto; }
+
+ .zone-section-head { height: clamp(80px, 12vh, 120px); }
+
+ .zone-card { height: clamp(200px, 28vh, 280px); }
+
+ /* ─────────────────────────────────────── */
+ /* HOW IT WORKS #F2F0EB */
+ /* ─────────────────────────────────────── */
+ .s3 { background: #F2F0EB; }
+
+ .s3 .col-2 { align-items: center; }
+
+ .zone-media { min-height: clamp(260px, 42vh, 440px); }
+
+ .s3-right {
+ display: flex;
+ flex-direction: column;
+ gap: 16px;
+ height: 100%;
+ }
+
+ .zone-h2-block { height: clamp(60px, 10vh, 100px); }
+ .zone-step { height: clamp(56px, 8vh, 72px); }
+
+ /* ─────────────────────────────────────── */
+ /* SOCIAL PROOF #F8F2ED */
+ /* ─────────────────────────────────────── */
+ .s4 { background: #F8F2ED; }
+
+ .zone-stat { height: clamp(100px, 14vh, 140px); }
+ .zone-quote { height: clamp(160px, 22vh, 220px); }
+
+ /* ─────────────────────────────────────── */
+ /* CTA #032626 */
+ /* ─────────────────────────────────────── */
+ .s5 { background: #032626; min-height: 50vh; }
+
+ .s5 .zone {
+ border-color: rgba(255,255,255,0.2);
+ }
+
+ .s5 .section-layout {
+ align-items: center;
+ justify-content: center;
+ min-height: 50vh;
+ }
+
+ .s5-centre {
+ display: flex;
+ flex-direction: column;
+ gap: 16px;
+ width: min(640px, 100%);
+ }
+
+ .zone-cta-h2 { height: clamp(60px, 10vh, 100px); }
+ .zone-cta-body { height: 40px; }
+ .zone-cta-buttons { height: 56px; }
+
+ /* ─────────────────────────────────────── */
+ /* QUIZ #F2F2F2 */
+ /* ─────────────────────────────────────── */
+ .s-quiz { background: #F2F2F2; }
+
+ .quiz-layout {
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+ gap: 24px;
+ padding: clamp(64px, 8vw, 100px) 0;
+ }
+
+ .quiz-card {
+ width: min(640px, 100%);
+ border: 1.5px dashed rgba(0,0,0,0.18);
+ border-radius: 16px;
+ padding: 40px;
+ display: flex;
+ flex-direction: column;
+ gap: 16px;
+ background: #FAFAF7;
+ position: relative;
+ }
+
+ .zone-dots { height: 20px; width: 120px; align-self: flex-end; }
+ .zone-question { height: clamp(56px, 8vh, 80px); }
+ .zone-option { height: 52px; }
+ .zone-feedback { height: 64px; }
+ .zone-next-btn { height: 52px; width: 160px; align-self: flex-end; }
+
+ /* result feedback options — pill style, visually distinct from quiz options */
+ .zone-feedback-option {
+ height: 48px;
+ border-radius: 999px;
+ border: 1.5px dashed rgba(0,0,0,0.15);
+ background: #F2F8FD;
+ position: relative;
+ }
+
+ /* ─────────────────────────────────────── */
+ /* BRANCHING #F8F2ED */
+ /* ─────────────────────────────────────── */
+ .s-branch { background: #F8F2ED; }
+
+ .branch-layout {
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+ gap: 48px;
+ padding: clamp(64px, 8vw, 100px) 0;
+ }
+
+ /* section heading */
+ .branch-head {
+ text-align: center;
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+ gap: 12px;
+ width: 100%;
+ }
+
+ /* step progress strip — floats above card centre */
+ .step-strip {
+ display: flex;
+ align-items: center;
+ gap: 0;
+ position: absolute;
+ top: 0;
+ left: 50%;
+ transform: translate(-50%, -50%);
+ background: #FFFFFF;
+ padding: 4px 12px;
+ border-radius: 999px;
+ border: 1.5px dashed rgba(0,0,0,0.18);
+ white-space: nowrap;
+ z-index: 2;
+ }
+ .step-pip {
+ width: 24px; height: 24px;
+ border-radius: 999px;
+ background: #E8E4DE;
+ border: 1.5px dashed rgba(0,0,0,0.18);
+ display: flex; align-items: center; justify-content: center;
+ font-size: 9px; color: rgba(0,0,0,0.3); letter-spacing: 0;
+ }
+ .step-pip.active { background: #120DA620; border-color: #120DA6; color: #120DA6; }
+ .step-pip.done { background: #C8C4BC; border-color: rgba(0,0,0,0.25); color: rgba(0,0,0,0.4); }
+ .step-line {
+ width: 20px; height: 1.5px;
+ background: rgba(0,0,0,0.15);
+ border-top: 1.5px dashed rgba(0,0,0,0.18);
+ }
+
+ /* shared screen card */
+ .screen-card {
+ width: min(680px, 100%);
+ background: #FFFFFF;
+ border: 1.5px dashed rgba(0,0,0,0.15);
+ border-radius: 16px;
+ padding: 36px;
+ padding-top: 48px;
+ display: flex;
+ flex-direction: column;
+ gap: 16px;
+ position: relative;
+ margin-top: 20px;
+ }
+
+ .screen-label {
+ font-size: 10px;
+ letter-spacing: 0.08em;
+ text-transform: uppercase;
+ color: rgba(0,0,0,0.3);
+ }
+
+ .zone-sc-heading { height: 32px; }
+ .zone-sc-body { height: 72px; }
+ .zone-sc-next { height: 48px; width: 120px; align-self: flex-end; }
+
+ /* branching activity card — wider */
+ .screen-card-wide {
+ width: min(680px, 100%);
+ background: #FFFFFF;
+ border: 1.5px dashed rgba(0,0,0,0.15);
+ border-radius: 16px;
+ padding: 36px;
+ padding-top: 48px;
+ display: flex;
+ flex-direction: column;
+ gap: 20px;
+ position: relative;
+ margin-top: 20px;
+ }
+
+ .zone-scenario { height: 80px; }
+ .three-options { display: flex; flex-direction: column; gap: 12px; }
+ .zone-option-card { padding: 14px 16px; display: flex; flex-direction: column; gap: 8px; }
+
+ /* down arrow connector */
+ .flow-arrow {
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+ gap: 0;
+ color: rgba(0,0,0,0.2);
+ font-size: 18px;
+ }
+ .flow-arrow::before {
+ content: '';
+ display: block;
+ width: 1.5px;
+ height: 24px;
+ border-left: 1.5px dashed rgba(0,0,0,0.2);
+ }
+
+ /* summary screen */
+ .summary-chain {
+ display: flex;
+ flex-direction: column;
+ gap: 12px;
+ width: 100%;
+ }
+ .chain-row {
+ display: grid;
+ grid-template-columns: 1fr 1fr;
+ gap: 12px;
+ }
+ .zone-chain-scenario { height: 52px; }
+ .zone-chain-choice { height: 52px; background: #F2F8FD; }
+
+ /* editable text area */
+ .text-area-wrap {
+ display: flex;
+ flex-direction: column;
+ gap: 0;
+ border: 1.5px dashed rgba(0,0,0,0.18);
+ border-radius: 8px;
+ overflow: hidden;
+ }
+ .text-toolbar {
+ display: flex;
+ align-items: center;
+ gap: 8px;
+ padding: 6px 10px;
+ background: #F5F5F5;
+ border-bottom: 1px solid rgba(0,0,0,0.08);
+ }
+ .zone-font-size {
+ height: 22px;
+ width: 64px;
+ border-radius: 4px;
+ border: 1.5px dashed rgba(0,0,0,0.18);
+ background: #fff;
+ position: relative;
+ }
+ .toolbar-label {
+ font-size: 9px;
+ text-transform: uppercase;
+ letter-spacing: 0.07em;
+ color: rgba(0,0,0,0.25);
+ }
+ .text-body {
+ min-height: 120px;
+ background: #fff;
+ border: none;
+ position: relative;
+ }
+
+ /* ai suggestion pills */
+ .ai-pills {
+ display: flex;
+ flex-wrap: wrap;
+ gap: 8px;
+ }
+ .ai-pill {
+ height: 32px;
+ border-radius: 999px;
+ border: 1.5px dashed rgba(0,0,0,0.18);
+ background: #F2F8FD;
+ position: relative;
+ display: flex;
+ align-items: center;
+ padding: 0 14px;
+ }
+ .ai-pill::after {
+ content: '';
+ display: block;
+ height: 8px;
+ background: rgba(0,0,0,0.18);
+ border-radius: 3px;
+ width: 100%;
+ }
+ .ai-pill:nth-child(1) { width: 140px; }
+ .ai-pill:nth-child(2) { width: 110px; }
+ .ai-pill:nth-child(3) { width: 160px; }
+ .ai-pills-label {
+ font-size: 9px;
+ letter-spacing: 0.08em;
+ text-transform: uppercase;
+ color: rgba(0,0,0,0.25);
+ margin-bottom: 2px;
+ }
+
+ /* slider zone */
+ .zone-slider-q { height: 32px; }
+ .zone-slider-bar { height: 40px; border-radius: 999px; }
+
+ /* 5-point slider */
+ .slider-section-wrap {
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+ gap: 48px;
+ padding: clamp(64px, 8vw, 100px) 0;
+ }
+
+ .slider-card {
+ width: min(680px, 100%);
+ background: #FFFFFF;
+ border: 1.5px dashed rgba(0,0,0,0.15);
+ border-radius: 16px;
+ padding: 40px;
+ display: flex;
+ flex-direction: column;
+ gap: 32px;
+ }
+
+ .slider-track-wrap {
+ display: flex;
+ flex-direction: column;
+ gap: 12px;
+ }
+
+ .slider-track {
+ position: relative;
+ display: flex;
+ align-items: center;
+ justify-content: space-between;
+ height: 48px;
+ }
+
+ /* the line */
+ .slider-track::before {
+ content: '';
+ position: absolute;
+ top: 50%;
+ left: 0;
+ right: 0;
+ transform: translateY(-50%);
+ height: 4px;
+ border-radius: 999px;
+ background: #E8E2D9;
+ border: 1.5px dashed rgba(0,0,0,0.15);
+ }
+
+ .slider-point {
+ width: 28px;
+ height: 28px;
+ border-radius: 999px;
+ background: #E8E2D9;
+ border: 1.5px dashed rgba(0,0,0,0.2);
+ position: relative;
+ z-index: 1;
+ flex-shrink: 0;
+ }
+
+ /* thumb — shown at rest (unused state) */
+ .slider-thumb {
+ position: absolute;
+ left: 0;
+ top: 50%;
+ transform: translate(-50%, -50%);
+ width: 40px;
+ height: 40px;
+ border-radius: 999px;
+ background: #D8D4CC;
+ border: 2px dashed rgba(0,0,0,0.2);
+ z-index: 2;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ }
+
+ .slider-nudge {
+ font-size: 9px;
+ text-transform: uppercase;
+ letter-spacing: 0.08em;
+ color: rgba(0,0,0,0.25);
+ text-align: center;
+ }
+
+ /* colour-changed state label */
+ .slider-state-row {
+ display: flex;
+ gap: 16px;
+ align-items: center;
+ justify-content: center;
+ }
+ .slider-state {
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+ gap: 6px;
+ font-size: 9px;
+ text-transform: uppercase;
+ letter-spacing: 0.07em;
+ color: rgba(0,0,0,0.3);
+ }
+ .slider-state-dot {
+ width: 28px; height: 28px;
+ border-radius: 999px;
+ border: 1.5px dashed;
+ }
+ .state-unused { background: #E8E2D9; border-color: rgba(0,0,0,0.2); }
+ .state-active { background: #120DA620; border-color: #120DA6; }
+
+ .slider-labels {
+ display: flex;
+ justify-content: space-between;
+ }
+ .slider-point-label {
+ font-size: 9px;
+ text-transform: uppercase;
+ letter-spacing: 0.06em;
+ color: rgba(0,0,0,0.3);
+ width: 28px;
+ text-align: center;
+ }
+
+ .col-3-branch { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; }
+
+ /* ── responsive ── */
+ @media (max-width: 768px) {
+ .col-2 { grid-template-columns: 1fr; }
+ .col-3 { grid-template-columns: 1fr; }
+ .col-2-narrow { grid-template-columns: 1fr; }
+ .col-3-branch { grid-template-columns: 1fr; }
+ }
+
+ /* ══════════════════════════════════════════════════════ */
+ /* WIREFRAME OVERRIDE — zero colour, outlines & fills */
+ /* ══════════════════════════════════════════════════════ */
+
+ /* 1. Strip shadows and gradients globally */
+ * { box-shadow: none !important; text-shadow: none !important; }
+ div[style*="linear-gradient"], section[style*="linear-gradient"] { background-image: none !important; }
+
+ /* 2. All sections → flat alternating grey regardless of inline colour */
+ section,
+ section[style] { background: #F0EFED !important; }
+ section:nth-of-type(even),
+ section:nth-of-type(even)[style] { background: #E8E7E5 !important; }
+
+ /* 3. Headings → solid grey placeholder bars */
+ h1 { background: #A8A5A2 !important; color: transparent !important; border-radius: 6px !important; display: block !important; }
+ h2 { background: #B2AFAC !important; color: transparent !important; border-radius: 6px !important; display: block !important; }
+ h3 { background: #BCBAB6 !important; color: transparent !important; border-radius: 6px !important; display: block !important; }
+ h4 { background: #C4C2BE !important; color: transparent !important; border-radius: 6px !important; display: block !important; }
+
+ /* 4. Paragraphs → grey placeholder lines */
+ p { background: #D0CCC8 !important; color: transparent !important; border-radius: 4px !important; }
+
+ /* 5. Links → wireframe button outlines */
+ a { background: transparent !important; background-image: none !important; color: transparent !important;
+ border: 1.5px dashed rgba(0,0,0,0.22) !important; border-radius: 8px !important; }
+ a * { color: transparent !important; background: transparent !important; background-image: none !important; }
+
+ /* 6. Brand colours on divs/spans → neutral wireframe grey
+ Targets colour values in inline style attributes */
+ div[style*="120DA6"], span[style*="120DA6"] { background-color: #C0BCBA !important; background-image: none !important; color: rgba(0,0,0,0.28) !important; border-color: rgba(0,0,0,0.18) !important; }
+ div[style*="032626"], span[style*="032626"] { background-color: #C8C4C0 !important; background-image: none !important; color: rgba(0,0,0,0.28) !important; border-color: rgba(0,0,0,0.18) !important; }
+ div[style*="40062B"], span[style*="40062B"] { background-color: #D0CCC8 !important; background-image: none !important; color: rgba(0,0,0,0.28) !important; border-color: rgba(0,0,0,0.18) !important; }
+ div[style*="F2BDD6"], span[style*="F2BDD6"] { background-color: #DEDAD6 !important; background-image: none !important; color: rgba(0,0,0,0.28) !important; border-color: rgba(0,0,0,0.15) !important; }
+ div[style*="C4E5F2"], span[style*="C4E5F2"] { background-color: #DDDAD5 !important; background-image: none !important; color: rgba(0,0,0,0.28) !important; border-color: rgba(0,0,0,0.15) !important; }
+ div[style*="F24405"], span[style*="F24405"] { background-color: #C8C4C0 !important; background-image: none !important; color: rgba(0,0,0,0.28) !important; border-color: rgba(0,0,0,0.18) !important; }
+ div[style*="8C5473"], span[style*="8C5473"] { background-color: #D0CCC8 !important; background-image: none !important; color: rgba(0,0,0,0.28) !important; border-color: rgba(0,0,0,0.18) !important; }
+
+ /* 7. White/near-white card backgrounds → keep off-white so structure shows */
+ div[style*="FFFFFF"], div[style*="FAFAF7"] { background-color: #F5F4F2 !important; border-color: rgba(0,0,0,0.14) !important; }
+
+ /* 8. Text colour overrides — all branded text → muted grey */
+ [style*="color:#120DA6"], [style*="color: #120DA6"] { color: rgba(0,0,0,0.35) !important; }
+ [style*="color:#FFFFFF"], [style*="color: #FFFFFF"] { color: rgba(0,0,0,0.35) !important; }
+ [style*="color:#1A1A1A"], [style*="color: #1A1A1A"] { color: rgba(0,0,0,0.45) !important; }
+ [style*="color:#40062B"], [style*="color: #40062B"] { color: rgba(0,0,0,0.35) !important; }
+ [style*="color:#6B6568"], [style*="color: #6B6568"] { color: rgba(0,0,0,0.30) !important; }
+
+ /* 9. Zone boxes — wireframe dashed fills */
+ .zone { background: #DEDAD6 !important; border: 1.5px dashed rgba(0,0,0,0.22) !important; }
+ .zone-label, .screen-label, .flow-arrow { color: rgba(0,0,0,0.30) !important; background: transparent !important; }
+
+ /* 10. Screen/quiz cards — structural white containers with dashed border */
+ .screen-card { background: #F5F4F2 !important; border: 1.5px dashed rgba(0,0,0,0.18) !important; }
+ .quiz-card { background: #F5F4F2 !important; border: 1.5px dashed rgba(0,0,0,0.18) !important; }
+
+ /* 11. Step pips */
+ .step-pip { background: #E0DDD8 !important; border: 1.5px dashed rgba(0,0,0,0.18) !important; color: rgba(0,0,0,0.30) !important; }
+ .step-pip.active { background: #C8C4C0 !important; border-color: rgba(0,0,0,0.30) !important; color: rgba(0,0,0,0.40) !important; }
+ .step-line { background: rgba(0,0,0,0.15) !important; border-color: rgba(0,0,0,0.18) !important; }
+
+ /* ═══════════════════════════════════════════════════════════ */
+ /* SUPPLEMENTAL OVERRIDES — catching all remaining colour leaks */
+ /* ═══════════════════════════════════════════════════════════ */
+
+ /* Additional background colours not caught above */
+ [style*="background:#F2F8FD"], [style*="background: #F2F8FD"] { background-color: #E2E0DC !important; }
+ [style*="background:#F8F2ED"], [style*="background: #F8F2ED"] { background-color: #E8E6E2 !important; }
+ [style*="background:#F2F0EB"], [style*="background: #F2F0EB"] { background-color: #ECEBE8 !important; }
+ [style*="background:#F2F2F2"], [style*="background: #F2F2F2"] { background-color: #EBEBEA !important; }
+ [style*="background:#FAFAF7"], [style*="background: #FAFAF7"] { background-color: #F0EFEC !important; }
+ [style*="background:#F9F9F9"], [style*="background: #F9F9F9"] { background-color: #EEECEA !important; }
+ [style*="background:#FFFDE8"], [style*="background: #FFFDE8"] { background-color: #E5E3DF !important; border-color: rgba(0,0,0,0.12) !important; }
+ [style*="background:#F8E04A"] { background-color: #D4D0CA !important; border-color: rgba(0,0,0,0.15) !important; }
+ [style*="background:#F8E04A60"] { background-color: rgba(200,195,190,0.3) !important; }
+ [style*="background:#1A1A1A"], [style*="background: #1A1A1A"] { background-color: #C0BCBA !important; }
+ [style*="background:#2A2A2A"], [style*="background: #2A2A2A"] { background-color: #BEBAB6 !important; }
+ [style*="background:#E8E2D9"], [style*="background: #E8E2D9"] { background-color: #DDD9D3 !important; }
+
+ /* Kill box-shadows from ALL inline-styled elements */
+ [style*="box-shadow"] { box-shadow: none !important; }
+
+ /* Kill linear gradients from inline styles */
+ [style*="linear-gradient"] { background-image: none !important; background-color: #D8D4CC !important; }
+
+ /* All coloured text via inline style → neutral grey */
+ [style*="color:#120DA6"], [style*="color: #120DA6"] { color: rgba(0,0,0,0.38) !important; }
+ [style*="color:#40062B"], [style*="color: #40062B"] { color: rgba(0,0,0,0.35) !important; }
+ [style*="color:#8C5473"], [style*="color: #8C5473"] { color: rgba(0,0,0,0.30) !important; }
+ [style*="color:#032626"], [style*="color: #032626"] { color: rgba(0,0,0,0.30) !important; }
+ [style*="color:#F24405"], [style*="color: #F24405"] { color: rgba(0,0,0,0.30) !important; }
+ [style*="color:#FFFFFF"], [style*="color: #FFFFFF"] { color: rgba(0,0,0,0.40) !important; }
+ [style*="color:#6B6568"], [style*="color: #6B6568"] { color: rgba(0,0,0,0.30) !important; }
+ [style*="color:#C8C4BC"] { color: rgba(0,0,0,0.25) !important; }
+
+ /* Borders using brand colours → neutral */
+ [style*="border:2px solid #40062B"], [style*="border: 2px solid #40062B"] { border-color: rgba(0,0,0,0.22) !important; }
+ [style*="border:1.5px solid #120DA6"], [style*="border: 1.5px solid #120DA6"] { border-color: rgba(0,0,0,0.20) !important; }
+ [style*="border:1px solid #120DA6"], [style*="border: 1px solid #120DA6"] { border-color: rgba(0,0,0,0.18) !important; }
+ [style*="border:2px solid #120DA6"], [style*="border: 2px solid #120DA6"] { border-color: rgba(0,0,0,0.22) !important; }
+ [style*="border:1px solid #E8E2D9"], [style*="border: 1px solid #E8E2D9"] { border-color: rgba(0,0,0,0.14) !important; }
+ [style*="border-bottom:2px solid #F8E04A"] { border-bottom-color: rgba(0,0,0,0.18) !important; }
+ [style*="border-bottom:1px solid #E8E2D9"] { border-bottom-color: rgba(0,0,0,0.12) !important; }
+ [style*="border-left:2px solid #E8E2D9"] { border-left-color: rgba(0,0,0,0.12) !important; }
+ [style*="border-top:1px solid #E8E2D9"] { border-top-color: rgba(0,0,0,0.12) !important; }
+ [style*="border-right:1px solid #E8E2D9"] { border-right-color: rgba(0,0,0,0.12) !important; }
+
+ /* Word cloud coloured spans → uniform neutral */
+ span[style*="color:#120DA6"], span[style*="color:#40062B"],
+ span[style*="color:#032626"], span[style*="color:#8C5473"],
+ span[style*="color:#6B6568"], span[style*="color:#C8C4BC"] {
+ color: rgba(0,0,0,0.40) !important;
+ }
+ span[style*="background:#C4E5F2"] { background-color: #D8D4CC !important; }
+
+ /* ── Section name labels (outside wireframe, not part of design) ── */
+ .section-name {
+ position: absolute;
+ top: 12px;
+ left: 12px;
+ font-family: monospace;
+ font-size: 10px;
+ font-weight: 700;
+ text-transform: uppercase;
+ letter-spacing: 0.1em;
+ color: rgba(0,0,0,0.35);
+ background: rgba(255,255,255,0.85);
+ padding: 4px 10px;
+ border-radius: 4px;
+ border: 1px dashed rgba(0,0,0,0.18);
+ pointer-events: none;
+ z-index: 100;
+ user-select: none;
+ }
+ section { position: relative; }
+
+ </style>
+</head>
+<body>
+  <section style="background:#F8F2ED; padding:clamp(48px,8vw,100px) clamp(24px,6vw,80px);">
+    <div style="max-width:1280px; margin:0 auto;">
+
+      <div style="display:flex; align-items:center; gap:12px; margin-bottom:48px;">
+        <div style="background:#1A1A1A; color:#fff; font-size:0.75rem; font-weight:700; letter-spacing:0.08em; padding:4px 10px; border-radius:4px; text-transform:uppercase;">Digital Asset</div>
+        <div style="font-size:0.875rem; color:#6B6568;">First-time forum post · 3-step flow · photo upload by design</div>
+      </div>
+
+      <div class="section-name">First Forum Post</div>
+
+      <div style="background:#EAF4FB; border:1px solid #B8D8EC; border-radius:6px; padding:16px 20px; margin-bottom:56px; max-width:900px;">
+        <div style="font-size:0.8125rem; color:#1A5276; font-weight:600; margin-bottom:4px;">Screen builder note</div>
+        <div style="font-size:0.8125rem; color:#1A5276;">Three-step flow. Step 1: text prompts. Step 2: photo upload — treated as the expected next step, not an optional extra. Skip is possible but visually buried (small muted link, no button). Step 3: preview card before final post. The photo step comes after writing — once the learner has already invested effort, the bar to upload feels lower. The wall is gated until they post.</div>
+      </div>
+
+      <!-- STEP INDICATOR -->
+      <div style="display:flex; justify-content:center; margin-bottom:48px;">
+        <div style="display:flex; align-items:center; gap:0;">
+          <!-- Step 1 — active -->
+          <div style="display:flex; align-items:center; gap:8px; background:#40062B; border-radius:999px; padding:8px 18px;">
+            <div style="width:22px; height:22px; border-radius:50%; background:rgba(255,255,255,0.2); display:flex; align-items:center; justify-content:center; font-size:0.75rem; font-weight:700; color:#fff; flex-shrink:0;">1</div>
+            <div style="font-size:0.875rem; font-weight:700; color:#fff;">Tell us about you</div>
+          </div>
+          <div style="width:32px; height:2px; background:#D8D4CC;"></div>
+          <!-- Step 2 — upcoming -->
+          <div style="display:flex; align-items:center; gap:8px; background:#F2F2F2; border-radius:999px; padding:8px 18px; border:1px solid #E8E2D9;">
+            <div style="width:22px; height:22px; border-radius:50%; background:#D8D4CC; display:flex; align-items:center; justify-content:center; font-size:0.75rem; font-weight:700; color:#6B6568; flex-shrink:0;">2</div>
+            <div style="font-size:0.875rem; font-weight:600; color:#6B6568;">Add a photo</div>
+          </div>
+          <div style="width:32px; height:2px; background:#D8D4CC;"></div>
+          <!-- Step 3 — upcoming -->
+          <div style="display:flex; align-items:center; gap:8px; background:#F2F2F2; border-radius:999px; padding:8px 18px; border:1px solid #E8E2D9;">
+            <div style="width:22px; height:22px; border-radius:50%; background:#D8D4CC; display:flex; align-items:center; justify-content:center; font-size:0.75rem; font-weight:700; color:#6B6568; flex-shrink:0;">3</div>
+            <div style="font-size:0.875rem; font-weight:600; color:#6B6568;">Review &amp; post</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ════════════════════════════════════════════════════════
+           STEP 1 — TEXT PROMPTS
+      ════════════════════════════════════════════════════════ -->
+      <div style="margin-bottom:64px;">
+        <div style="font-size:0.8125rem; color:#6B6568; font-weight:600; margin-bottom:20px; text-transform:uppercase; letter-spacing:0.06em;">Step 1 — Tell us about you</div>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:28px; align-items:start;">
+
+          <!-- Empty state -->
+          <div>
+            <div style="font-size:0.8125rem; color:#6B6568; font-weight:600; margin-bottom:14px; text-transform:uppercase; letter-spacing:0.05em;">State A — Empty (on first arrival)</div>
+            <div style="background:#FAFAF7; border:2px solid #40062B; border-radius:16px; overflow:hidden;">
+
+              <div style="background:#40062B; padding:22px 28px;">
+                <div style="font-size:0.75rem; color:rgba(255,255,255,0.65); font-weight:600; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:6px;">Welcome to the forum · Step 1 of 3</div>
+                <div style="font-size:1.125rem; font-weight:700; color:#fff; line-height:1.35; margin-bottom:6px;">Before you read what others have written, introduce yourself.</div>
+                <div style="font-size:0.875rem; color:rgba(255,255,255,0.7);">There are no right or wrong answers — just what is true for you right now.</div>
+              </div>
+
+              <div style="padding:24px 28px; display:flex; flex-direction:column; gap:18px;">
+
+                <div>
+                  <div style="font-size:0.875rem; font-weight:600; color:#40062B; margin-bottom:6px;">First name</div>
+                  <div style="background:#fff; border:1.5px dashed #D8D4CC; border-radius:8px; padding:11px 14px; font-size:0.9375rem; color:#D8D4CC; font-style:italic;">Your first name…</div>
+                  <div style="font-size:0.75rem; color:#6B6568; margin-top:4px;">This is how you will appear to the class</div>
+                </div>
+
+                <div>
+                  <div style="font-size:0.875rem; font-weight:600; color:#40062B; margin-bottom:6px;">Where are you from?</div>
+                  <div style="background:#fff; border:1.5px dashed #D8D4CC; border-radius:8px; padding:11px 14px; font-size:0.875rem; color:#D8D4CC; font-style:italic;">City, country — wherever feels right…</div>
+                </div>
+
+                <div>
+                  <div style="font-size:0.875rem; font-weight:600; color:#40062B; margin-bottom:6px;">What are you most looking forward to in this topic?</div>
+                  <div style="background:#fff; border:1.5px dashed #D8D4CC; border-radius:8px; padding:11px 14px; font-size:0.875rem; color:#D8D4CC; font-style:italic; min-height:52px;">I am most looking forward to…</div>
+                </div>
+
+                <div>
+                  <div style="font-size:0.875rem; font-weight:600; color:#40062B; margin-bottom:6px;">What are you most nervous or unsure about?</div>
+                  <div style="background:#fff; border:1.5px dashed #D8D4CC; border-radius:8px; padding:11px 14px; font-size:0.875rem; color:#D8D4CC; font-style:italic; min-height:52px;">I am a bit nervous about…</div>
+                </div>
+
+                <div>
+                  <div style="font-size:0.875rem; font-weight:600; color:#40062B; margin-bottom:4px;">What is one question you have right now?</div>
+                  <div style="font-size:0.75rem; color:#6B6568; margin-bottom:6px;">About the topic, the assessments, or anything on your mind.</div>
+                  <div style="background:#fff; border:1.5px dashed #D8D4CC; border-radius:8px; padding:11px 14px; font-size:0.875rem; color:#D8D4CC; font-style:italic; min-height:52px;">I am curious about… / I want to understand…</div>
+                </div>
+
+                <div>
+                  <div style="font-size:0.875rem; font-weight:600; color:#40062B; margin-bottom:6px;">One interest or hobby outside of study</div>
+                  <div style="background:#fff; border:1.5px dashed #D8D4CC; border-radius:8px; padding:11px 14px; font-size:0.875rem; color:#D8D4CC; font-style:italic;">Outside of uni, I enjoy…</div>
+                </div>
+
+                <!-- CTA disabled -->
+                <div style="margin-top:4px;">
+                  <div style="background:#D8D4CC; border-radius:10px; padding:14px 20px; text-align:center; font-size:0.9375rem; font-weight:700; color:#6B6568; cursor:not-allowed;">Next: add your photo →</div>
+                  <div style="font-size:0.75rem; color:#6B6568; text-align:center; margin-top:8px;">Fill in all fields to continue</div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+          <!-- Filled state -->
+          <div>
+            <div style="font-size:0.8125rem; color:#6B6568; font-weight:600; margin-bottom:14px; text-transform:uppercase; letter-spacing:0.05em;">State B — All filled (ready to continue)</div>
+            <div style="background:#FAFAF7; border:2px solid #40062B; border-radius:16px; overflow:hidden;">
+
+              <div style="background:#40062B; padding:22px 28px;">
+                <div style="font-size:0.75rem; color:rgba(255,255,255,0.65); font-weight:600; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:6px;">Welcome to the forum · Step 1 of 3</div>
+                <div style="font-size:1.125rem; font-weight:700; color:#fff; line-height:1.35; margin-bottom:6px;">Before you read what others have written, introduce yourself.</div>
+                <div style="font-size:0.875rem; color:rgba(255,255,255,0.7);">There are no right or wrong answers — just what is true for you right now.</div>
+              </div>
+
+              <div style="padding:24px 28px; display:flex; flex-direction:column; gap:12px;">
+
+                <div style="background:#F8F2ED; border:1.5px solid #40062B; border-radius:8px; padding:11px 14px;">
+                  <div style="font-size:0.625rem; color:#40062B; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:3px;">First name</div>
+                  <div style="font-size:0.9375rem; color:#1A1A1A; font-weight:600;">Sasha</div>
+                </div>
+
+                <div style="background:#F8F2ED; border:1.5px solid #40062B; border-radius:8px; padding:11px 14px;">
+                  <div style="font-size:0.625rem; color:#40062B; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:3px;">Where from</div>
+                  <div style="font-size:0.875rem; color:#1A1A1A;">Melbourne, Australia</div>
+                </div>
+
+                <div style="background:#F8F2ED; border:1.5px solid #40062B; border-radius:8px; padding:11px 14px;">
+                  <div style="font-size:0.625rem; color:#40062B; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:3px;">Looking forward to</div>
+                  <div style="font-size:0.875rem; color:#1A1A1A; line-height:1.5;">Understanding how supervision works in practice — not just the theory.</div>
+                </div>
+
+                <div style="background:#F8F2ED; border:1.5px solid #40062B; border-radius:8px; padding:11px 14px;">
+                  <div style="font-size:0.625rem; color:#40062B; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:3px;">Nervous about</div>
+                  <div style="font-size:0.875rem; color:#1A1A1A; line-height:1.5;">Getting feedback on my own practice — it can feel vulnerable.</div>
+                </div>
+
+                <div style="background:#F8F2ED; border:1.5px solid #40062B; border-radius:8px; padding:11px 14px;">
+                  <div style="font-size:0.625rem; color:#40062B; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:3px;">My question</div>
+                  <div style="font-size:0.875rem; color:#1A1A1A; line-height:1.5;">How do you handle it when a supervisee disagrees with your feedback?</div>
+                </div>
+
+                <div style="background:#F8F2ED; border:1.5px solid #40062B; border-radius:8px; padding:11px 14px;">
+                  <div style="font-size:0.625rem; color:#40062B; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:3px;">Outside of uni</div>
+                  <div style="font-size:0.875rem; color:#1A1A1A;">Long-distance running and growing vegetables</div>
+                </div>
+
+                <!-- CTA active -->
+                <div style="margin-top:8px;">
+                  <div style="background:#40062B; color:#fff; border-radius:10px; padding:14px 20px; text-align:center; font-size:0.9375rem; font-weight:700; cursor:pointer;">Next: add your photo →</div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ════════════════════════════════════════════════════════
+           STEP 2 — PHOTO UPLOAD
+      ════════════════════════════════════════════════════════ -->
+      <div style="margin-bottom:64px;">
+
+        <!-- Step indicator updated -->
+        <div style="display:flex; justify-content:center; margin-bottom:32px;">
+          <div style="display:flex; align-items:center; gap:0;">
+            <div style="display:flex; align-items:center; gap:8px; background:#F2F2F2; border-radius:999px; padding:8px 18px; border:1px solid #E8E2D9;">
+              <div style="width:22px; height:22px; border-radius:50%; background:#40062B; display:flex; align-items:center; justify-content:center; font-size:0.75rem; font-weight:700; color:#fff; flex-shrink:0;">✓</div>
+              <div style="font-size:0.875rem; font-weight:600; color:#6B6568;">Tell us about you</div>
+            </div>
+            <div style="width:32px; height:2px; background:#40062B;"></div>
+            <div style="display:flex; align-items:center; gap:8px; background:#40062B; border-radius:999px; padding:8px 18px;">
+              <div style="width:22px; height:22px; border-radius:50%; background:rgba(255,255,255,0.2); display:flex; align-items:center; justify-content:center; font-size:0.75rem; font-weight:700; color:#fff; flex-shrink:0;">2</div>
+              <div style="font-size:0.875rem; font-weight:700; color:#fff;">Add a photo</div>
+            </div>
+            <div style="width:32px; height:2px; background:#D8D4CC;"></div>
+            <div style="display:flex; align-items:center; gap:8px; background:#F2F2F2; border-radius:999px; padding:8px 18px; border:1px solid #E8E2D9;">
+              <div style="width:22px; height:22px; border-radius:50%; background:#D8D4CC; display:flex; align-items:center; justify-content:center; font-size:0.75rem; font-weight:700; color:#6B6568; flex-shrink:0;">3</div>
+              <div style="font-size:0.875rem; font-weight:600; color:#6B6568;">Review &amp; post</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="font-size:0.8125rem; color:#6B6568; font-weight:600; margin-bottom:20px; text-transform:uppercase; letter-spacing:0.06em;">Step 2 — Add a photo · two states</div>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:28px; align-items:start;">
+
+          <!-- State A: awaiting upload -->
+          <div>
+            <div style="font-size:0.8125rem; color:#6B6568; font-weight:600; margin-bottom:14px; text-transform:uppercase; letter-spacing:0.05em;">State A — Awaiting upload</div>
+            <div style="background:#FAFAF7; border:2px solid #40062B; border-radius:16px; overflow:hidden;">
+
+              <div style="background:#40062B; padding:20px 28px;">
+                <div style="font-size:0.75rem; color:rgba(255,255,255,0.65); font-weight:600; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:6px;">Step 2 of 3</div>
+                <div style="font-size:1.125rem; font-weight:700; color:#fff; line-height:1.35; margin-bottom:6px;">Add a photo to your introduction</div>
+                <div style="font-size:0.875rem; color:rgba(255,255,255,0.8); line-height:1.5;">Students who add a photo get more responses. It helps your cohort put a face to a name — especially in an online unit.</div>
+              </div>
+
+              <div style="padding:32px 28px; display:flex; flex-direction:column; align-items:center; gap:20px;">
+
+                <!-- Large upload zone — prominent, inviting -->
+                <div style="width:100%; max-width:320px; aspect-ratio:1; border-radius:50%; border:3px dashed #40062B; background:#F8F2ED; display:flex; flex-direction:column; align-items:center; justify-content:center; cursor:pointer; gap:10px; transition:all 0.2s;">
+                  <div style="width:56px; height:56px; border-radius:50%; background:#40062B; display:flex; align-items:center; justify-content:center;">
+                    <div style="font-size:1.5rem; color:#F2BDD6; font-weight:300; line-height:1;">+</div>
+                  </div>
+                  <div style="text-align:center;">
+                    <div style="font-size:1rem; font-weight:700; color:#40062B; margin-bottom:4px;">Upload a photo</div>
+                    <div style="font-size:0.8125rem; color:#8C5473; line-height:1.4;">Tap here or drag your photo<br>in — it will be cropped to a circle</div>
+                  </div>
+                </div>
+
+                <!-- Primary action -->
+                <div style="background:#40062B; color:#fff; border-radius:10px; padding:13px 32px; font-size:0.9375rem; font-weight:700; cursor:pointer; text-align:center; width:100%; max-width:320px; box-sizing:border-box;">Upload photo →</div>
+
+                <!-- Skip — small, muted, hard to find by design -->
+                <div style="font-size:0.8125rem; color:#D8D4CC; cursor:pointer; text-align:center;">continue without a photo</div>
+
+              </div>
+            </div>
+          </div>
+
+          <!-- State B: photo uploaded -->
+          <div>
+            <div style="font-size:0.8125rem; color:#6B6568; font-weight:600; margin-bottom:14px; text-transform:uppercase; letter-spacing:0.05em;">State B — Photo uploaded</div>
+            <div style="background:#FAFAF7; border:2px solid #40062B; border-radius:16px; overflow:hidden;">
+
+              <div style="background:#40062B; padding:20px 28px;">
+                <div style="font-size:0.75rem; color:rgba(255,255,255,0.65); font-weight:600; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:6px;">Step 2 of 3</div>
+                <div style="font-size:1.125rem; font-weight:700; color:#fff; line-height:1.35;">Add a photo to your introduction</div>
+              </div>
+
+              <div style="padding:32px 28px; display:flex; flex-direction:column; align-items:center; gap:20px;">
+
+                <!-- Photo preview — with crop handles implied -->
+                <div style="position:relative; width:220px; height:220px;">
+                  <!-- Circular mask -->
+                  <div style="width:220px; height:220px; border-radius:50%; overflow:hidden; border:4px solid #40062B; background:linear-gradient(135deg,#F2BDD6 0%,#8C5473 50%,#40062B 100%); display:flex; align-items:center; justify-content:center;">
+                    <div style="font-size:5rem; font-weight:700; color:rgba(255,255,255,0.5);">S</div>
+                  </div>
+                  <!-- Change photo button overlay -->
+                  <div style="position:absolute; bottom:8px; right:8px; background:#40062B; border-radius:999px; padding:6px 12px; font-size:0.75rem; font-weight:700; color:#fff; cursor:pointer; border:2px solid #FAFAF7;">Change</div>
+                </div>
+
+                <div style="background:#F2BDD6; border:1.5px solid #40062B; border-radius:8px; padding:10px 16px; text-align:center; width:100%; max-width:320px; box-sizing:border-box;">
+                  <div style="font-size:0.8125rem; font-weight:700; color:#40062B;">Photo looks great, Sasha ✓</div>
+                  <div style="font-size:0.75rem; color:#8C5473; margin-top:2px;">It will be shown as a circle on your card</div>
+                </div>
+
+                <div style="background:#40062B; color:#fff; border-radius:10px; padding:13px 32px; font-size:0.9375rem; font-weight:700; cursor:pointer; text-align:center; width:100%; max-width:320px; box-sizing:border-box;">Next: review your card →</div>
+
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Design intention annotation -->
+        <div style="background:#1A1A1A; border-radius:10px; padding:18px 24px; margin-top:20px; max-width:860px;">
+          <div style="font-size:0.75rem; font-weight:700; color:rgba(255,255,255,0.5); text-transform:uppercase; letter-spacing:0.06em; margin-bottom:10px;">Design intention — why the photo step is designed this way</div>
+          <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px; font-size:0.8125rem; color:rgba(255,255,255,0.7); line-height:1.55;">
+            <div><span style="color:#fff; font-weight:600;">Comes after the writing.</span> Once the learner has invested effort in 6 prompts, the marginal cost of uploading a photo feels lower. They are already in the flow.</div>
+            <div><span style="color:#fff; font-weight:600;">Skipping is possible but buried.</span> "Continue without a photo" is a small muted text link — not a button. It is not hidden; it is just not the obvious path. Learners who look for it will find it.</div>
+            <div><span style="color:#fff; font-weight:600;">The header does the persuasion.</span> "Students who add a photo get more responses" — a social nudge, not a rule. No guilt, no pressure. Just a reason that is true.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ════════════════════════════════════════════════════════
+           STEP 3 — PREVIEW CARD
+      ════════════════════════════════════════════════════════ -->
+      <div style="margin-bottom:64px;">
+
+        <!-- Step indicator -->
+        <div style="display:flex; justify-content:center; margin-bottom:32px;">
+          <div style="display:flex; align-items:center; gap:0;">
+            <div style="display:flex; align-items:center; gap:8px; background:#F2F2F2; border-radius:999px; padding:8px 18px; border:1px solid #E8E2D9;">
+              <div style="width:22px; height:22px; border-radius:50%; background:#40062B; display:flex; align-items:center; justify-content:center; font-size:0.75rem; font-weight:700; color:#fff; flex-shrink:0;">✓</div>
+              <div style="font-size:0.875rem; font-weight:600; color:#6B6568;">Tell us about you</div>
+            </div>
+            <div style="width:32px; height:2px; background:#40062B;"></div>
+            <div style="display:flex; align-items:center; gap:8px; background:#F2F2F2; border-radius:999px; padding:8px 18px; border:1px solid #E8E2D9;">
+              <div style="width:22px; height:22px; border-radius:50%; background:#40062B; display:flex; align-items:center; justify-content:center; font-size:0.75rem; font-weight:700; color:#fff; flex-shrink:0;">✓</div>
+              <div style="font-size:0.875rem; font-weight:600; color:#6B6568;">Add a photo</div>
+            </div>
+            <div style="width:32px; height:2px; background:#40062B;"></div>
+            <div style="display:flex; align-items:center; gap:8px; background:#40062B; border-radius:999px; padding:8px 18px;">
+              <div style="width:22px; height:22px; border-radius:50%; background:rgba(255,255,255,0.2); display:flex; align-items:center; justify-content:center; font-size:0.75rem; font-weight:700; color:#fff; flex-shrink:0;">3</div>
+              <div style="font-size:0.875rem; font-weight:700; color:#fff;">Review &amp; post</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="font-size:0.8125rem; color:#6B6568; font-weight:600; margin-bottom:20px; text-transform:uppercase; letter-spacing:0.06em;">Step 3 — Preview card before posting</div>
+
+        <div style="display:grid; grid-template-columns:5fr 7fr; gap:32px; align-items:start; max-width:960px;">
+
+          <!-- Preview card -->
+          <div>
+            <div style="font-size:0.8125rem; color:#6B6568; font-weight:600; margin-bottom:14px; text-transform:uppercase; letter-spacing:0.05em;">This is how your card will look</div>
+            <div style="background:#fff; border:2px solid #40062B; border-radius:14px; overflow:hidden; box-shadow:0 4px 20px rgba(64,6,43,0.12);">
+              <div style="background:#F2BDD6; padding:18px 20px; display:flex; align-items:center; gap:14px;">
+                <div style="width:60px; height:60px; border-radius:50%; border:3px solid #40062B; background:linear-gradient(135deg,#F2BDD6 0%,#8C5473 100%); flex-shrink:0; display:flex; align-items:center; justify-content:center; overflow:hidden;">
+                  <div style="font-size:1.5rem; font-weight:700; color:#fff;">S</div>
+                </div>
+                <div>
+                  <div style="font-size:1.0625rem; font-weight:700; color:#40062B;">Sasha</div>
+                  <div style="font-size:0.8125rem; color:#8C5473; font-weight:500;">Melbourne, Australia</div>
+                </div>
+              </div>
+              <div style="padding:16px 20px; display:flex; flex-direction:column; gap:12px;">
+                <div>
+                  <div style="font-size:0.625rem; color:#40062B; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:3px;">Looking forward to</div>
+                  <div style="font-size:0.875rem; color:#1A1A1A; line-height:1.5;">Understanding how supervision works in practice — not just the theory.</div>
+                </div>
+                <div>
+                  <div style="font-size:0.625rem; color:#8C5473; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:3px;">A bit nervous about</div>
+                  <div style="font-size:0.875rem; color:#1A1A1A; line-height:1.5;">Getting feedback on my own practice — it can feel vulnerable.</div>
+                </div>
+                <div style="background:#F8F2ED; border-radius:6px; padding:10px 12px;">
+                  <div style="font-size:0.625rem; color:#6B6568; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:3px;">My question</div>
+                  <div style="font-size:0.875rem; color:#1A1A1A; line-height:1.5;">How do you handle it when a supervisee disagrees with your feedback?</div>
+                </div>
+                <div style="font-size:0.8125rem; color:#6B6568; border-top:1px solid #E8E2D9; padding-top:10px; margin-top:2px;">Outside of uni: long-distance running and growing vegetables</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Confirm + edit options -->
+          <div>
+            <div style="font-size:0.8125rem; color:#6B6568; font-weight:600; margin-bottom:14px; text-transform:uppercase; letter-spacing:0.05em;">Confirm or edit before posting</div>
+            <div style="background:#FAFAF7; border:1px solid #E8E2D9; border-radius:14px; padding:24px 26px; display:flex; flex-direction:column; gap:16px;">
+
+              <div style="font-size:0.9375rem; font-weight:700; color:#1A1A1A; margin-bottom:4px;">Looking good, Sasha.</div>
+              <div style="font-size:0.875rem; color:#6B6568; line-height:1.6;">This is what your classmates will see. Once you post, you can still come back and edit at any time.</div>
+
+              <!-- Edit links -->
+              <div style="background:#F2F2F2; border-radius:8px; padding:12px 16px; display:flex; flex-direction:column; gap:8px;">
+                <div style="font-size:0.75rem; color:#6B6568; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:4px;">Want to change anything?</div>
+                <div style="font-size:0.875rem; color:#120DA6; font-weight:600; cursor:pointer; text-decoration:underline;">← Edit my answers</div>
+                <div style="font-size:0.875rem; color:#120DA6; font-weight:600; cursor:pointer; text-decoration:underline;">← Change my photo</div>
+              </div>
+
+              <!-- Post button -->
+              <div style="background:#40062B; color:#fff; border-radius:10px; padding:16px 24px; text-align:center; font-size:1rem; font-weight:700; cursor:pointer; margin-top:4px;">Post my introduction →</div>
+
+              <div style="font-size:0.75rem; color:#6B6568; text-align:center;">Your introduction will be visible to all students enrolled in this unit.</div>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ════════════════════════════════════════════════════════
+           WALL — after posting
+      ════════════════════════════════════════════════════════ -->
+      <div style="margin-bottom:48px;">
+        <div style="font-size:0.8125rem; color:#6B6568; font-weight:600; margin-bottom:20px; text-transform:uppercase; letter-spacing:0.06em;">After posting — class intro wall</div>
+
+        <div style="background:#40062B; border-radius:14px 14px 0 0; padding:20px 28px; display:flex; align-items:center; justify-content:space-between;">
+          <div>
+            <div style="font-size:0.75rem; color:rgba(255,255,255,0.6); font-weight:600; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:4px;">Your cohort</div>
+            <div style="font-size:1.0625rem; font-weight:700; color:#fff;">23 introductions posted so far</div>
+          </div>
+          <div style="display:flex; gap:8px; align-items:center;">
+            <div style="background:rgba(255,255,255,0.15); border-radius:999px; padding:6px 14px; font-size:0.8125rem; font-weight:600; color:#fff; cursor:pointer; border:1px solid rgba(255,255,255,0.2);">All</div>
+            <div style="background:transparent; border-radius:999px; padding:6px 14px; font-size:0.8125rem; font-weight:600; color:rgba(255,255,255,0.55); cursor:pointer; border:1px solid rgba(255,255,255,0.15);">With photos</div>
+            <div style="background:transparent; border-radius:999px; padding:6px 14px; font-size:0.8125rem; font-weight:600; color:rgba(255,255,255,0.55); cursor:pointer; border:1px solid rgba(255,255,255,0.15);">Same nervousness</div>
+          </div>
+        </div>
+
+        <div style="background:#F2BDD6; border:1px solid #40062B; border-top:none; padding:12px 28px; display:flex; align-items:center; gap:10px;">
+          <div style="width:6px; height:6px; background:#40062B; border-radius:50%;"></div>
+          <div style="font-size:0.8125rem; color:#40062B; font-weight:700;">Your card is pinned here · posted just now</div>
+          <div style="margin-left:auto; font-size:0.8125rem; color:#40062B; font-weight:600; cursor:pointer; text-decoration:underline;">Edit →</div>
+        </div>
+
+        <div style="background:#FAFAF7; border:1px solid #E8E2D9; border-top:none; border-radius:0 0 14px 14px; padding:28px;">
+          <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:16px;">
+
+            <!-- Own card (Sasha, with photo) -->
+            <div style="background:#fff; border:2px solid #40062B; border-radius:12px; overflow:hidden;">
+              <div style="background:#F2BDD6; padding:14px 16px; display:flex; align-items:center; gap:10px;">
+                <div style="width:48px; height:48px; border-radius:50%; border:2px solid #40062B; background:linear-gradient(135deg,#F2BDD6,#8C5473); flex-shrink:0; display:flex; align-items:center; justify-content:center;">
+                  <div style="font-size:1.25rem; font-weight:700; color:#fff;">S</div>
+                </div>
+                <div style="min-width:0;">
+                  <div style="font-size:0.9375rem; font-weight:700; color:#40062B;">Sasha</div>
+                  <div style="font-size:0.6875rem; color:#8C5473;">Melbourne, AU</div>
+                </div>
+                <div style="margin-left:auto; background:#40062B; color:#F2BDD6; border-radius:999px; padding:2px 7px; font-size:0.625rem; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; white-space:nowrap; flex-shrink:0;">You</div>
+              </div>
+              <div style="padding:12px 14px; display:flex; flex-direction:column; gap:8px;">
+                <div style="font-size:0.75rem; color:#1A1A1A; line-height:1.45;">Looking forward to understanding how supervision works in practice.</div>
+                <div style="font-size:0.75rem; color:#6B6568; line-height:1.45; border-top:1px solid #E8E2D9; padding-top:8px; font-style:italic;">Long-distance running and growing vegetables</div>
+              </div>
+            </div>
+
+            <!-- Jamie (with photo) -->
+            <div style="background:#fff; border:1px solid #E8E2D9; border-radius:12px; overflow:hidden;">
+              <div style="background:#F8F2ED; padding:14px 16px; display:flex; align-items:center; gap:10px;">
+                <div style="width:48px; height:48px; border-radius:50%; background:#8C5473; flex-shrink:0; display:flex; align-items:center; justify-content:center; border:2px solid #8C5473;">
+                  <div style="font-size:1.25rem; font-weight:700; color:#fff;">J</div>
+                </div>
+                <div>
+                  <div style="font-size:0.9375rem; font-weight:700; color:#1A1A1A;">Jamie</div>
+                  <div style="font-size:0.6875rem; color:#6B6568;">Sydney, NSW</div>
+                </div>
+              </div>
+              <div style="padding:12px 14px; display:flex; flex-direction:column; gap:8px;">
+                <div style="font-size:0.75rem; color:#1A1A1A; line-height:1.45;">Building real confidence in the supervisor role.</div>
+                <div style="font-size:0.75rem; color:#6B6568; line-height:1.45; border-top:1px solid #E8E2D9; padding-top:8px; font-style:italic;">Hiking and amateur photography</div>
+              </div>
+            </div>
+
+            <!-- Morgan (no photo — letter only) -->
+            <div style="background:#fff; border:1px solid #E8E2D9; border-radius:12px; overflow:hidden;">
+              <div style="background:#F2F2F2; padding:14px 16px; display:flex; align-items:center; gap:10px;">
+                <div style="width:48px; height:48px; border-radius:50%; background:#E8E2D9; flex-shrink:0; display:flex; align-items:center; justify-content:center; border:1.5px dashed #D8D4CC;">
+                  <div style="font-size:1.25rem; font-weight:700; color:#6B6568;">M</div>
+                </div>
+                <div>
+                  <div style="font-size:0.9375rem; font-weight:700; color:#1A1A1A;">Morgan</div>
+                  <div style="font-size:0.6875rem; color:#6B6568;">Brisbane, QLD</div>
+                </div>
+              </div>
+              <div style="padding:12px 14px; display:flex; flex-direction:column; gap:8px;">
+                <div style="font-size:0.75rem; color:#1A1A1A; line-height:1.45;">Seeing how the models we study map onto real clinical work.</div>
+                <div style="font-size:0.75rem; color:#6B6568; line-height:1.45; border-top:1px solid #E8E2D9; padding-top:8px; font-style:italic;">Cooking and playing in a community band</div>
+              </div>
+            </div>
+
+            <!-- Alex (with photo) -->
+            <div style="background:#fff; border:1px solid #E8E2D9; border-radius:12px; overflow:hidden;">
+              <div style="background:#F2F8FD; padding:14px 16px; display:flex; align-items:center; gap:10px;">
+                <div style="width:48px; height:48px; border-radius:50%; background:#120DA6; flex-shrink:0; display:flex; align-items:center; justify-content:center; border:2px solid #120DA6;">
+                  <div style="font-size:1.25rem; font-weight:700; color:#fff;">A</div>
+                </div>
+                <div>
+                  <div style="font-size:0.9375rem; font-weight:700; color:#1A1A1A;">Alex</div>
+                  <div style="font-size:0.6875rem; color:#6B6568;">Perth, WA</div>
+                </div>
+              </div>
+              <div style="padding:12px 14px; display:flex; flex-direction:column; gap:8px;">
+                <div style="font-size:0.75rem; color:#1A1A1A; line-height:1.45;">Learning to give useful feedback — not just positive reinforcement.</div>
+                <div style="font-size:0.75rem; color:#6B6568; line-height:1.45; border-top:1px solid #E8E2D9; padding-top:8px; font-style:italic;">Surfing and reading science fiction</div>
+              </div>
+            </div>
+
+          </div>
+
+          <div style="display:flex; align-items:center; gap:16px; margin-top:20px;">
+            <div style="flex:1; height:1px; background:#E8E2D9;"></div>
+            <div style="background:#F2F2F2; border:1px solid #E8E2D9; border-radius:999px; padding:8px 20px; font-size:0.8125rem; font-weight:600; color:#120DA6; cursor:pointer;">See all 23 introductions ↓</div>
+            <div style="flex:1; height:1px; background:#E8E2D9;"></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+</body>
+</html>
