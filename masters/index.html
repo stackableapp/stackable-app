@@ -196,45 +196,43 @@
 
 <script>
   const masterbrick = [
-    { file: 'MasterBrick.html',        name: 'MasterBrick' },
-    { file: 'branching-scenario.html', name: 'Branching Scenario' },
-    { file: 'multi-select.html',       name: 'Multi-Select' },
-    { file: 'orientation.html',        name: 'Orientation' },
-    { file: 'summary.html',            name: 'Summary' }
+    { path: '/masterbrick',      name: 'MasterBrick' },
+    { path: '/multi-select',     name: 'Multi-Select' },
+    { path: '/summary-screen',   name: 'Summary' }
   ];
 
   const classic = [
-    { file: 'about-cta.html',          name: 'About CTA' },
-    { file: 'activity-showcase.html',  name: 'Activity Showcase' },
-    { file: 'format-switcher.html',    name: 'Format Switcher' },
-    { file: 'hero-story.html',         name: 'Hero Story' },
-    { file: 'idea-wall.html',          name: 'Idea Wall' },
-    { file: 'kindle-reader.html',      name: 'Kindle Reader' },
-    { file: 'landing-page.html',       name: 'Landing Page' },
-    { file: 'landing-showcase.html',   name: 'Landing Showcase' },
-    { file: 'module-navigator.html',   name: 'Module Navigator' },
-    { file: 'orientation.html',        name: 'Orientation' },
-    { file: 'photo-story-reader.html', name: 'Photo Story Reader' },
-    { file: 'pricing.html',            name: 'Pricing' },
-    { file: 'quiz.html',               name: 'Quiz' },
-    { file: 'scene-setter.html',       name: 'Scene Setter' },
-    { file: 'self-check.html',         name: 'Self Check' },
-    { file: 'vocab-wall.html',         name: 'Vocab Wall' }
+    { path: '/about-cta',          name: 'About CTA' },
+    { path: '/activity-showcase',  name: 'Activity Showcase' },
+    { path: '/format-switcher',    name: 'Format Switcher' },
+    { path: '/hero-story',         name: 'Hero Story' },
+    { path: '/idea-wall',          name: 'Idea Wall' },
+    { path: '/kindle-reader',      name: 'Kindle Reader' },
+    { path: '/landing-page',       name: 'Landing Page' },
+    { path: '/landing-showcase',   name: 'Landing Showcase' },
+    { path: '/module-navigator',   name: 'Module Navigator' },
+    { path: '/orientation',        name: 'Orientation' },
+    { path: '/photo-story-reader', name: 'Photo Story Reader' },
+    { path: '/pricing',            name: 'Pricing' },
+    { path: '/quiz',               name: 'Quiz' },
+    { path: '/scene-setter',       name: 'Scene Setter' },
+    { path: '/self-check',         name: 'Self Check' },
+    { path: '/vocab-wall',         name: 'Vocab Wall' }
   ];
 
-  function render(items, basePath, mountId) {
+  function render(items, mountId) {
     const mount = document.getElementById(mountId);
     const frag = document.createDocumentFragment();
     items.forEach(item => {
       const a = document.createElement('a');
       a.className = 'card';
-      a.href = basePath + '/' + item.file;
+      a.href = item.path;
       a.target = '_blank';
       a.rel = 'noopener';
       a.innerHTML = `
         <div>
           <p class="name">${item.name}</p>
-          <p class="slug">${basePath}/${item.file}</p>
+          <p class="slug">${item.path}</p>
         </div>
         <p class="arrow">Open preview <span>→</span></p>
       `;
@@ -243,8 +241,8 @@
     mount.appendChild(frag);
   }
 
-  render(masterbrick, 'Master',   'grid-masterbrick');
-  render(classic,     '_masters', 'grid-classic');
+  render(masterbrick, 'grid-masterbrick');
+  render(classic,     'grid-classic');
 </script>
 
 </body>
