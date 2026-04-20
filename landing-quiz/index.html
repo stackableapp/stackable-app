@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Course Quiz</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      background: #F2F0EB;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      color: #1A1A1A;
+      overflow-x: hidden;
+    }
+
+    .quiz-section {
+      display: flex;
+      justify-content: center;
+      padding: clamp(32px, 6vw, 80px) clamp(16px, 4vw, 40px);
+    }
+
+    /* ── Quiz card container ── */
+    .quiz-card {
+      width: 100%;
+      max-width: 560px;
+      background: #FAFAF7;
+      border-radius: 24px;
+      border: 1px solid #E8E2D9;
+      padding: clamp(32px, 5vw, 56px);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+
+    /* ── Progress dots ── */
+    .dots {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: clamp(32px, 4vw, 48px);
+      transition: opacity 0.4s ease;
+    }
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: #E8E2D9;
+      transition: background 0.3s ease, transform 0.3s ease;
+    }
+    .dot.active {
+      background: #1A1A1A;
+      transform: scale(1.15);
+    }
+
+    /* ── Card viewport ── */
+    .card-viewport {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card-track {
+      display: flex;
+      transition: transform 0.55s cubic-bezier(0.32, 0.72, 0, 1);
+      width: 400%;
+    }
+
+    .card {
+      width: 25%;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      gap: clamp(24px, 3vw, 36px);
+    }
+
+    /* ── Question ── */
+    .question {
+      font-size: clamp(1.4rem, 3vw, 1.75rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.2;
+      color: #1A1A1A;
+    }
+
+    /* ── Options ── */
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .option {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 18px 22px;
+      border: 1.5px solid #E8E2D9;
+      border-radius: 16px;
+      background: #FFFFFF;
+      cursor: pointer;
+      font-size: clamp(0.95rem, 1.3vw, 1.05rem);
+      font-weight: 500;
+      line-height: 1.45;
+      color: #1A1A1A;
+      transition: all 0.2s ease;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .option:hover {
+      border-color: #C0BBB5;
+      background: #F8F7F5;
+    }
+    .option.selected {
+      background: #C4E5F2;
+      border-color: #120DA6;
+      color: #120DA6;
+    }
+    .option.selected:hover {
+      background: #B8DDE9;
+      border-color: #120DA6;
+    }
+
+    /* Checkbox indicator */
+    .option::before {
+      content: '';
+      width: 22px;
+      height: 22px;
+      border-radius: 6px;
+      border: 1.5px solid #D0CBC5;
+      background: #FFFFFF;
+      flex-shrink: 0;
+      transition: all 0.2s ease;
+    }
+    .option.selected::before {
+      background: #120DA6;
+      border-color: #120DA6;
+      background-image: url("data:image/svg+xml,%3Csvg width='14' height='14' viewBox='0 0 14 14' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M2.5 7.5L5.5 10.5L11.5 3.5' stroke='%23FFFFFF' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+
+    /* ── Swipe hint ── */
+    /* ── Button ── */
+    .go-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      padding: 18px 32px;
+      border-radius: 14px;
+      border: none;
+      background: #1A1A1A;
+      color: #FFFFFF;
+      font-family: 'Inter', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(4px);
+    }
+    .go-btn.enabled {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0);
+    }
+    .go-btn.enabled:hover {
+      background: #333333;
+    }
+    .go-btn.enabled:active {
+      transform: scale(0.985);
+    }
+
+    /* ── End screen ── */
+    .end-screen {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .end-heading {
+      font-size: clamp(1.4rem, 3vw, 1.75rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.2;
+      color: #1A1A1A;
+    }
+
+    .end-body {
+      font-size: clamp(0.95rem, 1.3vw, 1.05rem);
+      font-weight: 400;
+      line-height: 1.65;
+      color: #6B6568;
+    }
+
+    .end-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 8px;
+    }
+
+    .end-cta {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      padding: 18px 32px;
+      border-radius: 14px;
+      border: none;
+      background: #1A1A1A;
+      color: #FFFFFF;
+      font-family: 'Inter', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .end-cta:hover { background: #333333; }
+    .end-cta:active { transform: scale(0.985); }
+
+    .end-link {
+      display: block;
+      text-align: center;
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: #6B6568;
+      text-decoration: none;
+      padding: 8px;
+      transition: color 0.2s;
+    }
+    .end-link:hover { color: #1A1A1A; }
+
+    /* ── Editor toolbar ── */
+    .editor-bar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 16px;
+      background: #1A1A1A;
+      color: #FFFFFF;
+      font-size: 12px;
+      font-family: 'Inter', sans-serif;
+    }
+    .editor-bar span { opacity: 0.5; letter-spacing: 0.03em; }
+    .editor-bar .save-btn {
+      padding: 6px 18px;
+      border-radius: 6px;
+      border: none;
+      background: #120DA6;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .editor-bar .save-btn:hover { opacity: 0.9; }
+    .editor-bar .save-btn.saved { background: #34c759; pointer-events: none; }
+    body { padding-top: 40px; }
+
+    [contenteditable="true"] {
+      outline: none;
+      border-radius: 4px;
+      transition: box-shadow 0.15s;
+    }
+    [contenteditable="true"]:hover {
+      box-shadow: 0 0 0 2px rgba(0,0,0,0.06);
+    }
+    [contenteditable="true"]:focus {
+      box-shadow: 0 0 0 2px rgba(0,0,0,0.15);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="editor-bar">
+    <span>EDIT MODE — click any text to edit</span>
+    <button class="save-btn" onclick="saveFile()">Save file</button>
+  </div>
+
+  <div class="quiz-section">
+    <div class="quiz-card">
+
+      <!-- Progress dots -->
+      <div class="dots" id="dots">
+        <div class="dot active" id="dot-0"></div>
+        <div class="dot" id="dot-1"></div>
+        <div class="dot" id="dot-2"></div>
+      </div>
+
+      <!-- Card viewport -->
+      <div class="card-viewport">
+        <div class="card-track" id="cardTrack">
+
+          <!-- Card 1 -->
+          <div class="card" id="card-0">
+            <h2 class="question" contenteditable="true">If this course did one thing for me, it would be...</h2>
+            <div class="options" id="options-0">
+              <div class="option" onclick="toggleOption(this)">Confidently write a Social Story from scratch</div>
+              <div class="option" onclick="toggleOption(this)">Know what makes a Social Story effective</div>
+              <div class="option" onclick="toggleOption(this)">Help a student I am thinking about</div>
+              <div class="option" onclick="toggleOption(this)">Learn a new skill I can use right away</div>
+            </div>
+            <button class="go-btn" id="go-0" onclick="goNext()">That's me</button>
+          </div>
+
+          <!-- Card 2 -->
+          <div class="card" id="card-1">
+            <h2 class="question" contenteditable="true">The thing that would actually give me confidence is...</h2>
+            <div class="options" id="options-1">
+              <div class="option" onclick="toggleOption(this)">See a complete example with every step explained</div>
+              <div class="option" onclick="toggleOption(this)">Watch someone write one from scratch and explain their thinking out loud</div>
+              <div class="option" onclick="toggleOption(this)">Compare a good Social Story with a not-so-good one so I can spot the difference</div>
+              <div class="option" onclick="toggleOption(this)">All of the above</div>
+            </div>
+            <button class="go-btn" id="go-1" onclick="goNext()">That's me</button>
+          </div>
+
+          <!-- Card 3 -->
+          <div class="card" id="card-2">
+            <h2 class="question" contenteditable="true">The feedback I actually want sounds like...</h2>
+            <div class="options" id="options-2">
+              <div class="option" onclick="toggleOption(this)">Clearly explains what works and why</div>
+              <div class="option" onclick="toggleOption(this)">Highlights areas that need improvement and suggests solutions</div>
+              <div class="option" onclick="toggleOption(this)">Demonstrates how my writing has progressed since I began</div>
+              <div class="option" onclick="toggleOption(this)">All of the above</div>
+            </div>
+            <button class="go-btn" id="go-2" onclick="goNext()">That's me</button>
+          </div>
+
+          <!-- End screen -->
+          <div class="card end-screen" id="card-3">
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    var current = 0;
+    var total = 3;
+
+    function toggleOption(el) {
+      el.classList.toggle('selected');
+      updateBtn();
+    }
+
+    function updateBtn() {
+      var options = document.getElementById('options-' + current);
+      if (!options) return;
+      var btn = document.getElementById('go-' + current);
+      if (!btn) return;
+      var hasSelection = options.querySelector('.selected') !== null;
+      if (hasSelection) {
+        btn.classList.add('enabled');
+      } else {
+        btn.classList.remove('enabled');
+      }
+    }
+
+    function goNext() {
+      if (current >= total) return;
+      var options = document.getElementById('options-' + current);
+      if (!options.querySelector('.selected')) return;
+
+      current++;
+      document.getElementById('cardTrack').style.transform = 'translateX(-' + (current * 25) + '%)';
+
+      for (var i = 0; i < total; i++) {
+        if (i <= current - 1) {
+          document.getElementById('dot-' + i).classList.add('active');
+        }
+      }
+
+      if (current === total) {
+        document.getElementById('dots').style.opacity = '0';
+      }
+
+      document.querySelector('.quiz-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    // ── Swipe handling ──
+    var touchStartX = 0;
+    var touchEndX = 0;
+    var viewport = document.querySelector('.card-viewport');
+
+    viewport.addEventListener('touchstart', function(e) {
+      touchStartX = e.changedTouches[0].screenX;
+    }, { passive: true });
+
+    viewport.addEventListener('touchend', function(e) {
+      touchEndX = e.changedTouches[0].screenX;
+      var diff = touchStartX - touchEndX;
+      if (diff > 50) goNext(); // swipe left → next
+    }, { passive: true });
+
+    // ── Click arrow key support for desktop ──
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'ArrowRight') goNext();
+    });
+
+    /* ── Save file ── */
+    function saveFile() {
+      var clone = document.documentElement.cloneNode(true);
+      var bar = clone.querySelector('.editor-bar');
+      if (bar) bar.remove();
+      var styles = clone.querySelectorAll('style');
+      styles.forEach(function(s) {
+        s.textContent = s.textContent
+          .replace(/\/\*\s*── Editor toolbar[\s\S]*?body\s*\{\s*padding-top:\s*40px;\s*\}/, '')
+          .replace(/\[contenteditable="true"\][\s\S]*?\[contenteditable="true"\]:focus\s*\{[^}]*\}/, '');
+      });
+      clone.querySelectorAll('[contenteditable]').forEach(function(el) {
+        el.removeAttribute('contenteditable');
+      });
+      var body = clone.querySelector('body');
+      if (body) body.style.paddingTop = '';
+      var html = '<!DOCTYPE html>\n' + clone.outerHTML;
+      var blob = new Blob([html], { type: 'text/html' });
+      var a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'landing-quiz.html';
+      a.click();
+      URL.revokeObjectURL(a.href);
+      var btn = document.querySelector('.save-btn');
+      btn.textContent = 'Saved \u2713';
+      btn.className = 'save-btn saved';
+      setTimeout(function() {
+        btn.textContent = 'Save file';
+        btn.className = 'save-btn';
+      }, 2000);
+    }
+  </script>
+
+</body>
+</html>

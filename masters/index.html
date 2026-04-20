@@ -165,6 +165,41 @@
   }
 
   footer a { color: var(--slate); text-decoration: underline; }
+
+  /* ── Pill nav ─────────────────────────────────────── */
+  .pill-nav {
+    display: inline-flex;
+    gap: 4px;
+    padding: 4px;
+    background: var(--bg-neutral);
+    border-radius: 999px;
+    margin: 0 0 clamp(32px, 5vw, 48px);
+  }
+  .pill-nav button {
+    appearance: none;
+    border: none;
+    background: transparent;
+    padding: 10px 24px;
+    border-radius: 999px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 0.9375rem;
+    color: var(--slate);
+    cursor: pointer;
+    transition: background 180ms ease, color 180ms ease;
+  }
+  .pill-nav button:hover { color: var(--heading); }
+  .pill-nav button[aria-selected="true"] {
+    background: var(--navy);
+    color: #fff;
+  }
+  .pill-nav button:focus-visible {
+    outline: 2px solid var(--navy);
+    outline-offset: 2px;
+  }
+
+  .view[hidden] { display: none; }
+  .view > section:first-child { margin-top: 0; }
 </style>
 </head>
 <body>
@@ -176,17 +211,32 @@
     <p class="lede">Approved lesson templates. Click any card to preview the live HTML.</p>
   </header>
 
-  <section>
-    <h2>MasterBrick templates</h2>
-    <p class="section-intro">Newer config-driven lesson templates.</p>
-    <div class="grid" id="grid-masterbrick"></div>
-  </section>
+  <div class="pill-nav" role="tablist" aria-label="Template status">
+    <button role="tab" data-view="masters" aria-selected="true">Masters</button>
+    <button role="tab" data-view="working" aria-selected="false">Working</button>
+  </div>
 
-  <section>
-    <h2>Classic masters</h2>
-    <p class="section-intro">Original standalone master templates.</p>
-    <div class="grid" id="grid-classic"></div>
-  </section>
+  <div class="view view-masters" data-view="masters">
+    <section>
+      <h2>MasterBrick templates</h2>
+      <p class="section-intro">Newer config-driven lesson templates.</p>
+      <div class="grid" id="grid-masterbrick"></div>
+    </section>
+
+    <section>
+      <h2>Classic masters</h2>
+      <p class="section-intro">Original standalone master templates.</p>
+      <div class="grid" id="grid-classic"></div>
+    </section>
+  </div>
+
+  <div class="view view-working" data-view="working" hidden>
+    <section>
+      <h2>In progress</h2>
+      <p class="section-intro">Drafts still in <code>_working/</code> — not yet approved as masters.</p>
+      <div class="grid" id="grid-working"></div>
+    </section>
+  </div>
 
   <footer>
     Source: <a href="https://github.com/stackableapp/stackable-lessons" target="_blank" rel="noopener">github.com/stackableapp/stackable-lessons</a>
@@ -221,6 +271,11 @@
     { path: '/vocab-wall',         name: 'Vocab Wall' }
   ];
 
+  const working = [
+    { path: '/hero',          name: 'Hero' },
+    { path: '/landing-quiz',  name: 'Landing Quiz' }
+  ];
+
   function render(items, mountId) {
     const mount = document.getElementById(mountId);
     const frag = document.createDocumentFragment();
@@ -244,6 +299,18 @@
 
   render(masterbrick, 'grid-masterbrick');
   render(classic,     'grid-classic');
+  render(working,     'grid-working');
+
+  // Pill toggle
+  const tabs  = document.querySelectorAll('.pill-nav button');
+  const views = document.querySelectorAll('.view');
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      const target = tab.dataset.view;
+      tabs.forEach(t => t.setAttribute('aria-selected', t === tab ? 'true' : 'false'));
+      views.forEach(v => v.toggleAttribute('hidden', v.dataset.view !== target));
+    });
+  });
 </script>
 
 </body>

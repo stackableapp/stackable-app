@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hero</title>
+  <style>
+
+    /* ============================================================
+       APPLE DESIGN SYSTEM
+       Typography + Colour + Spacing + Rhythm
+    ============================================================ */
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+
+      --color-bg-primary:            #f5f5f7;
+      --color-bg-secondary:          #ffffff;
+      --color-bg-dark:               #000000;
+      --color-text-primary:          #1d1d1f;
+      --color-text-secondary:        #6e6e73;
+      --color-text-tertiary:         #86868b;
+      --color-text-ondark:           #f5f5f7;
+      --color-text-ondark-secondary: #a1a1a6;
+      --color-link:                  #0066cc;
+      --color-link-hover:            #0077ed;
+      --color-accent:                #ff9500;
+      --color-success:               #34c759;
+      --color-error:                 #ff3b30;
+      --color-border:                #d2d2d7;
+      --color-border-dark:           #424245;
+      --color-text-primary-op80:     rgba(29, 29, 31, 0.80);
+      --color-text-primary-op60:     rgba(29, 29, 31, 0.60);
+      --color-text-primary-op40:     rgba(29, 29, 31, 0.40);
+      --color-text-ondark-op80:      rgba(245, 245, 247, 0.80);
+      --color-text-ondark-op60:      rgba(245, 245, 247, 0.60);
+      --color-text-ondark-op40:      rgba(245, 245, 247, 0.40);
+      --color-glass-light:           rgba(255, 255, 255, 0.72);
+      --color-glass-dark:            rgba(28, 28, 30, 0.72);
+      --color-overlay-light:         rgba(0, 0, 0, 0.04);
+      --color-overlay-medium:        rgba(0, 0, 0, 0.16);
+      --color-overlay-heavy:         rgba(0, 0, 0, 0.48);
+      --gradient-light:              linear-gradient(180deg, #ffffff 0%, #f5f5f7 100%);
+      --gradient-dark:               linear-gradient(180deg, #1c1c1e 0%, #000000 100%);
+
+      --space-1:   8px;
+      --space-2:   16px;
+      --space-3:   24px;
+      --space-4:   32px;
+      --space-6:   48px;
+      --space-8:   64px;
+      --space-10:  80px;
+      --space-12:  96px;
+      --space-16:  128px;
+      --space-20:  160px;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --color-bg-primary:            #000000;
+        --color-bg-secondary:          #1c1c1e;
+        --color-text-primary:          #f5f5f7;
+        --color-text-secondary:        #a1a1a6;
+        --color-text-tertiary:         #6e6e73;
+        --color-link:                  #2997ff;
+        --color-link-hover:            #59b0ff;
+        --color-border:                #424245;
+        --color-border-dark:           #424245;
+      }
+    }
+
+    /* TYPOGRAPHY */
+    html {
+      background: var(--color-bg-primary);
+    }
+    body {
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      background: var(--color-bg-primary);
+    }
+
+    h1 {
+      font-size: clamp(48px, 6vw, 96px);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      color: var(--color-text-primary);
+      margin-bottom: var(--space-2);
+      max-width: none;
+    }
+    h2 {
+      font-size: clamp(21px, 2.5vw, 28px);
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      line-height: 1.2;
+      color: var(--color-text-primary);
+      margin-bottom: var(--space-2);
+      max-width: 680px;
+    }
+    p {
+      font-size: 17px;
+      font-weight: 400;
+      line-height: 1.5;
+      color: var(--color-text-primary);
+      max-width: min(680px, 100%);
+      margin-bottom: var(--space-2);
+    }
+
+    /* LAYOUT */
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding-left:  clamp(var(--space-2), 5vw, var(--space-8));
+      padding-right: clamp(var(--space-2), 5vw, var(--space-8));
+    }
+
+    /* ============================================================
+       HERO SECTION
+    ============================================================ */
+
+    .hero-section {
+      background: var(--color-bg-primary);
+      padding: clamp(80px, 10vw, 140px) 0 clamp(64px, 8vw, 100px);
+    }
+
+    .hero-inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-6);
+      text-align: center;
+    }
+
+    /* ── Book component ── */
+    .book-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+    }
+
+    .book-stack {
+      position: relative;
+      width: min(680px, 100%);
+    }
+    .book-shadow-deep {
+      position: absolute;
+      bottom: -10px;
+      left: 6px;
+      right: 6px;
+      height: 100%;
+      border-radius: 14px;
+      background: var(--color-border);
+      z-index: 1;
+    }
+    .book-shadow-mid {
+      position: absolute;
+      bottom: -5px;
+      left: 3px;
+      right: 3px;
+      height: 100%;
+      border-radius: 15px;
+      background: #e8e8ea;
+      z-index: 2;
+    }
+    .book-page {
+      position: relative;
+      z-index: 3;
+      background: var(--color-bg-secondary);
+      border-radius: 16px;
+      border: 1px solid var(--color-border);
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+      overflow: hidden;
+    }
+    .book-progress {
+      padding: 20px 32px 0;
+    }
+    .book-progress-track {
+      height: 3px;
+      background: var(--color-border);
+      border-radius: 999px;
+      position: relative;
+    }
+    .book-progress-fill {
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 3px;
+      background: var(--color-link);
+      border-radius: 999px;
+      transition: width 0.3s ease;
+    }
+    .book-content {
+      padding: 28px 32px 36px;
+      text-align: left;
+      min-height: 100px;
+    }
+    .book-content p {
+      max-width: 100%;
+      margin: 0;
+      font-size: 15px;
+      color: var(--color-text-primary);
+    }
+    .book-curl {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: 0;
+      height: 0;
+      border-style: solid;
+      border-width: 0 0 36px 36px;
+      border-color: transparent transparent var(--color-border) transparent;
+      opacity: 0.5;
+    }
+
+    /* Navigation strip */
+    .book-nav {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      margin-top: 28px;
+    }
+    .nav-arrow {
+      width: 40px;
+      height: 40px;
+      border-radius: 999px;
+      border: 1.5px solid var(--color-text-primary);
+      background: var(--color-bg-secondary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+      cursor: pointer;
+      font-size: 16px;
+      color: var(--color-text-primary);
+      font-weight: 700;
+      user-select: none;
+      transition: opacity 0.15s ease;
+    }
+    .nav-arrow.disabled {
+      border-color: var(--color-border);
+      background: var(--color-bg-primary);
+      box-shadow: none;
+      opacity: 0.35;
+      color: var(--color-text-secondary);
+      cursor: default;
+      pointer-events: none;
+    }
+    .page-counter {
+      padding: 8px 20px;
+      border-radius: 999px;
+      border: 1.5px solid var(--color-border);
+      background: var(--color-bg-secondary);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11px;
+      white-space: nowrap;
+    }
+    .page-counter-num   { color: var(--color-text-primary); font-weight: 700; }
+    .page-counter-label { color: var(--color-text-secondary); }
+
+    .page-dots {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .page-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: var(--color-border);
+      transition: background 0.2s ease, width 0.2s ease, height 0.2s ease;
+    }
+    .page-dot.active {
+      width: 8px;
+      height: 8px;
+      background: var(--color-text-primary);
+    }
+
+    /* ── CTA Buttons ── */
+    .cta-group {
+      display: flex;
+      gap: var(--space-2);
+      align-items: center;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .btn-primary {
+      height: 52px;
+      padding: 0 40px;
+      border-radius: 10px;
+      background: var(--color-link);
+      border: none;
+      cursor: pointer;
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+      color: #ffffff;
+      white-space: nowrap;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      transition: background 0.15s ease;
+    }
+    .btn-primary:hover { background: var(--color-link-hover); }
+
+    .btn-secondary {
+      height: 52px;
+      padding: 0 40px;
+      border-radius: 10px;
+      border: 1.5px solid var(--color-link);
+      background: var(--color-bg-secondary);
+      cursor: pointer;
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--color-link);
+      white-space: nowrap;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      transition: color 0.15s ease, border-color 0.15s ease;
+    }
+    .btn-secondary:hover {
+      color: var(--color-link-hover);
+      border-color: var(--color-link-hover);
+    }
+
+  </style>
+</head>
+<body>
+
+  <section class="hero-section">
+    <div class="container">
+      <div class="hero-inner">
+
+        <!-- H1 -->
+        <h1 style="max-width: min(900px, 100%); text-align: center;">
+          This is a H1 heading<br>
+          that uses <span style="color: var(--color-link);">accent words</span>
+        </h1>
+
+        <!-- Book component — single interactive instance -->
+        <div class="book-wrap">
+          <div class="book-stack">
+            <div class="book-shadow-deep"></div>
+            <div class="book-shadow-mid"></div>
+            <div class="book-page">
+              <div class="book-progress">
+                <div class="book-progress-track">
+                  <div class="book-progress-fill" id="progress-fill" style="width:20%;"></div>
+                </div>
+              </div>
+              <div class="book-content" id="book-content">
+                <p>This is body text inside the book component. Each page shares a story, a finding, or a practitioner insight that draws the learner in before the CTA.</p>
+              </div>
+              <div class="book-curl"></div>
+            </div>
+          </div>
+
+          <div class="book-nav">
+            <div class="nav-arrow disabled" id="btn-prev" onclick="changePage(-1)">‹</div>
+            <div class="page-counter">
+              <span class="page-counter-label">Page</span>
+              <span class="page-counter-num" id="page-current">1</span>
+              <span class="page-counter-label">of</span>
+              <span class="page-counter-num">5</span>
+            </div>
+            <div class="page-dots" id="page-dots">
+              <div class="page-dot active"></div>
+              <div class="page-dot"></div>
+              <div class="page-dot"></div>
+              <div class="page-dot"></div>
+              <div class="page-dot"></div>
+            </div>
+            <div class="nav-arrow" id="btn-next" onclick="changePage(1)">›</div>
+          </div>
+        </div>
+
+        <!-- H2 -->
+        <h2 style="text-align: center;">This is a H2 heading</h2>
+
+        <!-- CTAs -->
+        <div class="cta-group">
+          <a href="javascript:void(0)" class="btn-primary">Primary Button</a>
+          <a href="javascript:void(0)" class="btn-secondary">Secondary Button</a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <script>
+    const pages = [
+      "This is body text inside the book component. Each page shares a story, a finding, or a practitioner insight that draws the learner in before the CTA.",
+      "This is body text on page two. A different angle, a new voice — building a picture of the problem that the product solves.",
+      "This is body text on page three. The narrative continues, drawing on real experiences and specific moments that resonate with the reader.",
+      "This is body text on page four. The case is almost made. Each page earns the trust that the CTA below will rely on.",
+      "This is body text on the final page. The story closes here, handing off naturally to the H2 and the call to action that follows."
+    ];
+
+    let current = 0;
+
+    function changePage(dir) {
+      current = Math.max(0, Math.min(pages.length - 1, current + dir));
+      document.getElementById('book-content').querySelector('p').textContent = pages[current];
+      document.getElementById('progress-fill').style.width = `${((current + 1) / pages.length) * 100}%`;
+      document.getElementById('page-current').textContent = current + 1;
+      document.querySelectorAll('.page-dot').forEach((d, i) => d.classList.toggle('active', i === current));
+      document.getElementById('btn-prev').className = 'nav-arrow' + (current === 0 ? ' disabled' : '');
+      document.getElementById('btn-next').className = 'nav-arrow' + (current === pages.length - 1 ? ' disabled' : '');
+    }
+  </script>
+
+</body>
+</html>
