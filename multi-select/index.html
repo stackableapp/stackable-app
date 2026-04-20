@@ -84,7 +84,7 @@
       list-style: none;
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 16px;
+      gap: 12px;
       margin-bottom: 1.4rem;
     }
     @media (max-width: 640px) {
@@ -93,7 +93,7 @@
 
     .ms-option {
       width: 100%;
-      min-height: 48px;
+      min-height: 64px;
       display: flex;
       align-items: center;
       gap: 12px;
@@ -177,10 +177,9 @@
     }
 
     .ms-counter {
-      font-size: 0.85rem;
+      font-size: 0.9rem;
       line-height: 1.4;
       color: var(--text-sec);
-      opacity: 0.75;
     }
 
     .ms-confirm,
@@ -204,9 +203,8 @@
     }
 
     .ms-confirm[disabled] {
-      background: transparent;
-      color: var(--disabled);
-      border: 1px solid var(--border);
+      background: var(--disabled);
+      color: #ffffff;
       cursor: not-allowed;
     }
 
@@ -236,34 +234,11 @@
 
     .ms-info-body p {
       font-size: 1rem;
-      line-height: 2;
+      line-height: 1.7;
       color: var(--text);
       margin-bottom: 0.8rem;
     }
     .ms-info-body p:last-child { margin-bottom: 0; }
-
-    .ms-selections {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-bottom: 0.2rem;
-    }
-
-    .ms-selections-label {
-      font-size: 0.8rem;
-      color: var(--text-sec);
-      margin-bottom: 0.25rem;
-    }
-
-    .ms-tag {
-      font-size: 0.85rem;
-      line-height: 1.3;
-      padding: 6px 12px;
-      background: #ffffff;
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      color: var(--text);
-    }
 
     .ms-continue {
       align-self: flex-start;
@@ -279,7 +254,7 @@
       <div class="ms-state ms-state--question">
 
         <h2 class="ms-question"><!-- EDIT: question text -->Which of these feel like part of your day right now?</h2>
-        <p class="ms-instruction"><!-- EDIT: instruction -->Select all that apply. There are no right answers. After you confirm, you'll see a short response based on what you picked.</p>
+        <p class="ms-instruction"><!-- EDIT: instruction -->Select all that apply. There are no right answers.</p>
 
         <ul class="ms-options" role="group" aria-label="Options">
 
@@ -343,8 +318,7 @@
 
       <!-- ═══════ STATE 2 — INFORMATION CARD ═══════ -->
       <div class="ms-state ms-state--info" hidden>
-        <p class="ms-selections-label">You selected</p>
-        <div class="ms-selections" aria-label="Your selections"></div>
+        <p class="ms-eyebrow">Based on your selections</p>
         <h2 class="ms-info-heading"><!-- EDIT: info card heading -->Thanks for sharing where you're at</h2>
         <div class="ms-info-body">
           <!-- EDIT: info paragraph 1 -->
@@ -381,11 +355,8 @@
 
       function update() {
         var n = countSelected();
-        var ready = n >= minSelections;
-        counter.textContent = ready
-          ? n + ' selected — ready to confirm'
-          : n + ' of ' + total + ' selected';
-        if (ready) {
+        counter.textContent = n + ' of ' + total + ' selected';
+        if (n >= minSelections) {
           confirm.disabled = false;
           confirm.setAttribute('aria-disabled', 'false');
         } else {
@@ -420,21 +391,25 @@
 
       confirm.addEventListener('click', function () {
         if (confirm.disabled) return;
-
-        // populate selection summary so learner doesn't have to remember
-        var summary = card.querySelector('.ms-selections');
-        summary.innerHTML = '';
-        options.forEach(function (opt) {
-          if (opt.getAttribute('aria-pressed') === 'true') {
-            var tag = document.createElement('span');
-            tag.className = 'ms-tag';
-            tag.textContent = opt.querySelector('.ms-option-label').textContent;
-            summary.appendChild(tag);
-          }
-        });
-
         card.setAttribute('data-state', 'info');
         crossFadeTo(stateQ, stateI);
+        // Report completion + selected option labels to the parent template.
+        try {
+          var selected = options
+            .filter(function (o) { return o.getAttribute('aria-pressed') === 'true'; })
+            .map(function (o) {
+              var lbl = o.querySelector('.ms-option-label');
+              return lbl ? lbl.textContent.trim() : '';
+            })
+            .filter(Boolean);
+          if (window.parent && window.parent !== window) {
+            window.parent.postMessage({
+              type: 'sectionComplete',
+              id: 'checkin',
+              data: { selected: selected }
+            }, '*');
+          }
+        } catch (err) { /* template not present — fine */ }
       });
 
       if (continueBtn) {
