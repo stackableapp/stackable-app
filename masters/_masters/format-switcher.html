@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Social Stories — Format Switcher</title>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --accent:       #120DA6;
+      --accent-light: #C4E5F2;
+      --accent-bg:    #F2F8FD;
+      --bg:           #F2F0EB;
+      --bg-card:      #ffffff;
+      --text:         #1A1A1A;
+      --text-sec:     #6B6568;
+      --border:       #E8E2D9;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* ── landing section ── */
+    .section {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: clamp(56px, 10vw, 100px) clamp(20px, 5vw, 40px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 40px;
+    }
+
+    /* ── section header ── */
+    .section-head {
+      text-align: center;
+      max-width: 600px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: var(--accent-bg);
+      padding: 5px 14px;
+      border-radius: 999px;
+    }
+
+    .section-title {
+      font-family: 'Lora', Georgia, serif;
+      font-size: clamp(24px, 3.5vw, 34px);
+      font-weight: 600;
+      line-height: 1.25;
+      color: var(--text);
+    }
+
+    .section-body {
+      font-size: 15px;
+      line-height: 1.7;
+      color: var(--text-sec);
+    }
+
+    /* ── pill control ── */
+    .pill-control {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 4px;
+      display: inline-flex;
+      gap: 2px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+
+    .pill-btn {
+      height: 36px;
+      padding: 0 20px;
+      border-radius: 999px;
+      border: none;
+      background: transparent;
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-sec);
+      cursor: pointer;
+      transition: background 0.18s, color 0.18s;
+      white-space: nowrap;
+    }
+
+    .pill-btn:hover { color: var(--text); }
+
+    .pill-btn.active {
+      background: var(--accent);
+      color: #ffffff;
+      box-shadow: 0 2px 8px rgba(18,13,166,0.22);
+    }
+
+    /* ── viewer ── */
+    .viewer { width: 100%; }
+
+    .view { display: none; animation: fadeUp 0.22s ease; }
+    .view.active { display: block; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(6px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── format badge ── */
+    .format-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      color: var(--text-sec);
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 5px 14px;
+      margin-top: 14px;
+    }
+
+    /* ═══════════════════════════════════════
+       VIEW 1 — STORY
+    ═══════════════════════════════════════ */
+    .story-card {
+      background: #FAFAF7;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 48px clamp(32px, 6vw, 64px);
+      box-shadow: 0 4px 24px rgba(0,0,0,0.07);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .story-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: var(--accent);
+      border-radius: 16px 16px 0 0;
+    }
+
+    .story-lines {
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        transparent, transparent 30px,
+        rgba(0,0,0,0.018) 30px, rgba(0,0,0,0.018) 31px
+      );
+      pointer-events: none;
+    }
+
+    .story-inner { position: relative; z-index: 1; }
+
+    .story-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+
+    .story-title {
+      font-family: 'Lora', Georgia, serif;
+      font-size: 22px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 24px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .story-body p {
+      font-family: 'Lora', Georgia, serif;
+      font-size: 16px;
+      line-height: 1.85;
+      color: var(--text);
+      margin-bottom: 16px;
+    }
+
+    .story-body p:last-child { margin-bottom: 0; }
+
+    /* ═══════════════════════════════════════
+       VIEW 2 — SMS
+    ═══════════════════════════════════════ */
+    .sms-phone {
+      max-width: 380px;
+      margin: 0 auto;
+      background: #1C1C1E;
+      border-radius: 40px;
+      padding: 16px 12px 24px;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.22), 0 2px 8px rgba(0,0,0,0.12);
+    }
+
+    .sms-notch {
+      width: 100px;
+      height: 28px;
+      background: #1C1C1E;
+      border-radius: 0 0 18px 18px;
+      margin: 0 auto 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .sms-camera {
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: #2C2C2E;
+      border: 1.5px solid #3A3A3C;
+    }
+
+    .sms-speaker {
+      width: 36px;
+      height: 5px;
+      border-radius: 999px;
+      background: #2C2C2E;
+    }
+
+    .sms-screen {
+      background: #000000;
+      border-radius: 28px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .sms-status-bar {
+      background: #000;
+      padding: 8px 20px 4px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .sms-time {
+      font-size: 13px;
+      font-weight: 600;
+      color: #fff;
+    }
+
+    .sms-icons {
+      font-size: 11px;
+      color: #fff;
+      letter-spacing: 2px;
+    }
+
+    .sms-header {
+      background: #1C1C1E;
+      padding: 10px 16px 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      border-bottom: 0.5px solid #3A3A3C;
+    }
+
+    .sms-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #5E5CE6, #BF5AF2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .sms-contact-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: #fff;
+    }
+
+    .sms-messages {
+      background: #000;
+      padding: 16px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      min-height: 320px;
+    }
+
+    .sms-date-divider {
+      text-align: center;
+      font-size: 11px;
+      color: #8E8E93;
+      margin: 4px 0 8px;
+    }
+
+    .sms-bubble-row {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 2px;
+    }
+
+    .sms-bubble-row.sent { align-items: flex-end; }
+
+    .sms-bubble {
+      max-width: 82%;
+      padding: 10px 14px;
+      border-radius: 18px;
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
+    .sms-bubble.received {
+      background: #1C1C1E;
+      color: #fff;
+      border-bottom-left-radius: 4px;
+    }
+
+    .sms-bubble.sent {
+      background: #0A84FF;
+      color: #fff;
+      border-bottom-right-radius: 4px;
+    }
+
+    .sms-bubble-time {
+      font-size: 10px;
+      color: #8E8E93;
+      padding: 0 4px;
+    }
+
+    .sms-input-bar {
+      background: #1C1C1E;
+      border-top: 0.5px solid #3A3A3C;
+      padding: 10px 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .sms-input-field {
+      flex: 1;
+      background: #2C2C2E;
+      border-radius: 999px;
+      padding: 8px 14px;
+      font-size: 14px;
+      color: #8E8E93;
+    }
+
+    .sms-send-btn {
+      width: 30px;
+      height: 30px;
+      border-radius: 999px;
+      background: #0A84FF;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      color: #fff;
+      flex-shrink: 0;
+    }
+
+    /* ═══════════════════════════════════════
+       VIEW 3 — EMAIL (macOS Mail style)
+    ═══════════════════════════════════════ */
+    .email-window {
+      background: var(--bg-card);
+      border: 1px solid #C8C4BE;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.14), 0 2px 8px rgba(0,0,0,0.08);
+    }
+
+    .email-titlebar {
+      background: linear-gradient(to bottom, #ECEBE8, #E2E0DC);
+      border-bottom: 1px solid #C8C4BE;
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .email-titlebar-dots {
+      display: flex;
+      gap: 6px;
+    }
+
+    .email-titlebar-title {
+      flex: 1;
+      text-align: center;
+      font-size: 12px;
+      font-weight: 600;
+      color: #4A4845;
+    }
+
+    .email-toolbar {
+      background: #F5F4F2;
+      border-bottom: 1px solid var(--border);
+      padding: 8px 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .email-tool-btn {
+      height: 28px;
+      padding: 0 12px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+      font-size: 11px;
+      color: var(--text-sec);
+      cursor: default;
+    }
+
+    .email-layout {
+      display: grid;
+      grid-template-columns: 1fr;
+      min-height: 500px;
+    }
+
+    .email-sidebar {
+      background: #F5F4F0;
+      border-right: 1px solid var(--border);
+      padding: 12px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+    }
+
+    .email-sidebar-item {
+      padding: 10px 16px;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      cursor: default;
+    }
+
+    .email-sidebar-item.active {
+      background: var(--accent);
+    }
+
+    .email-sidebar-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 999px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .email-sidebar-preview {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .email-sidebar-from {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .email-sidebar-item.active .email-sidebar-from,
+    .email-sidebar-item.active .email-sidebar-snip,
+    .email-sidebar-item.active .email-sidebar-date {
+      color: #fff;
+    }
+
+    .email-sidebar-snip {
+      font-size: 11px;
+      color: var(--text-sec);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .email-sidebar-date {
+      font-size: 10px;
+      color: var(--text-sec);
+      margin-top: 2px;
+    }
+
+    .email-sidebar-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: var(--accent);
+      flex-shrink: 0;
+      margin-top: 4px;
+    }
+
+    .email-sidebar-item.active .email-sidebar-dot {
+      background: #fff;
+    }
+
+    .email-content {
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .email-content-header {
+      padding: 24px 28px 16px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .email-subject-line {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 14px;
+    }
+
+    .email-meta-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 6px;
+    }
+
+    .email-meta-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #34C759, #30B150);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 700;
+      color: #fff;
+      flex-shrink: 0;
+    }
+
+    .email-meta-info { display: flex; flex-direction: column; gap: 1px; }
+
+    .email-meta-from {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .email-meta-to {
+      font-size: 12px;
+      color: var(--text-sec);
+    }
+
+    .email-meta-date {
+      margin-left: auto;
+      font-size: 12px;
+      color: var(--text-sec);
+      white-space: nowrap;
+    }
+
+    .email-body {
+      padding: 24px 28px 32px;
+      overflow-y: auto;
+    }
+
+    .email-body p {
+      font-size: 14px;
+      line-height: 1.82;
+      color: var(--text);
+      margin-bottom: 14px;
+    }
+
+    .email-body p:last-child { margin-bottom: 0; }
+
+    .email-sig {
+      margin-top: 24px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+      font-size: 13px;
+      color: var(--text-sec);
+      line-height: 1.7;
+    }
+
+    .email-sig strong { color: var(--text); display: block; }
+
+  </style>
+</head>
+<body>
+
+<div class="section">
+
+  <div class="section-head">
+    <h2 class="section-title">A Social Story isn't always a story.</h2>
+  </div>
+
+  <div class="pill-control">
+    <button class="pill-btn active" onclick="switchView('text')"  id="tab-text">SMS</button>
+    <button class="pill-btn"        onclick="switchView('email')" id="tab-email">Email</button>
+  </div>
+
+  <div class="viewer">
+
+    <!-- SMS -->
+    <div class="view active" id="view-text">
+      <div class="sms-phone">
+        <div class="sms-notch">
+          <div class="sms-speaker"></div>
+          <div class="sms-camera"></div>
+        </div>
+        <div class="sms-screen">
+          <div class="sms-status-bar">
+            <span class="sms-time">9:41</span>
+            <span class="sms-icons">▶▶ ⬛⬛⬛</span>
+          </div>
+          <div class="sms-header">
+            <div class="sms-avatar">MP</div>
+            <div class="sms-contact-name">Ms Patel</div>
+          </div>
+          <div class="sms-messages">
+            <div class="sms-date-divider">Today 3:12 PM</div>
+
+            <div class="sms-bubble-row">
+              <div class="sms-bubble received">Hi Jordan,<br><br>After a final exam, many students experience a range of emotions. Some feel relieved, while others feel a bit strange. These feelings are completely normal.<br><br>Ms Patel</div>
+              <span class="sms-bubble-time">3:12</span>
+            </div>
+          </div>
+          <div class="sms-input-bar">
+            <div class="sms-input-field">Message</div>
+            <div class="sms-send-btn">↑</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- EMAIL — macOS Mail -->
+    <div class="view" id="view-email">
+      <div class="email-window">
+        <div class="email-titlebar">
+          <div class="email-titlebar-dots">
+            <div class="chrome-dot" style="background:#FF5F57;"></div>
+            <div class="chrome-dot" style="background:#FFBD2E;"></div>
+            <div class="chrome-dot" style="background:#28C840;"></div>
+          </div>
+          <div class="email-titlebar-title">Mail — Inbox</div>
+          <div style="width:52px;"></div>
+        </div>
+        <div class="email-layout">
+          <!-- email content -->
+          <div class="email-content">
+            <div class="email-content-header">
+              <div class="email-subject-line">Relief teacher tomorrow</div>
+              <div class="email-meta-row">
+                <div class="email-meta-avatar">MP</div>
+                <div class="email-meta-info">
+                  <div class="email-meta-from">Ms Patel</div>
+                  <div class="email-meta-to">To: Jordan &lt;jordan@studentmail.edu.au&gt;</div>
+                </div>
+                <div class="email-meta-date">Today, 3:15 PM</div>
+              </div>
+            </div>
+            <div class="email-body">
+              <p>Hi Jordan,</p>
+              <p>Tomorrow, Ms Henderson won't be at school. She'll be back on Friday.</p>
+              <p>There will be a relief teacher in Room 14, named Mr Okafor, who knows the class schedule and where things are kept.</p>
+              <p>Sometimes, a relief teacher feels a little different, and most students notice this. It makes sense.</p>
+              <p>Room 14 will stay the same, and the class will start at the same time. Ms Patel will be there too.</p>
+              <p>If tomorrow feels tricky, you can let Ms Patel know.</p>
+              <p>Friday, Ms Henderson will be back.</p>
+              <div class="email-sig">
+                <strong>Ms Patel</strong>
+                Education Support Worker<br>
+                Greenfield Primary School<br>
+                m.patel@schoolsupport.edu.au
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+  </div><!-- /viewer -->
+
+  <h2 class="section-title" style="margin-top: clamp(32px, 4vw, 48px);">Good moments need Social Stories too.</h2>
+
+</div>
+
+<script>
+  /* ── view switcher ── */
+  function switchView(name) {
+    document.querySelectorAll('.pill-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-' + name).classList.add('active');
+    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+    document.getElementById('view-' + name).classList.add('active');
+  }
+
+</script>
+
+</body>
+</html>

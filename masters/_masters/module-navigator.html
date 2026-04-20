@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Module Navigator</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --color-bg:       #F2F0EB;
+      --color-text:     #1A1A1A;
+      --color-text-sec: #6B6568;
+      --color-border:   #E8E2D9;
+      --color-plum:     #5C2D4F;
+    }
+
+    html, body {
+      background: var(--color-bg);
+      font-family: 'Inter', sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    section {
+      padding: clamp(48px, 8vw, 100px) clamp(24px, 6vw, 80px);
+    }
+
+    .inner {
+      max-width: 520px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 32px;
+    }
+
+    /* ── Headline ── */
+    h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 4vw, 3.25rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      color: var(--color-text);
+      line-height: 1.1;
+    }
+
+    /* ── Promise line ── */
+    .promise {
+      font-size: clamp(1.05rem, 1.5vw, 1.2rem);
+      font-weight: 500;
+      color: var(--color-text);
+      line-height: 1.55;
+    }
+
+    /* ── Block list ── */
+    .block-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .block-item {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--color-border);
+    }
+    .block-item:last-child {
+      border-bottom: none;
+    }
+
+    .block-num {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--color-text-sec);
+      width: 20px;
+      flex-shrink: 0;
+    }
+
+    .block-label {
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--color-text);
+      text-align: left;
+    }
+
+    /* ── CTA ── */
+    .cta-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px 32px;
+      border-radius: 10px;
+      background: var(--color-plum);
+      border: none;
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      color: #ffffff;
+      transition: opacity 0.15s;
+      align-self: center;
+    }
+    .cta:hover { opacity: 0.9; }
+
+    .trial-note {
+      font-size: 0.875rem;
+      color: var(--color-text-sec);
+    }
+
+    /* ── Editor toolbar ── */
+    .editor-bar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 16px;
+      background: #1A1A1A;
+      color: #FFFFFF;
+      font-size: 12px;
+      font-family: 'Inter', sans-serif;
+    }
+    .editor-bar span { opacity: 0.5; letter-spacing: 0.03em; }
+    .editor-bar .save-btn {
+      padding: 6px 18px;
+      border-radius: 6px;
+      border: none;
+      background: #120DA6;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .editor-bar .save-btn:hover { opacity: 0.9; }
+    .editor-bar .save-btn.saved { background: #34c759; pointer-events: none; }
+    body { padding-top: 40px; }
+
+    [contenteditable="true"] {
+      outline: none;
+      border-radius: 4px;
+      transition: box-shadow 0.15s;
+    }
+    [contenteditable="true"]:hover {
+      box-shadow: 0 0 0 2px rgba(18, 13, 166, 0.15);
+    }
+    [contenteditable="true"]:focus {
+      box-shadow: 0 0 0 2px rgba(18, 13, 166, 0.4);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="editor-bar">
+    <span>EDIT MODE — click any text to edit</span>
+    <button class="save-btn" onclick="saveFile()">Save file</button>
+  </div>
+
+  <section>
+    <div class="inner">
+
+      <h2 contenteditable="true">Write your first Social Story.</h2>
+
+      <p class="promise" contenteditable="true">Finish with a Social Story ready for your student.</p>
+
+      <div class="block-list">
+        <div class="block-item">
+          <span class="block-num">1</span>
+          <span class="block-label" contenteditable="true">What is a Social Story?</span>
+        </div>
+        <div class="block-item">
+          <span class="block-num">2</span>
+          <span class="block-label" contenteditable="true">Who is this story for?</span>
+        </div>
+        <div class="block-item">
+          <span class="block-num">3</span>
+          <span class="block-label" contenteditable="true">The sentences inside a Social Story.</span>
+        </div>
+        <div class="block-item">
+          <span class="block-num">4</span>
+          <span class="block-label" contenteditable="true">Time to write.</span>
+        </div>
+      </div>
+
+      <div class="cta-wrap">
+        <button class="cta"><span contenteditable="true">Start writing</span></button>
+        <span class="trial-note" contenteditable="true">14-day free trial</span>
+      </div>
+
+    </div>
+  </section>
+
+  <script>
+    function saveFile() {
+      var clone = document.documentElement.cloneNode(true);
+      var bar = clone.querySelector('.editor-bar');
+      if (bar) bar.remove();
+      var styles = clone.querySelectorAll('style');
+      styles.forEach(function(s) {
+        s.textContent = s.textContent
+          .replace(/\/\*\s*── Editor toolbar[\s\S]*?body\s*\{\s*padding-top:\s*40px;\s*\}/, '')
+          .replace(/\[contenteditable="true"\][\s\S]*?\[contenteditable="true"\]:focus\s*\{[^}]*\}/, '');
+      });
+      clone.querySelectorAll('[contenteditable]').forEach(function(el) {
+        el.removeAttribute('contenteditable');
+      });
+      var body = clone.querySelector('body');
+      if (body) body.style.paddingTop = '';
+      var html = '<!DOCTYPE html>\n' + clone.outerHTML;
+      var blob = new Blob([html], { type: 'text/html' });
+      var a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'module-navigator.html';
+      a.click();
+      URL.revokeObjectURL(a.href);
+      var btn = document.querySelector('.save-btn');
+      btn.textContent = 'Saved \u2713';
+      btn.className = 'save-btn saved';
+      setTimeout(function() {
+        btn.textContent = 'Save file';
+        btn.className = 'save-btn';
+      }, 2000);
+    }
+  </script>
+
+</body>
+</html>

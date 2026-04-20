@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Stackable Lessons — Masters</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F2F0EB;
+    --bg-neutral: #F2F2F2;
+    --bg-white: #FAFAF7;
+    --card: #FFFFFF;
+    --border: #E8E2D9;
+    --navy: #120DA6;
+    --sky: #C4E5F2;
+    --heading: #1A1A1A;
+    --body: #1A1A1A;
+    --slate: #6B6568;
+    --shadow-card: 0 2px 8px rgba(0,0,0,0.06);
+    --shadow-float: 0 4px 24px rgba(0,0,0,0.08);
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--body);
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: clamp(1rem, 1.2vw, 1.25rem);
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a { color: var(--navy); text-decoration: none; }
+
+  .wrap {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: clamp(48px, 10vw, 140px) clamp(24px, 6vw, 80px);
+  }
+
+  header { margin-bottom: clamp(40px, 6vw, 72px); }
+
+  .eyebrow {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--slate);
+    margin: 0 0 12px;
+  }
+
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: clamp(2rem, 6vw, 5rem);
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    color: var(--heading);
+    margin: 0 0 16px;
+  }
+
+  .lede {
+    max-width: 65ch;
+    font-size: clamp(1.1rem, 1.5vw, 1.25rem);
+    color: var(--slate);
+    margin: 0;
+  }
+
+  section { margin-top: clamp(48px, 8vw, 100px); }
+
+  h2 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    color: var(--heading);
+    margin: 0 0 8px;
+  }
+
+  .section-intro {
+    color: var(--slate);
+    margin: 0 0 32px;
+    max-width: 65ch;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 24px;
+  }
+
+  @media (max-width: 768px) {
+    .grid { gap: 16px; grid-template-columns: 1fr; }
+  }
+
+  .card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 40px;
+    box-shadow: var(--shadow-card);
+    transition: box-shadow 180ms ease, transform 180ms ease, border-color 180ms ease;
+    color: var(--heading);
+    min-height: 160px;
+  }
+
+  @media (max-width: 768px) {
+    .card { padding: 24px; min-height: 0; }
+  }
+
+  .card:hover,
+  .card:focus-visible {
+    box-shadow: var(--shadow-float);
+    border-color: var(--navy);
+    transform: translateY(-2px);
+    outline: none;
+  }
+
+  .card:focus-visible { outline: 2px solid var(--navy); outline-offset: 2px; }
+
+  .card .name {
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 1.25rem;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+    color: var(--heading);
+    margin: 0 0 8px;
+  }
+
+  .card .slug {
+    font-size: 0.875rem;
+    color: var(--slate);
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    word-break: break-all;
+  }
+
+  .card .arrow {
+    margin-top: 20px;
+    font-weight: 600;
+    font-size: 0.9375rem;
+    color: var(--navy);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .card:hover .arrow span { transform: translateX(3px); }
+  .card .arrow span { display: inline-block; transition: transform 180ms ease; }
+
+  footer {
+    margin-top: clamp(64px, 10vw, 120px);
+    padding-top: 32px;
+    border-top: 1px solid var(--border);
+    color: var(--slate);
+    font-size: 0.875rem;
+  }
+
+  footer a { color: var(--slate); text-decoration: underline; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <p class="eyebrow">Stackable Lessons</p>
+    <h1>Masters</h1>
+    <p class="lede">Approved lesson templates. Click any card to preview the live HTML.</p>
+  </header>
+
+  <section>
+    <h2>MasterBrick templates</h2>
+    <p class="section-intro">Newer config-driven lesson templates.</p>
+    <div class="grid" id="grid-masterbrick"></div>
+  </section>
+
+  <section>
+    <h2>Classic masters</h2>
+    <p class="section-intro">Original standalone master templates.</p>
+    <div class="grid" id="grid-classic"></div>
+  </section>
+
+  <footer>
+    Source: <a href="https://github.com/stackableapp/stackable-lessons" target="_blank" rel="noopener">github.com/stackableapp/stackable-lessons</a>
+  </footer>
+
+</div>
+
+<script>
+  const masterbrick = [
+    { file: 'MasterBrick.html',        name: 'MasterBrick' },
+    { file: 'branching-scenario.html', name: 'Branching Scenario' },
+    { file: 'multi-select.html',       name: 'Multi-Select' },
+    { file: 'orientation.html',        name: 'Orientation' },
+    { file: 'summary.html',            name: 'Summary' }
+  ];
+
+  const classic = [
+    { file: 'about-cta.html',          name: 'About CTA' },
+    { file: 'activity-showcase.html',  name: 'Activity Showcase' },
+    { file: 'format-switcher.html',    name: 'Format Switcher' },
+    { file: 'hero-story.html',         name: 'Hero Story' },
+    { file: 'idea-wall.html',          name: 'Idea Wall' },
+    { file: 'kindle-reader.html',      name: 'Kindle Reader' },
+    { file: 'landing-page.html',       name: 'Landing Page' },
+    { file: 'landing-showcase.html',   name: 'Landing Showcase' },
+    { file: 'module-navigator.html',   name: 'Module Navigator' },
+    { file: 'orientation.html',        name: 'Orientation' },
+    { file: 'photo-story-reader.html', name: 'Photo Story Reader' },
+    { file: 'pricing.html',            name: 'Pricing' },
+    { file: 'quiz.html',               name: 'Quiz' },
+    { file: 'scene-setter.html',       name: 'Scene Setter' },
+    { file: 'self-check.html',         name: 'Self Check' },
+    { file: 'vocab-wall.html',         name: 'Vocab Wall' }
+  ];
+
+  function render(items, basePath, mountId) {
+    const mount = document.getElementById(mountId);
+    const frag = document.createDocumentFragment();
+    items.forEach(item => {
+      const a = document.createElement('a');
+      a.className = 'card';
+      a.href = basePath + '/' + item.file;
+      a.target = '_blank';
+      a.rel = 'noopener';
+      a.innerHTML = `
+        <div>
+          <p class="name">${item.name}</p>
+          <p class="slug">${basePath}/${item.file}</p>
+        </div>
+        <p class="arrow">Open preview <span>→</span></p>
+      `;
+      frag.appendChild(a);
+    });
+    mount.appendChild(frag);
+  }
+
+  render(masterbrick, 'Master',   'grid-masterbrick');
+  render(classic,     '_masters', 'grid-classic');
+</script>
+
+</body>
+</html>

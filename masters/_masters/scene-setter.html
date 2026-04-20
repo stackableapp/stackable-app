@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Scene Setter — Social Stories</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --color-bg:       #F2F0EB;
+      --color-surface:  #FAFAF7;
+      --color-text:     #1A1A1A;
+      --color-slate:    #6B6568;
+      --color-navy:     #120DA6;
+      --color-plum:     #40062B;
+      --color-border:   #E8E2D9;
+    }
+
+    html, body {
+      background: var(--color-bg);
+      color: var(--color-text);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+      line-height: 1.65;
+    }
+
+    /* ============ STAGE ============ */
+    .stage {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: clamp(64px, 12vw, 140px) clamp(24px, 6vw, 60px) clamp(48px, 8vw, 96px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .scene-card {
+      width: 100%;
+      max-width: 640px;
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: 20px;
+      padding: clamp(36px, 6vw, 64px) clamp(28px, 5vw, 56px);
+      box-shadow: 0 1px 2px rgba(0,0,0,0.04), 0 12px 40px rgba(18, 13, 166, 0.06);
+    }
+
+    .script {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      align-items: stretch;
+    }
+
+    .line {
+      display: none;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity 0.35s ease, transform 0.35s ease;
+      will-change: opacity, transform;
+    }
+    .line.is-visible {
+      display: block;
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .line-narration {
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
+      font-size: clamp(1.1rem, 1.5vw, 1.3rem);
+      line-height: 1.6;
+      color: var(--color-text);
+    }
+
+    .line-dialogue {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-style: italic;
+      font-weight: 700;
+      font-size: clamp(1.55rem, 2.6vw, 2.1rem);
+      line-height: 1.25;
+      letter-spacing: -0.01em;
+      color: var(--color-plum);
+      margin: 6px 0;
+    }
+
+    .dialogue-speaker {
+      display: block;
+      font-family: 'Inter', sans-serif;
+      font-style: normal;
+      font-weight: 600;
+      font-size: 0.75rem;
+      line-height: 1;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--color-slate);
+      margin-bottom: 10px;
+    }
+
+    /* Phase-grouping spacing — extra space at the start of each scene movement */
+    .line.phase-start {
+      margin-top: 24px;
+    }
+
+    /* ============ CTA ============ */
+    .cta-row {
+      margin-top: clamp(40px, 6vw, 64px);
+      display: flex;
+      justify-content: center;
+      width: 100%;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+      pointer-events: none;
+    }
+    .cta-row.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--color-navy);
+      color: #FFFFFF;
+      border: none;
+      border-radius: 10px;
+      padding: 18px 36px;
+      font-family: 'Inter', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      line-height: 1;
+      cursor: pointer;
+      text-decoration: none;
+      transition: transform 0.15s ease, box-shadow 0.2s ease, background 0.3s ease, opacity 0.3s ease;
+      box-shadow: 0 2px 8px rgba(18, 13, 166, 0.18);
+    }
+    .btn-primary:hover:not(:disabled):not([aria-disabled="true"]) {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 18px rgba(18, 13, 166, 0.25);
+    }
+    .btn-primary svg { width: 16px; height: 16px; stroke: currentColor; }
+
+    /* ============ REPLAY LINK ============ */
+    .replay-link {
+      display: inline-block;
+      margin: 18px auto 0;
+      background: none;
+      border: none;
+      padding: 6px 10px;
+      color: var(--color-slate);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.8125rem;
+      font-weight: 500;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    .replay-link:hover { color: var(--color-navy); text-decoration: underline; }
+    .replay-link[hidden] { display: none; }
+
+    /* ============ MOBILE ============ */
+    @media (max-width: 640px) {
+      .btn-primary { width: 100%; justify-content: center; padding: 18px 24px; }
+    }
+
+    /* ============ REDUCED MOTION ============ */
+    @media (prefers-reduced-motion: reduce) {
+      .line, .btn-primary {
+        transition: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <section class="stage" id="stage">
+      <div class="scene-card">
+        <div class="script" id="script">
+        <!-- Phase 1: Setup -->
+        <p class="line line-narration is-visible">You enter a classroom.</p>
+        <p class="line line-narration">The teacher hands you a Social Story.</p>
+        <p class="line line-narration">You've never met Mia.</p>
+        <p class="line line-narration">Maybe you've never done this before.</p>
+
+        <!-- Phase 2: Tension -->
+        <p class="line line-narration phase-start">Mia sees the story in your hands.</p>
+        <p class="line line-narration">Her jaw tightens.</p>
+        <p class="line line-narration">She crosses her arms.</p>
+
+        <p class="line line-dialogue">
+          <span class="dialogue-speaker">Mia</span>
+          "Am I in trouble?"
+        </p>
+
+        <!-- Phase 3: The ask -->
+        <p class="line line-narration phase-start">The teacher leans toward you.</p>
+
+        <p class="line line-dialogue">
+          <span class="dialogue-speaker">Teacher</span>
+          "Can you read it with her now? Before science."
+        </p>
+
+        <p class="line line-narration">Two girls in the back row stop talking.</p>
+
+        <!-- Phase 4: Coda -->
+        <p class="line line-narration phase-start">Mia is waiting.</p>
+      </div>
+      </div>
+
+      <div class="cta-row" id="ctaRow" inert>
+        <button type="button" class="btn-primary" id="continueBtn">
+          Continue
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M5 12h14"></path>
+            <path d="M13 5l7 7-7 7"></path>
+          </svg>
+        </button>
+      </div>
+      <button type="button" class="replay-link" id="replayLink" hidden>↺ Replay scene</button>
+    </section>
+  </main>
+
+  <script>
+    (function () {
+      const stage = document.getElementById('stage');
+      const lines = Array.from(document.querySelectorAll('.line'));
+      const ctaRow = document.getElementById('ctaRow');
+      const continueBtn = document.getElementById('continueBtn');
+      const replayLink = document.getElementById('replayLink');
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      const STORAGE_KEY = 'scene-setter:seen';
+      const hasSeen = (function () {
+        try { return localStorage.getItem(STORAGE_KEY) === '1'; } catch (e) { return false; }
+      })();
+
+      // Auto-reveal pacing — per-line dwell, scaled by length so longer beats linger.
+      const BASE_DELAY = 1200;        // minimum dwell on each line
+      const PER_WORD_DELAY = 220;     // extra ms per word
+      const DIALOGUE_BONUS = 600;     // dialogue gets extra breathing room
+      const PHASE_PAUSE = 500;        // extra pause when crossing a phase boundary
+      const POST_REVEAL_DELAY = 700;  // pause after final beat before Continue appears
+
+      function dwellFor(line) {
+        const text = (line.textContent || '').trim();
+        const words = text ? text.split(/\s+/).length : 0;
+        let d = BASE_DELAY + words * PER_WORD_DELAY;
+        if (line.classList.contains('line-dialogue')) d += DIALOGUE_BONUS;
+        return d;
+      }
+
+      function showLine(line) {
+        line.style.display = 'block';
+        // Force reflow so the fade-in transition fires after display swap
+        void line.offsetHeight;
+        line.classList.add('is-visible');
+      }
+
+      function showCta() {
+        ctaRow.classList.add('is-visible');
+        ctaRow.removeAttribute('inert');
+        replayLink.hidden = false;
+      }
+
+      function revealAllImmediately() {
+        lines.forEach(function (l) {
+          l.style.display = 'block';
+          l.classList.add('is-visible');
+        });
+        showCta();
+      }
+
+      let started = false;
+      function startReveal() {
+        if (started) return;
+        started = true;
+
+        if (reduceMotion || hasSeen) {
+          revealAllImmediately();
+          return;
+        }
+
+        // Line 0 is pre-rendered visible. Walk lines 1..n with paced delays.
+        let i = 1;
+        function step() {
+          if (i >= lines.length) {
+            setTimeout(showCta, POST_REVEAL_DELAY);
+            return;
+          }
+          const line = lines[i];
+          showLine(line);
+          // Schedule next line: dwell on the one we just showed, plus a phase pause
+          // if the NEXT line starts a new phase.
+          const next = lines[i + 1];
+          const phaseGap = (next && next.classList.contains('phase-start')) ? PHASE_PAUSE : 0;
+          const wait = dwellFor(line) + phaseGap;
+          i++;
+          setTimeout(step, wait);
+        }
+        // Initial dwell on the pre-rendered line[0] before we reveal line[1]
+        setTimeout(step, dwellFor(lines[0]));
+      }
+
+      function isInViewport(el) {
+        const r = el.getBoundingClientRect();
+        const vh = window.innerHeight || document.documentElement.clientHeight;
+        return r.top < vh && r.bottom > 0;
+      }
+
+      // Returning visitor or reduced motion: skip the wait, render everything now.
+      if (reduceMotion || hasSeen) {
+        startReveal();
+      } else if (isInViewport(stage)) {
+        // The scene is already on screen — start immediately. No need to wait
+        // for an IntersectionObserver callback (which can be flaky inside
+        // iframes / preview environments).
+        startReveal();
+      } else if ('IntersectionObserver' in window) {
+        // Scene is below the fold — wait for it to scroll into view.
+        const io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              startReveal();
+              io.disconnect();
+            }
+          });
+        }, { threshold: 0.1 });
+        io.observe(stage);
+        // Belt-and-braces fallback: also poll on scroll in case IO doesn't fire.
+        const onScroll = function () {
+          if (isInViewport(stage)) {
+            startReveal();
+            window.removeEventListener('scroll', onScroll);
+          }
+        };
+        window.addEventListener('scroll', onScroll, { passive: true });
+      } else {
+        // No IO support — just start.
+        startReveal();
+      }
+
+      // Persist seen state when the learner moves on
+      continueBtn.addEventListener('click', function () {
+        try { localStorage.setItem(STORAGE_KEY, '1'); } catch (err) {}
+      });
+
+      // Replay: clear seen flag and reload
+      replayLink.addEventListener('click', function () {
+        try { localStorage.removeItem(STORAGE_KEY); } catch (err) {}
+        window.location.reload();
+      });
+    })();
+  </script>
+</body>
+</html>

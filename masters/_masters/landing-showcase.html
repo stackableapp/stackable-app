@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Landing Showcase</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      background: #F2F0EB;
+      font-family: 'Inter', -apple-system, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      color: #1A1A1A;
+    }
+
+    .section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: clamp(48px, 8vw, 100px) clamp(16px, 4vw, 40px);
+      gap: 32px;
+    }
+
+    /* ── Section header ── */
+    .section-heading {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 4vw, 3.25rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+      color: #1A1A1A;
+      text-align: center;
+      max-width: 600px;
+    }
+    .section-sub {
+      font-size: clamp(1.05rem, 1.5vw, 1.2rem);
+      font-weight: 500;
+      line-height: 1.55;
+      color: #1A1A1A;
+      text-align: center;
+      max-width: 520px;
+    }
+
+    /* ── Pill nav ── */
+    .pills {
+      display: flex;
+      gap: 6px;
+      background: #FFFFFF;
+      border-radius: 999px;
+      padding: 5px;
+      border: 1px solid #E8E2D9;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+    .pill {
+      padding: 10px 22px;
+      border-radius: 999px;
+      border: none;
+      background: transparent;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #1A1A1A;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      white-space: nowrap;
+    }
+    .pill:hover { color: #000000; }
+    .pill.active {
+      background: #120DA6;
+      color: #FFFFFF;
+    }
+
+    /* ── Showcase card ── */
+    .showcase {
+      width: 100%;
+      max-width: 720px;
+      background: #FAFAF7;
+      border-radius: 24px;
+      border: 1px solid #E8E2D9;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      overflow: hidden;
+    }
+
+    /* ── Panel ── */
+    .panel {
+      display: none;
+    }
+    .panel.active { display: block; }
+
+    .panel iframe {
+      width: 100%;
+      border: none;
+      display: block;
+      border-radius: 0 0 24px 24px;
+    }
+
+    /* ── Editor toolbar ── */
+    .editor-bar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 16px;
+      background: #1A1A1A;
+      color: #FFFFFF;
+      font-size: 12px;
+      font-family: 'Inter', sans-serif;
+    }
+    .editor-bar span { opacity: 0.5; letter-spacing: 0.03em; }
+    .editor-bar .save-btn {
+      padding: 6px 18px;
+      border-radius: 6px;
+      border: none;
+      background: #120DA6;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .editor-bar .save-btn:hover { opacity: 0.9; }
+    .editor-bar .save-btn.saved { background: #34c759; pointer-events: none; }
+    body { padding-top: 40px; }
+
+    [contenteditable="true"] {
+      outline: none;
+      border-radius: 4px;
+      transition: box-shadow 0.15s;
+    }
+    [contenteditable="true"]:hover { box-shadow: 0 0 0 2px rgba(0,0,0,0.06); }
+    [contenteditable="true"]:focus { box-shadow: 0 0 0 2px rgba(0,0,0,0.15); }
+
+    @media (max-width: 600px) {
+      .pills { flex-wrap: wrap; justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="editor-bar">
+    <span>EDIT MODE — click any text to edit</span>
+    <button class="save-btn" onclick="saveFile()">Save file</button>
+  </div>
+
+  <div class="section">
+
+    <!-- Section header -->
+    <h2 class="section-heading" contenteditable="true">Built for learning, not just watching.</h2>
+    <p class="section-sub" contenteditable="true">Every lesson includes real activities. Try one yourself.</p>
+
+    <!-- Pill nav -->
+    <div class="pills">
+      <button class="pill active" onclick="showPanel('quiz', this)">Test yourself</button>
+      <button class="pill" onclick="showPanel('wall', this)">Idea wall</button>
+      <button class="pill" onclick="showPanel('reader', this)">Textbook</button>
+    </div>
+
+    <!-- Showcase card -->
+    <div class="showcase">
+
+      <!-- ═══ QUIZ ═══ -->
+      <div class="panel active" id="panel-quiz">
+        <iframe src="quiz.html" id="iframe-quiz" height="680"></iframe>
+      </div>
+
+      <!-- ═══ IDEA WALL ═══ -->
+      <div class="panel" id="panel-wall">
+        <iframe src="idea-wall.html" id="iframe-wall" height="750"></iframe>
+      </div>
+
+      <!-- ═══ READER ═══ -->
+      <div class="panel" id="panel-reader">
+        <iframe src="kindle-reader.html" id="iframe-reader" height="700"></iframe>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    function showPanel(id, btn) {
+      var panels = document.querySelectorAll('.panel');
+      for (var i = 0; i < panels.length; i++) panels[i].classList.remove('active');
+      document.getElementById('panel-' + id).classList.add('active');
+
+      var pills = document.querySelectorAll('.pill');
+      for (var i = 0; i < pills.length; i++) pills[i].classList.remove('active');
+      btn.classList.add('active');
+    }
+
+    /* ── Save file ── */
+    function saveFile() {
+      var clone = document.documentElement.cloneNode(true);
+      var bar = clone.querySelector('.editor-bar');
+      if (bar) bar.remove();
+      var styles = clone.querySelectorAll('style');
+      styles.forEach(function(s) {
+        s.textContent = s.textContent
+          .replace(/\/\*\s*── Editor toolbar[\s\S]*?body\s*\{\s*padding-top:\s*40px;\s*\}/, '')
+          .replace(/\[contenteditable="true"\][\s\S]*?\[contenteditable="true"\]:focus\s*\{[^}]*\}/, '');
+      });
+      clone.querySelectorAll('[contenteditable]').forEach(function(el) {
+        el.removeAttribute('contenteditable');
+      });
+      var body = clone.querySelector('body');
+      if (body) body.style.paddingTop = '';
+      var html = '<!DOCTYPE html>\n' + clone.outerHTML;
+      var blob = new Blob([html], { type: 'text/html' });
+      var a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'landing-showcase.html';
+      a.click();
+      URL.revokeObjectURL(a.href);
+      var btn = document.querySelector('.save-btn');
+      btn.textContent = 'Saved ✓';
+      btn.className = 'save-btn saved';
+      setTimeout(function() {
+        btn.textContent = 'Save file';
+        btn.className = 'save-btn';
+      }, 2000);
+    }
+  </script>
+
+</body>
+</html>

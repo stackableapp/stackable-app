@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quiz</title>
+  <style>
+
+    /* ============================================================
+       APPLE DESIGN SYSTEM
+    ============================================================ */
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --color-bg-primary:            #f5f5f7;
+      --color-bg-secondary:          #fafafa;
+      --color-text-primary:          #1d1d1f;
+      --color-text-secondary:        #6e6e73;
+      --color-link:                  #0066cc;
+      --color-link-hover:            #0077ed;
+      --color-success:               #34c759;
+      --color-success-bg:            #f0fdf4;
+      --color-error:                 #ff3b30;
+      --color-error-bg:              #fff5f5;
+      --color-border:                #d2d2d7;
+
+      --space-1:   8px;
+      --space-2:   16px;
+      --space-3:   24px;
+      --space-4:   32px;
+      --space-6:   48px;
+      --space-8:   64px;
+      --space-12:  96px;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --color-bg-primary:   #1d1d1f;
+        --color-bg-secondary: #2c2c2e;
+        --color-text-primary: #f5f5f7;
+        --color-text-secondary: #98989d;
+        --color-link:         #2997ff;
+        --color-link-hover:   #59b0ff;
+        --color-border:       #3a3a3c;
+        --color-success-bg:   #0d2b1c;
+        --color-error-bg:     #2b0d0d;
+      }
+    }
+
+    /* ── BODY ── */
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', sans-serif;
+      background: var(--color-bg-primary);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── LAYOUT ── */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding-left:  clamp(var(--space-2), 5vw, var(--space-8));
+      padding-right: clamp(var(--space-2), 5vw, var(--space-8));
+    }
+
+    .quiz-section {
+      background: var(--color-bg-primary);
+      padding: clamp(var(--space-8), 8vw, var(--space-12)) 0;
+    }
+
+    .quiz-layout {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-3);
+    }
+
+    /* ── SECTION HEADING ── */
+    .quiz-heading {
+      font-size: clamp(28px, 3.5vw, 44px);
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      line-height: 1.2;
+      text-align: center;
+      margin-bottom: 8px;
+    }
+    .quiz-heading-primary {
+      color: var(--color-text-primary);
+    }
+    .quiz-heading-secondary {
+      font-size: clamp(20px, 2.5vw, 32px);
+      font-weight: 500;
+      color: var(--color-text-secondary);
+    }
+
+    /* ── QUIZ WRAPPER ── */
+    .quiz-wrapper {
+      width: min(640px, 100%);
+      position: relative;
+      margin-top: 18px;
+    }
+
+    /* floating pill on card top border */
+    .quiz-pill {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 2;
+      display: inline-flex;
+      align-items: center;
+      height: 28px;
+      padding: 0 16px;
+      border-radius: 999px;
+      border: 1px solid var(--color-border);
+      background: var(--color-bg-secondary);
+      white-space: nowrap;
+    }
+    .quiz-pill span {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--color-text-secondary);
+    }
+
+    /* ── QUIZ CARD ── */
+    .quiz-card {
+      background-color: var(--color-bg-secondary);
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.15'/%3E%3C/svg%3E");
+      border: 1px solid var(--color-border);
+      border-radius: 20px;
+      overflow: hidden;
+    }
+
+    /* context header band */
+    .quiz-header {
+      background: var(--color-bg-primary);
+      padding: var(--space-3) var(--space-4);
+      border-bottom: 1px solid var(--color-border);
+      text-align: center;
+    }
+    .quiz-header p {
+      font-size: 15px;
+      color: var(--color-text-primary);
+      line-height: 1.5;
+    }
+
+    /* quiz body */
+    .quiz-body {
+      padding: var(--space-4);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-2);
+    }
+
+    /* ── PROGRESS ROW ── */
+    .progress-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-2);
+    }
+
+    .question-counter {
+      font-size: 13px;
+      color: var(--color-text-secondary);
+      white-space: nowrap;
+    }
+
+    .dots-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      border: 1.5px solid var(--color-border);
+      background: transparent;
+      transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+    }
+    .dot.current {
+      width: 10px;
+      height: 10px;
+      border-color: var(--color-link);
+      background: transparent;
+    }
+    .dot.done-correct {
+      background: var(--color-success);
+      border-color: var(--color-success);
+    }
+    .dot.done-incorrect {
+      background: var(--color-text-secondary);
+      border-color: var(--color-text-secondary);
+    }
+
+    /* ── QUESTION BLOCK ── */
+    .question-block {
+      background: rgba(0, 102, 204, 0.07);
+      border: 1px solid rgba(0, 102, 204, 0.15);
+      border-radius: 12px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .question-stem {
+      font-size: 19px;
+      font-weight: 600;
+      color: var(--color-text-primary);
+      line-height: 1.4;
+    }
+
+    .question-scenario {
+      display: none;
+    }
+
+    /* ── OPTIONS ── */
+    .option-radio { display: none; }
+
+    .options-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 8px;
+    }
+
+    .option {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 16px;
+      border: 1.5px solid var(--color-border);
+      border-radius: 12px;
+      background: var(--color-bg-secondary);
+      cursor: pointer;
+      transition: border-color 0.15s ease, background 0.15s ease, opacity 0.2s ease;
+      user-select: none;
+    }
+
+    .option-letter {
+      width: 26px;
+      height: 26px;
+      border-radius: 999px;
+      background: var(--color-bg-primary);
+      border: 1px solid var(--color-border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--color-text-secondary);
+      flex-shrink: 0;
+      transition: border-color 0.15s ease, background 0.15s ease, color 0.15s ease;
+    }
+
+    .option.selected .option-letter {
+      border-color: var(--color-link);
+      background: var(--color-link);
+      color: #ffffff;
+    }
+
+    .option:hover:not(.locked) {
+      border-color: var(--color-link);
+      background: rgba(0, 102, 204, 0.04);
+    }
+
+    .option.selected {
+      border-color: var(--color-link);
+      background: rgba(0, 102, 204, 0.06);
+    }
+
+    .option.locked {
+      cursor: default;
+    }
+
+    .option.locked:not(.selected) {
+      opacity: 0.45;
+    }
+
+    .option-radio {
+      width: 18px;
+      height: 18px;
+      border-radius: 999px;
+      border: 1.5px solid var(--color-border);
+      background: transparent;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: border-color 0.15s ease, background 0.15s ease;
+    }
+
+    .option.selected .option-radio {
+      border-color: var(--color-link);
+      background: var(--color-link);
+    }
+
+    .option.selected .option-radio::after {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: #ffffff;
+    }
+
+    .option-label {
+      font-size: 15px;
+      color: var(--color-text-primary);
+      line-height: 1.4;
+    }
+
+    /* ── CHECK / NEXT ROW ── */
+    .action-row {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-2);
+      border-top: 1px solid var(--color-border);
+      padding-top: var(--space-2);
+    }
+
+    /* ── FEEDBACK BLOCK ── */
+    .feedback-block {
+      border-radius: 12px;
+      padding: var(--space-2);
+      display: none;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .feedback-block.visible { display: flex; }
+
+    .feedback-block.correct {
+      background: var(--color-success-bg);
+      border: 1px solid rgba(52, 199, 89, 0.25);
+    }
+
+    .feedback-block.incorrect {
+      background: var(--color-error-bg);
+      border: 1px solid rgba(255, 59, 48, 0.20);
+    }
+
+    .feedback-label {
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .feedback-block.correct .feedback-label { color: #1a7a3a; }
+    .feedback-block.incorrect .feedback-label { color: #c0392b; }
+
+    .feedback-text {
+      font-size: 15px;
+      line-height: 1.55;
+      color: var(--color-text-primary);
+    }
+
+    .feedback-guidance {
+      font-size: 13px;
+      font-style: italic;
+      color: var(--color-text-secondary);
+      margin-top: 2px;
+    }
+
+    /* ── BUTTONS ── */
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      height: 48px;
+      padding: 0 28px;
+      border-radius: 999px;
+      background: var(--color-link);
+      border: none;
+      cursor: pointer;
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+      color: #ffffff;
+      text-decoration: none;
+      transition: background 0.15s ease, opacity 0.15s ease;
+      align-self: flex-end;
+    }
+
+    .btn-primary:hover { background: var(--color-link-hover); }
+
+    .btn-primary:disabled {
+      opacity: 0.35;
+      cursor: default;
+    }
+
+    .btn-primary.hidden { display: none; }
+
+    /* ── RESULT WRAPPER ── */
+    .result-wrapper {
+      width: min(640px, 100%);
+      position: relative;
+      margin-top: 18px;
+      display: none;
+    }
+
+    .result-wrapper.visible { display: block; }
+
+    .result-pill {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 2;
+      display: inline-flex;
+      align-items: center;
+      height: 28px;
+      padding: 0 16px;
+      border-radius: 999px;
+      border: 1px solid var(--color-border);
+      background: var(--color-bg-secondary);
+      white-space: nowrap;
+    }
+    .result-pill span {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--color-text-secondary);
+    }
+
+    .result-card {
+      background: var(--color-bg-secondary);
+      border: 1px solid var(--color-border);
+      border-radius: 20px;
+      overflow: hidden;
+    }
+
+    .result-header {
+      background: var(--color-bg-primary);
+      padding: var(--space-2) var(--space-4);
+      border-bottom: 1px solid var(--color-border);
+      text-align: center;
+    }
+
+    .result-header p {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--color-text-secondary);
+    }
+
+    .result-body {
+      padding: var(--space-4);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-2);
+      text-align: center;
+    }
+
+    .result-score {
+      font-size: clamp(48px, 7vw, 72px);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      color: var(--color-text-primary);
+      line-height: 1;
+    }
+
+    .result-label {
+      font-size: clamp(24px, 3vw, 32px);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--color-text-primary);
+    }
+
+    .result-message {
+      font-size: 15px;
+      color: var(--color-text-primary);
+      line-height: 1.6;
+      max-width: 420px;
+    }
+
+    .result-divider {
+      width: 100%;
+      height: 1px;
+      background: var(--color-border);
+      margin: var(--space-1) 0;
+    }
+
+    .result-cta {
+      width: 100%;
+    }
+
+    .btn-continue {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 52px;
+      border-radius: 999px;
+      background: var(--color-link);
+      border: none;
+      cursor: pointer;
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+      color: #ffffff;
+      text-decoration: none;
+      transition: background 0.15s ease;
+      margin-bottom: var(--space-1);
+    }
+
+    .btn-continue:hover { background: var(--color-link-hover); }
+
+    .try-again-link {
+      font-size: 13px;
+      color: var(--color-link);
+      text-decoration: none;
+      cursor: pointer;
+      transition: color 0.15s ease;
+    }
+
+    .try-again-link:hover { color: var(--color-link-hover); }
+
+    /* view switching */
+    #quiz-question-view { display: flex; flex-direction: column; gap: var(--space-2); }
+    #quiz-result-view   { display: none; }
+
+  </style>
+</head>
+<body>
+
+  <section class="quiz-section">
+    <div class="container">
+      <div class="quiz-layout">
+
+        <!-- ── SECTION HEADING ── -->
+        <!-- heading removed -->
+
+        <!-- ── QUIZ CARD ── -->
+        <div class="quiz-wrapper" id="quiz-wrapper">
+
+          <!-- floating pill -->
+          <div class="quiz-pill">
+            <span>3 questions</span>
+          </div>
+
+          <div class="quiz-card">
+
+            <!-- context header band -->
+            <div class="quiz-header">
+              <p>Based on Carol Gray's Social Story guidelines.</p>
+            </div>
+
+            <!-- quiz body -->
+            <div class="quiz-body">
+
+              <!-- ── QUESTION VIEW ── -->
+              <div id="quiz-question-view">
+
+                <!-- progress row -->
+                <div class="progress-row">
+                  <span class="question-counter" id="question-counter">Question 1 of 3</span>
+                  <div class="dots-row" id="dots-row">
+                    <div class="dot current" data-index="0"></div>
+                    <div class="dot" data-index="1"></div>
+                    <div class="dot" data-index="2"></div>
+                  </div>
+                </div>
+
+                <!-- question block -->
+                <div class="question-block">
+                  <p class="question-stem" id="question-stem"></p>
+                  <p class="question-scenario" id="question-scenario"></p>
+                </div>
+
+                <!-- options -->
+                <div class="options-list" id="options-list"></div>
+
+                <!-- check / feedback / next -->
+                <div class="action-row">
+                  <div class="feedback-block" id="feedback-block">
+                    <p class="feedback-label" id="feedback-label"></p>
+                    <p class="feedback-text" id="feedback-text"></p>
+                    <p class="feedback-guidance" id="feedback-guidance"></p>
+                  </div>
+                  <button class="btn-primary hidden" id="check-btn" onclick="handleCheck()">Check</button>
+                  <button class="btn-primary hidden" id="next-btn" onclick="handleNext()">Next</button>
+                </div>
+
+              </div><!-- end question view -->
+
+            </div><!-- end quiz body -->
+          </div><!-- end quiz card -->
+        </div><!-- end quiz wrapper -->
+
+        <!-- ── RESULT CARD ── -->
+        <div class="result-wrapper" id="result-wrapper">
+
+          <div class="result-pill">
+            <span>Your result</span>
+          </div>
+
+          <div class="result-card">
+
+            <div class="result-header">
+              <p id="result-eyebrow">Quiz complete</p>
+            </div>
+
+            <div class="result-body">
+              <p class="result-score" id="result-score"></p>
+              <h2 class="result-label" id="result-label"></h2>
+              <p class="result-message" id="result-message"></p>
+              <div class="result-divider"></div>
+              <div class="result-cta">
+                <a href="#" class="btn-continue">Continue</a>
+                <br>
+                <a class="try-again-link" onclick="resetQuiz()">↺ Try again</a>
+              </div>
+            </div>
+
+          </div>
+        </div><!-- end result wrapper -->
+
+      </div><!-- end quiz layout -->
+    </div><!-- end container -->
+  </section>
+
+  <script>
+
+    const questions = [
+      {
+        stem: 'Mia flaps her hands when she gets excited at assembly. Her teacher asks you to write a Social Story about it. What do you do?',
+        scenario: '',
+        options: [
+          'Write a story about keeping hands still during assembly',
+          'Ask whether Mia is actually struggling or whether the behaviour only bothers the adults',
+          'Write a story about what happens at assembly so Mia knows what to expect',
+          'Observe Mia at three assemblies before deciding what to write about',
+        ],
+        correct: 1,
+        feedback: {
+          correct: 'Carol Gray is clear that a Social Story is only appropriate when the child is the one struggling. If Mia is happy and coping, the behaviour is not a problem for her. Writing a story to stop something that only bothers the adults misses the purpose entirely.',
+          incorrect: 'Before writing anything, you need to ask who this is actually a problem for. Mia is excited and coping. The hand-flapping is only an issue for the adults in the room. According to Carol Gray, a Social Story should never be used to manage behaviour that the child is not struggling with.',
+          guidance: 'This is one of the first things you will learn in this course. Getting this question right changes everything that follows.',
+        }
+      },
+      {
+        stem: 'You are writing a Social Story for Jake, who gets upset when the class moves from the carpet to their desks. Which opening line follows Carol Gray\'s guidelines?',
+        scenario: '',
+        options: [
+          '"Jake needs to move quietly when the teacher says it is time to go to our desks."',
+          '"Sometimes in class, we move from the carpet to our desks. This happens most days after the morning lesson."',
+          '"When it is time to move to desks, good students walk quietly and sit down straight away."',
+          '"Jake must learn to handle transitions better so he does not disrupt the class."',
+        ],
+        correct: 1,
+        feedback: {
+          correct: 'This is a descriptive sentence. Carol Gray\'s guidelines say a Social Story should begin by describing what happens, when it happens, and why. It should never open with a directive telling the child what to do. This line gives Jake information without judging or instructing him.',
+          incorrect: 'Carol Gray\'s guidelines require that a Social Story opens with descriptive sentences that patiently explain the situation. Sentences that tell the child what to do, compare them to other students, or frame their behaviour as a problem are not how a Social Story should begin.',
+          guidance: 'You will practise writing each of Carol Gray\'s sentence types in this course and learn why the balance between describing and directing matters so much.',
+        }
+      },
+      {
+        stem: 'You have read a Social Story to Lily three times this week about what happens at lunch when the menu changes. Nothing has improved. A colleague says it is not working. What is your response?',
+        scenario: '',
+        options: [
+          'Rewrite the story because the language is probably too complex for Lily',
+          'Try a different approach because Social Stories are clearly not right for this child',
+          'Keep reading it because research shows at least six readings before the information sticks',
+          'Read it to Lily right before lunch so it is fresh in her mind',
+        ],
+        correct: 2,
+        feedback: {
+          correct: 'Three readings is not enough. Research shows that children need to hear their Social Story at least six times before the information is available to them in the real moment. The story also needs to be read during a calm, settled time and never right before the situation.',
+          incorrect: 'Giving up after three readings is the most common reason people say Social Stories do not work. The research is consistent. At least six readings, delivered during calm moments, gives the child the best chance of having that information when they need it.',
+          guidance: 'This course covers exactly how often, when, and how to deliver a Social Story so it actually makes a difference.',
+        }
+      },
+    ];
+
+    let current = 0;
+    let selected = null;
+    let checked = false;
+    const results = []; // true/false per question
+
+    function renderQuestion() {
+      const q = questions[current];
+      selected = null;
+      checked = false;
+
+      // counter
+      document.getElementById('question-counter').textContent = `Question ${current + 1} of ${questions.length}`;
+
+      // dots
+      const dots = document.querySelectorAll('.dot');
+      dots.forEach((dot, i) => {
+        dot.className = 'dot';
+        if (i < results.length) {
+          dot.classList.add(results[i] ? 'done-correct' : 'done-incorrect');
+        } else if (i === current) {
+          dot.classList.add('current');
+        }
+      });
+
+      // question
+      document.getElementById('question-stem').textContent = q.stem;
+      document.getElementById('question-scenario').textContent = q.scenario;
+
+      // options
+      const list = document.getElementById('options-list');
+      list.innerHTML = '';
+      q.options.forEach((text, i) => {
+        const opt = document.createElement('div');
+        opt.className = 'option';
+        const letter = ['A', 'B', 'C', 'D'][i];
+        opt.innerHTML = `<div class="option-letter">${letter}</div><span class="option-label">${text}</span>`;
+        opt.addEventListener('click', () => handleOptionClick(i, opt));
+        list.appendChild(opt);
+      });
+
+      // hide feedback + buttons
+      document.getElementById('feedback-block').className = 'feedback-block';
+      document.getElementById('check-btn').className = 'btn-primary hidden';
+      document.getElementById('next-btn').className = 'btn-primary hidden';
+    }
+
+    function handleOptionClick(index, el) {
+      if (checked) return;
+
+      // deselect all
+      document.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+
+      // select clicked
+      el.classList.add('selected');
+      selected = index;
+
+      // reveal Check
+      document.getElementById('check-btn').className = 'btn-primary';
+    }
+
+    function handleCheck() {
+      if (selected === null) return;
+      checked = true;
+
+      const q = questions[current];
+      const isCorrect = selected === q.correct;
+      results.push(isCorrect);
+
+      // lock all options
+      document.querySelectorAll('.option').forEach(o => o.classList.add('locked'));
+
+      // feedback
+      const block = document.getElementById('feedback-block');
+      block.className = 'feedback-block visible ' + (isCorrect ? 'correct' : 'incorrect');
+      document.getElementById('feedback-label').textContent = isCorrect ? 'Correct!' : 'Not quite.';
+      document.getElementById('feedback-text').textContent = isCorrect ? q.feedback.correct : q.feedback.incorrect;
+      document.getElementById('feedback-guidance').textContent = q.feedback.guidance;
+
+      // swap buttons
+      document.getElementById('check-btn').className = 'btn-primary hidden';
+      const nextBtn = document.getElementById('next-btn');
+      nextBtn.className = 'btn-primary';
+      nextBtn.textContent = current < questions.length - 1 ? 'Next' : 'See my result';
+    }
+
+    function handleNext() {
+      current++;
+      if (current < questions.length) {
+        renderQuestion();
+      } else {
+        showResult();
+      }
+    }
+
+    function showResult() {
+      document.getElementById('quiz-wrapper').style.display = 'none';
+      document.getElementById('result-wrapper').classList.add('visible');
+
+      const score = results.filter(r => r).length;
+      const total = questions.length;
+
+      document.getElementById('result-score').textContent = `${score}/${total}`;
+
+      let label, message;
+      if (score === total) {
+        label = 'Outstanding!';
+        message = 'You\'ve nailed the key principles of effective learning. Keep applying these strategies and you\'ll see real results.';
+      } else if (score >= total - 1) {
+        label = 'Well done!';
+        message = 'You\'ve got a strong grasp of the essentials. Review the feedback above to sharpen your understanding even further.';
+      } else {
+        label = 'Good effort!';
+        message = 'There\'s more to explore here. Review the feedback from each question and give it another go. That\'s how learning really happens.';
+      }
+
+      document.getElementById('result-label').textContent = label;
+      document.getElementById('result-message').textContent = message;
+    }
+
+    function resetQuiz() {
+      current = 0;
+      selected = null;
+      checked = false;
+      results.length = 0;
+
+      document.getElementById('quiz-wrapper').style.display = '';
+      document.getElementById('result-wrapper').classList.remove('visible');
+      renderQuestion();
+    }
+
+    // init
+    renderQuestion();
+
+  </script>
+
+</body>
+</html>

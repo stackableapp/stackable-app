@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pricing</title>
+  <style>
+    /* ── Apple Design System tokens ── */
+    :root {
+      --color-bg-primary:    #f5f5f7;
+      --color-bg-secondary:  #ffffff;
+      --color-text-primary:  #1d1d1f;
+      --color-text-secondary:#6e6e73;
+      --color-border:        #d2d2d7;
+      --color-link:          #0066cc;
+      --color-success:       #34c759;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --color-bg-primary:    #1d1d1f;
+        --color-bg-secondary:  #2c2c2e;
+        --color-text-primary:  #f5f5f7;
+        --color-text-secondary:#98989d;
+        --color-border:        #3a3a3c;
+        --color-link:          #2997ff;
+        --color-success:       #30d158;
+      }
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', sans-serif;
+      background: var(--color-bg-primary);
+      color: var(--color-text-primary);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ─── Section ─── */
+    section.pricing {
+      background: var(--color-bg-primary);
+      padding: clamp(64px, 8vw, 100px) clamp(20px, 6vw, 60px);
+    }
+
+    .pricing-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 56px;
+    }
+
+    /* ─── Heading ─── */
+    .pricing-head {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .pricing-head h2 {
+      font-size: clamp(28px, 4vw, 44px);
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      color: var(--color-text-primary);
+    }
+
+
+    /* ─── Card grid ─── */
+    .card-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 24px;
+      align-items: stretch;
+      width: 100%;
+    }
+
+    /* ─── Shared card ─── */
+    .price-card {
+      border-radius: 20px;
+      padding: 40px 36px;
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+    }
+
+    /* Standard card */
+    .card-standard {
+      background: var(--color-bg-secondary);
+      border: 1px solid var(--color-border);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    }
+
+    /* Featured card */
+    .card-featured {
+      background: rgba(0,102,204,0.04);
+      border: 2px solid var(--color-link);
+      box-shadow: 0 12px 40px rgba(0,102,204,0.18);
+      margin-top: -20px;
+      margin-bottom: -20px;
+      position: relative;
+      padding-top: 48px;
+      padding-bottom: 56px;
+    }
+    @media (prefers-color-scheme: dark) {
+      .card-featured {
+        background: rgba(41,151,255,0.08);
+        box-shadow: 0 12px 40px rgba(41,151,255,0.20);
+      }
+    }
+
+    /* Most popular badge */
+    .popular-badge {
+      position: absolute;
+      top: -14px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--color-bg-secondary);
+      border: 1.5px solid var(--color-link);
+      border-radius: 999px;
+      padding: 4px 18px;
+      white-space: nowrap;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--color-link);
+    }
+
+    /* Tier label */
+    .tier-label {
+      font-size: 19px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      color: var(--color-text-primary);
+    }
+
+    /* Tagline — the ONE sentence */
+    .card-tagline {
+      font-size: 17px;
+      font-weight: 500;
+      line-height: 1.45;
+      color: var(--color-text-primary);
+      letter-spacing: -0.012em;
+    }
+    .card-tagline-light { color: #ffffff; }
+
+    /* Price display */
+    .price-block {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+    .price-row {
+      display: flex;
+      align-items: baseline;
+      gap: 5px;
+    }
+    .price-amount {
+      font-size: 42px;
+      font-weight: 700;
+      letter-spacing: -0.035em;
+      line-height: 1;
+      color: var(--color-text-primary);
+    }
+    .price-amount-light { color: #ffffff; }
+    .price-period {
+      font-size: 15px;
+      color: var(--color-text-secondary);
+    }
+    .price-period-light { color: rgba(255,255,255,0.65); }
+    .price-custom {
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--color-text-primary);
+    }
+
+    .billing-note {
+      font-size: 12px;
+      color: var(--color-text-secondary);
+    }
+    .billing-note-light { color: rgba(255,255,255,0.5); }
+
+
+    /* CTA button */
+    .cta-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 52px;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      text-decoration: none;
+      transition: opacity 0.18s, transform 0.12s;
+      margin-top: auto;
+    }
+    .cta-btn:hover { opacity: 0.88; transform: translateY(-1px); }
+    .cta-btn:active { transform: scale(0.98); }
+
+    .cta-solid {
+      background: var(--color-link);
+      color: #ffffff;
+    }
+    .cta-filled {
+      background: #ffffff;
+      color: var(--color-link);
+    }
+
+
+    /* ─── Employer PD accordion ─── */
+    .pd-accordion {
+      width: min(560px, 100%);
+      border: 1.5px solid var(--color-border);
+      border-radius: 12px;
+      background: var(--color-bg-secondary);
+      overflow: hidden;
+      transition: border-color 0.2s;
+    }
+    .pd-accordion.open {
+      border-color: var(--color-link);
+    }
+
+    .pd-header {
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      cursor: pointer;
+      user-select: none;
+    }
+    .pd-header-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .pd-info-icon {
+      font-size: 14px;
+      color: var(--color-text-secondary);
+      transition: color 0.2s;
+    }
+    .pd-accordion.open .pd-info-icon { color: var(--color-link); }
+    .pd-title {
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--color-text-primary);
+      transition: color 0.2s, font-weight 0.2s;
+    }
+    .pd-accordion.open .pd-title {
+      color: var(--color-text-primary);
+      font-weight: 600;
+    }
+    .pd-toggle-icon {
+      font-size: 18px;
+      font-weight: 400;
+      color: var(--color-link);
+      line-height: 1;
+      flex-shrink: 0;
+      width: 20px;
+      text-align: center;
+      transition: transform 0.22s;
+    }
+
+    .pd-body {
+      display: none;
+      padding: 0 20px 18px;
+      border-top: 1px solid var(--color-border);
+    }
+    .pd-accordion.open .pd-body {
+      display: block;
+    }
+    .pd-body-inner {
+      padding-top: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .pd-body p {
+      font-size: 15px;
+      color: var(--color-text-primary);
+      line-height: 1.55;
+    }
+    .pd-download-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--color-link);
+      text-decoration: none;
+      transition: opacity 0.15s;
+    }
+    .pd-download-link:hover { opacity: 0.75; }
+
+    /* ─── Responsive ─── */
+    @media (max-width: 820px) {
+      .card-grid {
+        grid-template-columns: 1fr;
+        max-width: 400px;
+      }
+      .card-featured { margin-top: 0; padding-top: 44px; }
+      .trust-item + .trust-item { border-left: none; border-top: 1px solid var(--color-border); }
+      .trust-bar { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <section class="pricing">
+    <div class="pricing-inner">
+
+      <!-- Heading -->
+      <div class="pricing-head">
+        <h2><span style="color:var(--color-text-primary)">Start for free.</span><br><span style="color:var(--color-text-secondary);font-weight:500;">Stay because it works.</span></h2>
+      </div>
+
+
+      <!-- Pricing cards -->
+      <div class="card-grid">
+
+        <!-- Card 1 — Monthly -->
+        <div class="price-card card-standard">
+          <span class="tier-label">Monthly</span>
+          <p class="card-tagline">Everything included. Cancel anytime.</p>
+          <p class="card-tagline" style="margin-top:-12px;">3 days free. No card needed.</p>
+          <div class="price-block">
+            <div class="price-row">
+              <span class="price-amount">$29</span>
+              <span class="price-period">/mo</span>
+            </div>
+          </div>
+          <a href="#" class="cta-btn cta-solid">Start writing</a>
+        </div>
+
+        <!-- Card 2 — Yearly (featured) -->
+        <div class="price-card card-featured">
+          <div class="popular-badge">Most popular</div>
+          <span class="tier-label">Yearly</span>
+          <p class="card-tagline">Everything included. Try free for 14 days. No card needed.</p>
+          <p class="card-tagline" style="margin-top:-12px;font-style:italic;color:var(--color-text-secondary);">May be covered by your workplace PD budget.</p>
+          <div class="price-block">
+            <div class="price-row">
+              <span class="price-amount">$199</span>
+              <span class="price-period">/yr</span>
+            </div>
+          </div>
+          <a href="#" class="cta-btn cta-solid">Start writing</a>
+        </div>
+
+        <!-- Card 3 — Schools & Teams -->
+        <div class="price-card card-standard">
+          <span class="tier-label">Schools &amp; Teams</span>
+          <p class="card-tagline">Get your whole team writing social stories. We'll make the pricing work.</p>
+          <a href="#" class="cta-btn cta-solid">Talk to us</a>
+        </div>
+
+      </div><!-- /card-grid -->
+
+
+      <!-- Employer PD accordion -->
+      <div class="pd-accordion" id="pdAccordion">
+        <div class="pd-header" onclick="togglePD()" aria-expanded="false" aria-controls="pdBody">
+          <span class="pd-title">This may be covered by your employer's PD budget</span>
+          <span class="pd-toggle-icon" id="pdToggleIcon">+</span>
+        </div>
+        <div class="pd-body" id="pdBody" role="region">
+          <div class="pd-body-inner">
+            <p>Many employers cover PD costs. Just ask your manager.</p>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /pricing-inner -->
+  </section>
+
+  <script>
+    // ── Employer PD accordion ──
+    function togglePD() {
+      const el  = document.getElementById('pdAccordion');
+      const icon = document.getElementById('pdToggleIcon');
+      const header = el.querySelector('.pd-header');
+      const isOpen = el.classList.contains('open');
+      el.classList.toggle('open', !isOpen);
+      icon.textContent = isOpen ? '+' : '−';
+      header.setAttribute('aria-expanded', String(!isOpen));
+    }
+
+    // Init
+  </script>
+</body>
+</html>

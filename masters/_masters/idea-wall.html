@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Idea Wall</title>
+  <style>
+
+    /* ============================================================
+       APPLE DESIGN SYSTEM
+    ============================================================ */
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+
+      --color-bg-primary:      #f5f5f7;
+      --color-bg-secondary:    #ffffff;
+      --color-text-primary:    #1d1d1f;
+      --color-text-secondary:  #6e6e73;
+      --color-text-tertiary:   #86868b;
+      --color-link:            #0066cc;
+      --color-link-hover:      #0077ed;
+      --color-border:          #d2d2d7;
+      --color-success:         #34c759;
+
+      /* Post-it palette — decorative content colours, not interactive */
+      --note-pink:   #fce4ec;
+      --note-sky:    #dbeeff;
+      --note-cream:  #fdf4ec;
+      --note-yellow: #fffde8;
+
+      --space-1:  8px;
+      --space-2:  16px;
+      --space-3:  24px;
+      --space-4:  32px;
+      --space-6:  48px;
+      --space-8:  64px;
+      --space-12: 96px;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --color-bg-primary:    #000000;
+        --color-bg-secondary:  #1c1c1e;
+        --color-text-primary:  #f5f5f7;
+        --color-text-secondary:#a1a1a6;
+        --color-text-tertiary: #6e6e73;
+        --color-link:          #2997ff;
+        --color-link-hover:    #59b0ff;
+        --color-border:        #424245;
+        --note-pink:           #3a1a23;
+        --note-sky:            #0d2035;
+        --note-cream:          #2a1f14;
+        --note-yellow:         #2a2300;
+      }
+    }
+
+    /* ── BODY ── */
+    body {
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      background: var(--color-bg-primary);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── LAYOUT ── */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding-left:  clamp(var(--space-2), 5vw, var(--space-8));
+      padding-right: clamp(var(--space-2), 5vw, var(--space-8));
+    }
+
+    .idea-wall-section {
+      background: var(--color-bg-primary);
+      padding: clamp(var(--space-8), 8vw, var(--space-12)) 0;
+    }
+
+    .wall-layout {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-6);
+      align-items: center;
+    }
+
+    /* ── SECTION HEADING ── */
+    .section-head {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      text-align: center;
+    }
+
+    .section-head h2 {
+      font-size: clamp(28px, 3.5vw, 44px);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+      color: var(--color-text-primary);
+    }
+
+    .section-head p {
+      font-size: 17px;
+      color: var(--color-text-secondary);
+      line-height: 1.5;
+    }
+
+    /* ── WALL CARD (white container) ── */
+    .wall-card {
+      width: 100%;
+      background: var(--color-bg-secondary);
+      border: 1px solid var(--color-border);
+      border-radius: 20px;
+      padding: clamp(var(--space-3), 3vw, var(--space-4));
+      box-shadow: 0 2px 16px rgba(0,0,0,0.06);
+      overflow: hidden;
+    }
+
+    /* ── NOTES GRID ── */
+    .notes-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      align-items: start;
+    }
+
+    @media (max-width: 900px) {
+      .notes-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 500px) {
+      .notes-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+    }
+
+    /* ── POST-IT NOTE ── */
+    .sticky-note {
+      border-radius: 4px;
+      padding: 14px 14px 32px 14px;
+      box-shadow: 3px 4px 12px rgba(0,0,0,0.12);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      position: relative;
+      cursor: default;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .sticky-note:hover {
+      box-shadow: 4px 6px 20px rgba(0,0,0,0.16);
+      z-index: 2;
+    }
+
+    .sticky-note.pink   { background: var(--note-pink); }
+    .sticky-note.sky    { background: var(--note-sky); }
+    .sticky-note.cream  { background: var(--note-cream); }
+    .sticky-note.yellow { background: var(--note-yellow); }
+
+    .note-text {
+      font-size: 13px;
+      line-height: 1.5;
+      color: var(--color-text-primary);
+      word-break: break-word;
+    }
+
+    .note-author {
+      position: absolute;
+      bottom: 9px;
+      right: 12px;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: rgba(0,0,0,0.35);
+    }
+
+    /* new note animation */
+    @keyframes noteIn {
+      from { opacity: 0; transform: scale(0.8) rotate(0deg); }
+      to   { opacity: 1; }
+    }
+
+    .sticky-note.new-note {
+      animation: noteIn 0.35s ease forwards;
+    }
+
+    /* ── SEE MORE ROW ── */
+    .see-more-row {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      width: 100%;
+    }
+
+    .see-more-line {
+      flex: 1;
+      height: 1px;
+      background: var(--color-border);
+    }
+
+    .see-more-btn {
+      display: inline-flex;
+      align-items: center;
+      height: 32px;
+      padding: 0 20px;
+      border-radius: 999px;
+      border: 1px solid var(--color-border);
+      background: var(--color-bg-secondary);
+      cursor: pointer;
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      color: var(--color-text-secondary);
+      transition: border-color 0.15s ease, color 0.15s ease;
+    }
+
+    .see-more-btn:hover {
+      border-color: var(--color-link);
+      color: var(--color-link);
+    }
+
+    /* ── ADD A NOTE CARD ── */
+    .add-note-card {
+      width: min(560px, 100%);
+      background: var(--color-bg-secondary);
+      border: 1px solid var(--color-border);
+      border-radius: 20px;
+      padding: var(--space-4);
+    }
+
+    /* form header */
+    .your-turn-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--color-text-tertiary);
+      margin-bottom: 6px;
+    }
+
+    .prompt-text {
+      font-size: 17px;
+      font-weight: 600;
+      color: var(--color-text-primary);
+      line-height: 1.4;
+      margin-bottom: var(--space-2);
+    }
+
+    /* text input area */
+    .note-input-wrap {
+      background: var(--note-yellow);
+      border-radius: 8px;
+      border: 1.5px solid rgba(0,0,0,0.10);
+      padding: 12px 12px 0 12px;
+      margin-bottom: var(--space-2);
+      transition: border-color 0.15s ease;
+    }
+
+    .note-input-wrap:focus-within {
+      border-color: var(--color-link);
+      box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.12);
+    }
+
+    .note-textarea {
+      width: 100%;
+      min-height: 80px;
+      background: transparent;
+      border: none;
+      outline: none;
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      font-size: 15px;
+      line-height: 1.6;
+      color: var(--color-text-primary);
+      resize: none;
+    }
+
+    .note-textarea::placeholder {
+      color: rgba(0,0,0,0.25);
+    }
+
+    .input-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 0;
+      border-top: 1px solid rgba(0,0,0,0.08);
+    }
+
+    .char-count {
+      font-size: 11px;
+      color: var(--color-text-tertiary);
+      letter-spacing: 0;
+    }
+
+    .char-count.near-limit { color: var(--color-error, #ff3b30); }
+
+    .name-tag {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: rgba(0,0,0,0.30);
+    }
+
+    /* form actions row */
+    .form-actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .one-note-note {
+      font-size: 12px;
+      color: var(--color-text-tertiary);
+    }
+
+    /* post button */
+    .btn-post {
+      display: inline-flex;
+      align-items: center;
+      height: 40px;
+      padding: 0 20px;
+      border-radius: 10px;
+      background: var(--color-link);
+      border: none;
+      cursor: pointer;
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      color: #ffffff;
+      transition: background 0.15s ease, opacity 0.15s ease;
+    }
+
+    .btn-post:hover:not(:disabled) { background: var(--color-link-hover); }
+
+    .btn-post:disabled {
+      opacity: 0.32;
+      cursor: default;
+    }
+
+    /* ── POSTED STATE ── */
+    .posted-note-display {
+      background: var(--color-bg-primary);
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: var(--space-2);
+      border: 1px solid var(--color-border);
+    }
+
+    .posted-note-text {
+      font-size: 15px;
+      color: var(--color-text-primary);
+      line-height: 1.5;
+      margin-bottom: 6px;
+    }
+
+    .posted-meta {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--color-text-tertiary);
+    }
+
+    .posted-actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .posted-status {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      color: var(--color-text-secondary);
+    }
+
+    .posted-check {
+      color: var(--color-success);
+      font-weight: 600;
+    }
+
+    .edit-link {
+      font-size: 13px;
+      color: var(--color-link);
+      cursor: pointer;
+      text-decoration: underline;
+      background: none;
+      border: none;
+      font-family: inherit;
+      padding: 0;
+    }
+
+    .edit-link:hover { color: var(--color-link-hover); }
+
+    .btn-posted {
+      display: inline-flex;
+      align-items: center;
+      height: 40px;
+      padding: 0 20px;
+      border-radius: 10px;
+      background: var(--color-bg-primary);
+      border: 1px solid var(--color-border);
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--color-text-secondary);
+      cursor: default;
+    }
+
+    /* ── CONTINUE / SKIP ROW ── */
+    .continue-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-2);
+      width: min(560px, 100%);
+    }
+
+    .btn-continue {
+      display: inline-flex;
+      align-items: center;
+      height: 44px;
+      padding: 0 28px;
+      border-radius: 10px;
+      background: var(--color-link);
+      border: none;
+      cursor: pointer;
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+      color: #ffffff;
+      text-decoration: none;
+      transition: background 0.15s ease;
+    }
+
+    .btn-continue:hover { background: var(--color-link-hover); }
+
+    .or-divider {
+      font-size: 13px;
+      color: var(--color-text-tertiary);
+    }
+
+    .btn-skip {
+      display: inline-flex;
+      align-items: center;
+      height: 40px;
+      padding: 0 20px;
+      border-radius: 10px;
+      background: transparent;
+      border: 1px solid var(--color-border);
+      cursor: pointer;
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--color-text-secondary);
+      text-decoration: none;
+      transition: border-color 0.15s ease, color 0.15s ease;
+    }
+
+    .btn-skip:hover {
+      border-color: var(--color-link);
+      color: var(--color-link);
+    }
+
+    .skip-note {
+      font-size: 12px;
+      color: var(--color-text-tertiary);
+      text-align: center;
+      width: min(560px, 100%);
+      margin-top: calc(-1 * var(--space-2));
+    }
+
+    /* ── HIDDEN NOTES (see more) ── */
+    .notes-extra {
+      display: none;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      align-items: start;
+      margin-top: 20px;
+    }
+
+    @media (max-width: 900px) {
+      .notes-extra { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    .notes-extra.visible { display: grid; }
+
+  </style>
+</head>
+<body>
+
+  <section class="idea-wall-section">
+    <div class="container">
+      <div class="wall-layout">
+
+        <!-- Section heading -->
+        <div class="section-head">
+          <h2>One thing you'll do differently</h2>
+          <p>See what other learners shared.</p>
+        </div>
+
+        <!-- Wall card -->
+        <div class="wall-card">
+          <div class="notes-grid" id="notes-grid">
+
+            <!-- Row 1 — seed notes -->
+            <div class="sticky-note pink" style="transform:rotate(-1.5deg)">
+              <p class="note-text">i was literally reading it to him 5 mins before lunch every time 🤦‍♀️ no wonder</p>
+              <span class="note-author">Priya</span>
+            </div>
+            <div class="sticky-note sky" style="transform:rotate(1deg)">
+              <p class="note-text">just one situation per story. Ive been cramming like 3 things into one and it obviously wasnt landing</p>
+              <span class="note-author">Meg</span>
+            </div>
+            <div class="sticky-note cream" style="transform:rotate(-0.5deg)">
+              <p class="note-text">going to actually sit down with the teacher first before writing anything. we never do that</p>
+              <span class="note-author">Dani</span>
+            </div>
+            <div class="sticky-note pink" style="transform:rotate(2deg)">
+              <p class="note-text">The bit about if the kid is fine but the adults are annoyed — thats not a social story situation. Mind blown honestly</p>
+              <span class="note-author">Tash</span>
+            </div>
+
+            <!-- Row 2 — seed notes -->
+            <div class="sticky-note cream" style="transform:rotate(1deg)">
+              <p class="note-text">SIX times?? I was doing it twice and wondering why nothing changed 😅</p>
+              <span class="note-author">Liam</span>
+            </div>
+            <div class="sticky-note pink" style="transform:rotate(-2deg)">
+              <p class="note-text">Write it for the kid not the teacher. thats the thing im taking away from this</p>
+              <span class="note-author">Jess T</span>
+            </div>
+            <div class="sticky-note sky" style="transform:rotate(0.5deg)">
+              <p class="note-text">be way more specific. like "what to do when someone sits in your spot" not just "being a good friend"</p>
+              <span class="note-author">Brooke</span>
+            </div>
+            <div class="sticky-note cream" style="transform:rotate(-1deg)">
+              <p class="note-text">Ask the kid. Actually ask them whats hard. Stop assuming.</p>
+              <span class="note-author">Ren</span>
+            </div>
+
+          </div><!-- end notes grid -->
+
+          <!-- Extra notes (hidden until See more) -->
+          <div class="notes-extra" id="notes-extra">
+            <div class="sticky-note sky" style="transform:rotate(1.5deg)">
+              <p class="note-text">just tell them before things change!! would of saved so many hard mornings</p>
+              <span class="note-author">Kim L</span>
+            </div>
+            <div class="sticky-note pink" style="transform:rotate(-0.8deg)">
+              <p class="note-text">stop telling parents its going to fix everything. it helps with one thing at a time and thats ok</p>
+              <span class="note-author">Sarah</span>
+            </div>
+            <div class="sticky-note cream" style="transform:rotate(2.5deg)">
+              <p class="note-text">"help tom with social skills" is not a goal its a wish 😂 need to be way more specific than that</p>
+              <span class="note-author">Anh</span>
+            </div>
+            <div class="sticky-note sky" style="transform:rotate(-1.2deg)">
+              <p class="note-text">Read it enough times that the info is already there when the moment happens. Not after.</p>
+              <span class="note-author">Chris W</span>
+            </div>
+          </div>
+
+        </div><!-- end wall card -->
+
+        <!-- See more row -->
+        <div class="see-more-row">
+          <div class="see-more-line"></div>
+          <button class="see-more-btn" id="see-more-btn" onclick="toggleMore()">See more notes ↓</button>
+          <div class="see-more-line"></div>
+        </div>
+
+        <!-- Add a note card -->
+        <div class="add-note-card">
+
+          <!-- STATE A: default form -->
+          <div id="state-form">
+            <p class="your-turn-label">Your turn</p>
+            <p class="prompt-text">What's one thing you'll do differently after this module?</p>
+
+            <div class="note-input-wrap">
+              <textarea
+                class="note-textarea"
+                id="note-input"
+                maxlength="140"
+                placeholder="Share your thought…"
+                oninput="handleInput()"
+              ></textarea>
+              <div class="input-footer">
+                <span class="char-count" id="char-count">0 / 140</span>
+                <span class="name-tag">You</span>
+              </div>
+            </div>
+
+            <div class="form-actions">
+              <span class="one-note-note">1 note per learner</span>
+              <button class="btn-post" id="post-btn" disabled onclick="postNote()">Post note →</button>
+            </div>
+          </div>
+
+          <!-- STATE B: posted -->
+          <div id="state-posted" style="display:none;">
+            <p class="your-turn-label">Your note</p>
+            <p class="prompt-text">What's one thing you'll do differently after this module?</p>
+
+            <div class="posted-note-display">
+              <p class="posted-note-text" id="posted-note-text"></p>
+              <span class="posted-meta">You</span>
+            </div>
+
+            <div class="posted-actions">
+              <div class="posted-status">
+                <span class="posted-check">✓ Posted</span>
+                <button class="edit-link" onclick="editNote()">Edit</button>
+              </div>
+              <div class="btn-posted">Posted ✓</div>
+            </div>
+          </div>
+
+        </div><!-- end add note card -->
+
+
+      </div><!-- end wall layout -->
+    </div><!-- end container -->
+  </section>
+
+  <script>
+
+    let noteText = '';
+    let posted = false;
+    let expanded = false;
+
+    const noteColors = ['pink', 'sky', 'cream'];
+    const noteRotations = ['-1.5deg', '1.2deg', '-0.8deg', '2deg', '-1.8deg', '0.5deg'];
+
+    function handleInput() {
+      const input = document.getElementById('note-input');
+      const count = document.getElementById('char-count');
+      const btn   = document.getElementById('post-btn');
+
+      const len = input.value.length;
+      count.textContent = `${len} / 140`;
+      count.classList.toggle('near-limit', len >= 120);
+      btn.disabled = len === 0;
+      noteText = input.value;
+    }
+
+    function postNote() {
+      if (!noteText.trim()) return;
+
+      // Add user note to the wall
+      const grid = document.getElementById('notes-grid');
+      const note = document.createElement('div');
+      const rot  = noteRotations[Math.floor(Math.random() * noteRotations.length)];
+      note.className = 'sticky-note yellow new-note';
+      note.style.transform = `rotate(${rot})`;
+      note.innerHTML = `
+        <p class="note-text">${escapeHtml(noteText)}</p>
+        <span class="note-author">You</span>
+      `;
+      // prepend user's note (appears first)
+      grid.insertBefore(note, grid.firstChild);
+
+      // Switch to posted state
+      document.getElementById('posted-note-text').textContent = noteText;
+      document.getElementById('state-form').style.display = 'none';
+      document.getElementById('state-posted').style.display = 'block';
+      posted = true;
+    }
+
+    function editNote() {
+      // Return to form with text restored
+      document.getElementById('note-input').value = noteText;
+      document.getElementById('char-count').textContent = `${noteText.length} / 140`;
+      document.getElementById('post-btn').disabled = false;
+      document.getElementById('state-posted').style.display = 'none';
+      document.getElementById('state-form').style.display = 'block';
+
+      // Remove user's note from wall temporarily
+      const userNote = document.querySelector('.sticky-note.yellow.new-note');
+      if (userNote) userNote.remove();
+
+      posted = false;
+    }
+
+    function toggleMore() {
+      const extra = document.getElementById('notes-extra');
+      const btn   = document.getElementById('see-more-btn');
+      expanded = !expanded;
+      extra.classList.toggle('visible', expanded);
+      btn.textContent = expanded ? 'Show less ↑' : 'See more notes ↓';
+    }
+
+    function escapeHtml(str) {
+      return str
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+  </script>
+
+</body>
+</html>

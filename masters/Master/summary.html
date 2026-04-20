@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Summary — Before you go</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+
+    /* ══════════════════════════════════════
+       SHARED RESET & TOKENS
+       (warm brand system — see brand doc)
+    ══════════════════════════════════════ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --color-bg:       #F2F0EB;
+      --color-surface:  #FAFAF7;
+      --color-card:     #FFFFFF;
+      --color-cool:     #F2F8FD;
+      --color-text:     #1A1A1A;
+      --color-text-sec: #6B6568;
+      --color-navy:     #120DA6;
+      --color-sky:      #C4E5F2;
+      --color-border:   #E8E2D9;
+    }
+
+    html, body {
+      background: var(--color-bg);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      color: var(--color-text);
+      line-height: 1.65;
+    }
+
+    /* ══════════════════════════════════════
+       SECTION LAYOUT
+    ══════════════════════════════════════ */
+    .summary {
+      padding: clamp(48px, 8vw, 100px) clamp(24px, 6vw, 80px);
+      max-width: 1280px;
+      margin: 0 auto;
+      /* gentle cross-fade on mount — no transforms */
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+    .summary.is-ready { opacity: 1; }
+
+    .summary-inner {
+      max-width: 880px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ══════════════════════════════════════
+       1. PROGRESS INDICATOR
+    ══════════════════════════════════════ */
+    .progress {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 48px;
+    }
+    .progress-label {
+      font-size: 0.8125rem;
+      font-weight: 500;
+      color: var(--color-text-sec);
+      text-align: right;
+    }
+    .progress-track {
+      width: 100%;
+      height: 6px;
+      background: var(--color-border);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      width: 0;
+      background: var(--color-navy);
+      border-radius: 999px;
+      transition: width 0.6s cubic-bezier(.22,.9,.32,1);
+    }
+
+    /* ══════════════════════════════════════
+       2. HEADING + SUBHEADING
+    ══════════════════════════════════════ */
+    .summary-heading {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      font-weight: 700;
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      color: var(--color-text);
+      max-width: 720px;
+    }
+    .summary-sub {
+      font-family: 'Inter', sans-serif;
+      font-size: clamp(1.1rem, 1.5vw, 1.25rem);
+      font-weight: 400;
+      color: var(--color-text-sec);
+      max-width: 720px;
+      margin-top: 16px;
+    }
+    @media (min-width: 768px) {
+      .summary-sub { margin-top: 24px; }
+    }
+
+    /* ══════════════════════════════════════
+       3. KEY IDEAS — CARD SET
+       Default: 3 cards.
+       For 4 or 5 cards, simply add more .idea-card blocks;
+       grid auto-fits. Keep body copy terse — reinforcement,
+       not re-teach.
+    ══════════════════════════════════════ */
+    .ideas {
+      margin-top: 48px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+    }
+    @media (min-width: 768px) {
+      .ideas { gap: 24px; }
+    }
+
+    .idea-card {
+      background: var(--color-card);
+      border: 1px solid var(--color-border);
+      border-radius: 16px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    @media (min-width: 768px) {
+      .idea-card { padding: 40px; }
+    }
+
+    .idea-num {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 700;
+      line-height: 1;
+      color: var(--color-navy);
+      letter-spacing: -0.02em;
+    }
+    .idea-title {
+      font-family: 'Inter', sans-serif;
+      font-size: clamp(1.25rem, 2vw, 1.5rem);
+      font-weight: 700;
+      line-height: 1.3;
+      letter-spacing: -0.01em;
+      color: var(--color-text);
+    }
+    .idea-body {
+      font-family: 'Inter', sans-serif;
+      font-size: 1rem;
+      font-weight: 400;
+      line-height: 1.65;
+      color: var(--color-text-sec);
+    }
+
+    /* ══════════════════════════════════════
+       DIVIDER
+    ══════════════════════════════════════ */
+    .summary-divider {
+      border: 0;
+      border-top: 1px solid var(--color-border);
+      margin: 48px 0;
+    }
+
+    /* ══════════════════════════════════════
+       4. HOOK CALLBACK
+    ══════════════════════════════════════ */
+    .callback {
+      background: var(--color-cool);
+      border-radius: 16px;
+      padding: 24px;
+    }
+    @media (min-width: 768px) {
+      .callback { padding: 32px; }
+    }
+    .callback-prompt {
+      font-family: 'Inter', sans-serif;
+      font-size: clamp(1.1rem, 1.5vw, 1.25rem);
+      font-weight: 600;
+      line-height: 1.4;
+      color: var(--color-text);
+    }
+    .callback-bridge {
+      font-family: 'Inter', sans-serif;
+      font-size: 1rem;
+      font-weight: 400;
+      color: var(--color-text-sec);
+      margin-top: 8px;
+    }
+
+    /* ══════════════════════════════════════
+       5. "WHAT YOU CAN NOW DO" PAYOFF LINE
+    ══════════════════════════════════════ */
+    .payoff {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.5rem, 2.5vw, 2rem);
+      font-weight: 700;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      color: var(--color-text);
+      text-align: center;
+      max-width: 640px;
+      margin: 48px auto 32px;
+    }
+
+    /* ══════════════════════════════════════
+       6. PRIMARY ACTION
+    ══════════════════════════════════════ */
+    .cta-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--color-navy);
+      color: #FFFFFF;
+      font-family: 'Inter', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      line-height: 1;
+      text-decoration: none;
+      border: none;
+      border-radius: 10px;
+      padding: 16px 32px;
+      cursor: pointer;
+      transition: opacity 0.15s ease;
+      width: 100%;
+    }
+    .btn-primary:hover { opacity: 0.9; }
+    @media (min-width: 768px) {
+      .btn-primary {
+        width: auto;
+        min-width: 200px;
+      }
+    }
+
+    /* ══════════════════════════════════════
+       7. UP NEXT LINE
+    ══════════════════════════════════════ */
+    .up-next {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.875rem;
+      font-weight: 400;
+      color: var(--color-text-sec);
+      text-align: center;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100%;
+    }
+
+  </style>
+</head>
+<body>
+
+  <section class="summary" id="summary">
+    <div class="summary-inner">
+
+      <!-- 1. Progress indicator — set data-progress on next line (0–100) -->
+      <div class="progress" data-progress="90">
+        <span class="progress-label">Almost done</span>
+        <div class="progress-track">
+          <div class="progress-fill"></div>
+        </div>
+      </div>
+
+      <!-- 2. Heading + subheading — conversational, not "Summary" -->
+      <h2 class="summary-heading">Before you go</h2>
+      <p class="summary-sub">A quick look at what you covered.</p>
+
+      <!-- 3. Artifacts — populated by the parent template via postMessage
+           with what the learner actually did in earlier sections. Falls back
+           to the placeholder cards below if the page is opened standalone. -->
+      <div class="ideas" id="ideas">
+        <article class="idea-card">
+          <div class="idea-num">01</div>
+          <h3 class="idea-title">[Key idea one]</h3>
+          <p class="idea-body">One or two short sentences that reinforce the main point. Not a re-teach.</p>
+        </article>
+
+        <article class="idea-card">
+          <div class="idea-num">02</div>
+          <h3 class="idea-title">[Key idea two]</h3>
+          <p class="idea-body">Keep it terse — this is reinforcement, not new information.</p>
+        </article>
+
+        <article class="idea-card">
+          <div class="idea-num">03</div>
+          <h3 class="idea-title">[Key idea three]</h3>
+          <p class="idea-body">The learner should recognise this, not read it for the first time.</p>
+        </article>
+      </div>
+
+      <hr class="summary-divider" />
+
+      <!-- 4. Hook callback — closes the loop on the opening scenario. Two lines max. -->
+      <div class="callback">
+        <p class="callback-prompt">Remember [the scenario from the start of the lesson]?</p>
+        <p class="callback-bridge">Here's how what you've just learned applies.</p>
+      </div>
+
+      <!-- 5. Payoff line — concrete and behavioural. "You can now [do thing]." -->
+      <p class="payoff">You can now [do the concrete thing this lesson unlocks].</p>
+
+      <!-- 6. Single primary action. Swap label to "Finish" if this is the last lesson. -->
+      <div class="cta-wrap">
+        <a href="#" class="btn-primary">Continue →</a>
+
+        <!-- 7. Up next — small, one line, forward-looking. -->
+        <p class="up-next">Up next: [next lesson title]</p>
+      </div>
+
+    </div>
+  </section>
+
+  <script>
+    (function () {
+      var root = document.getElementById('summary');
+      var progressEl = root.querySelector('.progress');
+      var fillEl = root.querySelector('.progress-fill');
+      var pct = parseInt(progressEl.getAttribute('data-progress'), 10);
+      if (isNaN(pct)) pct = 90;
+      pct = Math.max(0, Math.min(100, pct));
+
+      // Fade in, then fill the progress bar.
+      root.classList.add('is-ready');
+      fillEl.style.width = pct + '%';
+
+      /* ──────────────────────────────────────────────
+         Artifact rendering — when the parent template
+         sends `{ type: 'lessonState', data: {...} }`,
+         replace the placeholder cards with what the
+         learner actually did in earlier sections.
+      ────────────────────────────────────────────── */
+      var ideas = document.getElementById('ideas');
+
+      function escapeHtml(s) {
+        return String(s)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;');
+      }
+
+      function buildCard(num, title, body) {
+        var n = String(num).padStart(2, '0');
+        return (
+          '<article class="idea-card">' +
+            '<div class="idea-num">' + n + '</div>' +
+            '<h3 class="idea-title">' + escapeHtml(title) + '</h3>' +
+            '<p class="idea-body">' + escapeHtml(body) + '</p>' +
+          '</article>'
+        );
+      }
+
+      function renderArtifacts(state) {
+        if (!state) return;
+        var cards = [];
+        var n = 1;
+
+        if (state.checkin && state.checkin.selected && state.checkin.selected.length) {
+          cards.push(buildCard(
+            n++,
+            "What you said you're carrying",
+            state.checkin.selected.join(' · ')
+          ));
+        }
+
+        if (state.choice && state.choice.chosen && state.choice.chosen.length) {
+          state.choice.chosen.forEach(function (c, i) {
+            cards.push(buildCard(
+              n++,
+              'Round ' + (i + 1) + ' — your choice',
+              c
+            ));
+          });
+        }
+
+        if (cards.length) {
+          ideas.innerHTML = cards.join('');
+        }
+      }
+
+      window.addEventListener('message', function (e) {
+        var msg = e.data;
+        if (!msg || typeof msg !== 'object') return;
+        if (msg.type === 'lessonState') {
+          renderArtifacts(msg.data);
+        }
+      });
+    })();
+  </script>
+
+</body>
+</html>

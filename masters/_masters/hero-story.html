@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hero — Story Builder</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --color-bg:       #F2F0EB;
+      --color-surface:  #FAFAF7;
+      --color-text:     #1A1A1A;
+      --color-text-sec: #6B6568;
+      --color-navy:     #120DA6;
+      --color-sky:      #C4E5F2;
+      --color-border:   #E8E2D9;
+    }
+
+    html, body {
+      background: var(--color-bg);
+      font-family: 'Inter', sans-serif;
+    }
+
+    /* ── LAYOUT ── */
+    .hero {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 48px;
+      padding: clamp(48px, 10vw, 140px) clamp(24px, 6vw, 80px);
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+
+    /* ── H1 ── */
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 6vw, 5rem);
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      line-height: 1.12;
+      color: var(--color-text);
+      text-align: center;
+      max-width: 720px;
+    }
+
+    /* ── STORYBOOK ── */
+    .book-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+    }
+
+    .book-stage {
+      width: min(600px, 100%);
+      height: 320px;
+      position: relative;
+    }
+
+    .book-container {
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+
+    /* each page is an absolute-fill card */
+    .page {
+      position: absolute;
+      inset: 0;
+      background: var(--color-surface);
+      border-radius: 16px;
+      border: 1px solid var(--color-border);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 48px;
+      opacity: 0;
+      transition: none;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .page p {
+      font-family: -apple-system, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      font-size: clamp(1.1rem, 2vw, 1.5rem);
+      line-height: 1.65;
+      color: var(--color-text);
+      text-align: center;
+      max-width: 520px;
+    }
+
+    /* page states */
+    .page.current {
+      z-index: 3;
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .page.current .page-turn,
+    .page.current .page-turn-back.visible {
+      pointer-events: auto;
+    }
+
+    .page.fading-out {
+      z-index: 4;
+      animation: fadeOut 0.6s ease-in-out forwards;
+    }
+
+    .page.fading-in {
+      z-index: 3;
+      animation: fadeIn 0.6s ease-in-out forwards;
+    }
+
+    .page.done {
+      z-index: 1;
+      opacity: 0;
+    }
+
+    @keyframes fadeOut {
+      0%   { opacity: 1; }
+      100% { opacity: 0; }
+    }
+
+    @keyframes fadeIn {
+      0%   { opacity: 0; }
+      100% { opacity: 1; }
+    }
+
+    /* ── IN-CARD NAVIGATION ── */
+
+    /* page-turn tab — right edge */
+    .page-turn {
+      position: absolute;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      width: 64px;
+      cursor: pointer;
+      pointer-events: none;
+      z-index: 5;
+      border-radius: 0 16px 16px 0;
+      background: linear-gradient(to left, rgba(0,0,0,0.03) 0%, transparent 100%);
+      transition: width 0.2s ease, background 0.2s ease;
+    }
+    .page-turn:hover {
+      width: 80px;
+      background: linear-gradient(to left, rgba(0,0,0,0.06) 0%, transparent 100%);
+    }
+    /* curl at bottom-right — large and visible */
+    .page-turn::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: 56px;
+      height: 56px;
+      background: linear-gradient(135deg, transparent 46%, var(--color-border) 46%, #E8E0D6 49%, var(--color-bg) 52%, var(--color-bg) 100%);
+      border-radius: 0 0 16px 0;
+      box-shadow: -3px -3px 8px rgba(0,0,0,0.08);
+      transition: width 0.3s, height 0.3s, box-shadow 0.3s;
+      animation: curlPulse 3s ease-in-out infinite;
+    }
+    .page-turn:hover::after {
+      width: 72px;
+      height: 72px;
+      box-shadow: -5px -5px 14px rgba(0,0,0,0.12);
+      animation: none;
+    }
+    .page-turn.hidden {
+      pointer-events: none;
+      opacity: 0;
+    }
+
+    @keyframes curlPulse {
+      0%   { width: 56px; height: 56px; box-shadow: -3px -3px 8px rgba(0,0,0,0.08); }
+      50%  { width: 66px; height: 66px; box-shadow: -5px -5px 12px rgba(0,0,0,0.12); }
+      100% { width: 56px; height: 56px; box-shadow: -3px -3px 8px rgba(0,0,0,0.08); }
+    }
+
+    /* page-turn tab — left edge (back) */
+    .page-turn-back {
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 40px;
+      cursor: pointer;
+      pointer-events: none;
+      z-index: 5;
+      border-radius: 16px 0 0 16px;
+      background: linear-gradient(to right, rgba(0,0,0,0.02) 0%, transparent 100%);
+      opacity: 0;
+      pointer-events: none;
+      transition: width 0.2s ease, background 0.2s ease, opacity 0.2s;
+    }
+    .page-turn-back.visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .page-turn-back:hover {
+      width: 48px;
+      background: linear-gradient(to right, rgba(0,0,0,0.05) 0%, transparent 100%);
+    }
+    .page-turn-back::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(225deg, transparent 50%, var(--color-border) 50%, #E8E0D6 52%, var(--color-bg) 100%);
+      border-radius: 0 0 0 16px;
+      transition: width 0.2s, height 0.2s;
+    }
+    .page-turn-back:hover::after {
+      width: 40px;
+      height: 40px;
+    }
+
+    .page-number {
+      position: absolute;
+      bottom: 16px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: -apple-system, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      font-size: 0.8125rem;
+      color: var(--color-text-sec);
+      user-select: none;
+    }
+
+    /* ── CTAs ── */
+    .cta-group {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .btn-primary {
+      padding: 16px 32px;
+      border-radius: 10px;
+      background: #5C2D4F;
+      border: none;
+      cursor: pointer;
+      font-family: -apple-system, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      line-height: 1;
+      letter-spacing: 0;
+      color: var(--color-bg);
+      white-space: nowrap;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      transition: opacity 0.15s;
+    }
+    .btn-primary:hover { opacity: 0.9; }
+
+    .btn-secondary {
+      padding: 16px 32px;
+      border-radius: 10px;
+      border: 1px solid #5C2D4F;
+      background: var(--color-bg);
+      cursor: pointer;
+      font-family: -apple-system, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      line-height: 1;
+      letter-spacing: 0;
+      color: #5C2D4F;
+      white-space: nowrap;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      transition: opacity 0.15s;
+    }
+    .btn-secondary:hover { opacity: 0.9; }
+
+    /* ── EDITOR TOOLBAR (remove before production) ── */
+    .editor-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 16px;
+      background: #1A1A1A;
+      color: #FFFFFF;
+      font-size: 12px;
+      font-family: 'Inter', sans-serif;
+    }
+    .editor-bar span {
+      opacity: 0.5;
+      letter-spacing: 0.03em;
+    }
+    .editor-bar .save-btn {
+      padding: 6px 18px;
+      border-radius: 6px;
+      border: none;
+      background: #120DA6;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      transition: background 0.15s;
+    }
+    .editor-bar .save-btn:hover { opacity: 0.9; }
+    .editor-bar .save-btn.saved {
+      background: #34c759;
+      pointer-events: none;
+    }
+
+    /* push page content below the bar */
+    body { padding-top: 40px; }
+
+    /* editable highlight */
+    [contenteditable="true"] {
+      outline: none;
+      border-radius: 4px;
+      transition: box-shadow 0.15s;
+    }
+    [contenteditable="true"]:hover {
+      box-shadow: 0 0 0 2px rgba(18, 13, 166, 0.15);
+    }
+    [contenteditable="true"]:focus {
+      box-shadow: 0 0 0 2px rgba(18, 13, 166, 0.4);
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- Editor toolbar — remove before production -->
+  <div class="editor-bar">
+    <span>EDIT MODE — click any text to edit</span>
+    <button class="save-btn" onclick="saveFile()">Save file</button>
+  </div>
+
+  <section class="hero">
+
+    <!-- H1 -->
+    <h1 contenteditable="true">Writing Social Stories<br><span style="color: #5C2D4F;">shouldn't feel this hard</span></h1>
+
+    <!-- Storybook -->
+    <div class="book-wrapper">
+      <div class="book-stage">
+        <div class="book-container" id="book">
+
+          <div class="page current" data-index="0">
+            <p contenteditable="true">We created this because Education Support Workers told us their biggest problem.</p>
+            <div class="page-turn-back"></div>
+            <div class="page-turn"></div>
+            <span class="page-number">1</span>
+          </div>
+
+          <div class="page" data-index="1">
+            <p contenteditable="true">They don't have enough time to make social stories.</p>
+            <div class="page-turn-back visible"></div>
+            <div class="page-turn"></div>
+            <span class="page-number">2</span>
+          </div>
+
+          <div class="page" data-index="2">
+            <p contenteditable="true">We looked at every resource, course, workshop and webinar out there.<br><br>The same pattern occurs.</p>
+            <div class="page-turn-back visible"></div>
+            <div class="page-turn"></div>
+            <span class="page-number">3</span>
+          </div>
+
+          <div class="page" data-index="3">
+            <p contenteditable="true">A full-day workshop with a presenter you'll never see again or a webinar so dense your eyes glaze over.</p>
+            <div class="page-turn-back visible"></div>
+            <div class="page-turn"></div>
+            <span class="page-number">4</span>
+          </div>
+
+          <div class="page" data-index="4">
+            <p contenteditable="true">Two weeks later, you're sitting at your desk, staring at a blank page, and the presenter's number isn't on the certificate.</p>
+            <div class="page-turn-back visible"></div>
+            <div class="page-turn"></div>
+            <span class="page-number">5</span>
+          </div>
+
+          <div class="page" data-index="5">
+            <p contenteditable="true">It shouldn't be this hard.</p>
+            <div class="page-turn-back visible"></div>
+            <div class="page-turn"></div>
+            <span class="page-number">6</span>
+          </div>
+
+          <div class="page" data-index="6">
+            <p contenteditable="true">What if you could drink your coffee, enjoy your Tim Tam, and answer a few questions on your phone.<br><br>And before your morning tea break is over, you have a Social Story written.</p>
+            <div class="page-turn-back visible"></div>
+            <div class="page-turn"></div>
+            <span class="page-number">7</span>
+          </div>
+
+          <div class="page" data-index="7">
+            <p contenteditable="true">We call it <b>Story Builder.</b></p>
+            <div class="page-turn-back visible"></div>
+            <div class="page-turn hidden"></div>
+            <span class="page-number">8</span>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- CTAs -->
+    <div class="cta-group">
+      <a href="javascript:void(0)" class="btn-primary" contenteditable="true" data-href="">Show me how it works</a>
+      <a href="javascript:void(0)" class="btn-secondary" contenteditable="true" data-href="">Learn more</a>
+    </div>
+
+  </section>
+
+  <script>
+    var pages   = document.querySelectorAll('.page');
+    var total   = pages.length;
+    var current = 0;
+    var turning = false;
+    var ANIM_MS = 600;
+
+    function turnTo(next) {
+      if (turning || next === current || next < 0 || next >= total) return;
+      turning = true;
+
+      var from = pages[current];
+      var to   = pages[next];
+
+      from.className = 'page fading-out';
+      to.className   = 'page fading-in';
+
+      current = next;
+
+      setTimeout(function() {
+        pages.forEach(function(p, i) {
+          if (i === current) p.className = 'page current';
+          else               p.className = 'page done';
+        });
+        turning = false;
+      }, ANIM_MS);
+    }
+
+    function goForward() {
+      if (!turning && current < total - 1) turnTo(current + 1);
+    }
+
+    function goBack() {
+      if (!turning && current > 0) turnTo(current - 1);
+    }
+
+    /* Event delegation — single listener handles all page-turn clicks */
+    document.getElementById('book').addEventListener('click', function(e) {
+      var el = e.target;
+      if (turning) return;
+      if (el.classList.contains('page-turn') && !el.classList.contains('hidden')) {
+        goForward();
+      } else if (el.classList.contains('page-turn-back') && el.classList.contains('visible')) {
+        goBack();
+      }
+    });
+
+    /* ── EDITOR: Save file ── */
+    function saveFile() {
+      // Remove editor bar and its styles from the saved output
+      var clone = document.documentElement.cloneNode(true);
+
+      // Remove editor bar element
+      var bar = clone.querySelector('.editor-bar');
+      if (bar) bar.remove();
+
+      // Remove editor-specific CSS block
+      var styles = clone.querySelectorAll('style');
+      styles.forEach(function(s) {
+        s.textContent = s.textContent
+          .replace(/\/\*\s*── EDITOR TOOLBAR[\s\S]*?body\s*\{\s*padding-top:\s*40px;\s*\}/, '')
+          .replace(/\/\*\s*editable highlight[\s\S]*?\[contenteditable="true"\]:focus\s*\{[^}]*\}/, '');
+      });
+
+      // Remove contenteditable attributes
+      clone.querySelectorAll('[contenteditable]').forEach(function(el) {
+        el.removeAttribute('contenteditable');
+      });
+
+      // Set real hrefs on CTA buttons from data-href
+      clone.querySelectorAll('[data-href]').forEach(function(el) {
+        var url = el.getAttribute('data-href');
+        if (url) el.setAttribute('href', url);
+        el.removeAttribute('data-href');
+      });
+
+      // Remove padding-top from body
+      var body = clone.querySelector('body');
+      if (body) body.style.paddingTop = '';
+
+      // Remove the editor script block (everything after startTimer)
+      var scripts = clone.querySelectorAll('script');
+      scripts.forEach(function(s) {
+        s.textContent = s.textContent.replace(/\/\*\s*── EDITOR:[\s\S]*$/, '');
+      });
+
+      var html = '<!DOCTYPE html>\n' + clone.outerHTML;
+      var blob = new Blob([html], { type: 'text/html' });
+      var a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'hero-story.html';
+      a.click();
+      URL.revokeObjectURL(a.href);
+
+      var btn = document.querySelector('.save-btn');
+      btn.textContent = 'Saved ✓';
+      btn.className = 'save-btn saved';
+      setTimeout(function() {
+        btn.textContent = 'Save file';
+        btn.className = 'save-btn';
+      }, 2000);
+    }
+
+    /* ── EDITOR: CTA link editing ── */
+    document.querySelectorAll('.btn-primary, .btn-secondary').forEach(function(btn) {
+      btn.addEventListener('dblclick', function(e) {
+        e.preventDefault();
+        var currentUrl = btn.getAttribute('data-href') || '';
+        var url = prompt('Enter URL for this button:', currentUrl);
+        if (url !== null) {
+          btn.setAttribute('data-href', url);
+          btn.title = url || 'No link set';
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>

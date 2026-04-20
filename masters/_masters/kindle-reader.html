@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The most misused tool in every school</title>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet">
+  <style>
+    /* ── Design tokens ── */
+    :root {
+      --bg:         #ffffff;
+      --bg-card:    #ffffff;
+      --text:       #1d1d1f;
+      --text-sec:   #6e6e73;
+      --border:     #d2d2d7;
+      --accent:     #0066cc;
+      --accent-bg:  #e8f0fb;
+      --font-size:  19px;
+    }
+    [data-theme="sepia"] {
+      --bg:         #f9f3e8;
+      --bg-card:    #fdf6eb;
+      --text:       #3a2f1e;
+      --text-sec:   #7a6a54;
+      --border:     #e0d5c1;
+      --accent:     #8a6440;
+      --accent-bg:  #f0e8d8;
+    }
+    [data-theme="dark"] {
+      --bg:         #1c1c1e;
+      --bg-card:    #2c2c2e;
+      --text:       #f5f5f7;
+      --text-sec:   #98989d;
+      --border:     #3a3a3c;
+      --accent:     #2997ff;
+      --accent-bg:  #1c3048;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+      -webkit-text-size-adjust: 100%;
+      transition: background 0.25s, color 0.25s;
+      min-height: 100vh;
+    }
+
+    /* ── Reading area — content centred ── */
+    .reading-area {
+      min-width: 0;
+      padding: clamp(28px, 4vw, 48px) clamp(24px, 5vw, 64px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* ── Toolbar ── */
+    .toolbar {
+      width: 100%;
+      max-width: 640px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 44px;
+      gap: 12px;
+      flex-wrap: wrap;
+      transition: opacity 0.3s;
+    }
+
+    .toolbar-right {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    /* A- / A+ */
+    .font-pair {
+      display: flex;
+      gap: 2px;
+      margin-right: 4px;
+    }
+    .font-btn {
+      width: 28px;
+      height: 28px;
+      border-radius: 7px;
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+      color: var(--accent);
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.15s;
+    }
+    .font-btn:hover { background: var(--accent-bg); }
+    .font-btn.small { font-size: 11px; }
+    .font-btn.large { font-size: 14px; }
+
+    /* Theme switcher */
+    .theme-group {
+      display: flex;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      margin-right: 4px;
+    }
+    .theme-btn {
+      width: 28px;
+      height: 28px;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      transition: box-shadow 0.15s;
+      border-right: 1px solid var(--border);
+      position: relative;
+    }
+    .theme-btn:last-child { border-right: none; }
+    .theme-light-btn  { background: #ffffff; color: rgba(0,0,0,0.45); }
+    .theme-sepia-btn  { background: #f9f3e8; color: rgba(80,55,20,0.5); }
+    .theme-dark-btn   { background: #2c2c2e; color: rgba(255,255,255,0.5); }
+    .theme-btn.is-active::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      box-shadow: inset 0 0 0 2px var(--accent);
+      border-radius: inherit;
+    }
+
+    /* Bookmark */
+    .bookmark-btn {
+      height: 28px;
+      padding: 0 12px;
+      border-radius: 7px;
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+      color: var(--text-sec);
+      font-size: 12px;
+      font-weight: 400;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      white-space: nowrap;
+      transition: background 0.15s, border-color 0.15s, color 0.15s;
+    }
+    .bookmark-btn:hover { background: var(--accent-bg); }
+    .bookmark-btn.saved {
+      background: var(--accent-bg);
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    /* Focus */
+    .focus-btn {
+      height: 28px;
+      padding: 0 12px;
+      border-radius: 7px;
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+      color: var(--text-sec);
+      font-size: 12px;
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s, color 0.15s;
+    }
+    .focus-btn:hover { background: var(--bg); }
+    .focus-btn.on {
+      background: var(--accent-bg);
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    /* ── Reading content ── */
+    .reading-content {
+      width: 100%;
+      max-width: 620px;
+      font-family: 'Lora', Georgia, 'Times New Roman', serif;
+      font-size: var(--font-size);
+      line-height: 1.82;
+      color: var(--text);
+      transition: font-size 0.15s;
+    }
+
+    /* ── Chapter opener — Apple Books style ── */
+    .chapter-opener {
+      text-align: center;
+      padding: 16px 0 0;
+      margin-bottom: 40px;
+      position: relative;
+    }
+    /* short top rule — signals start of chapter */
+    .chapter-opener::before {
+      content: '';
+      display: block;
+      width: 36px;
+      height: 1px;
+      background: var(--border);
+      margin: 0 auto 24px;
+    }
+    /* full-width bottom rule — clean boundary before body text */
+    .chapter-opener::after {
+      content: '';
+      display: block;
+      width: 100%;
+      height: 1px;
+      background: var(--border);
+      margin-top: 28px;
+    }
+    .chapter-title {
+      font-family: 'Lora', Georgia, serif;
+      font-size: clamp(24px, 3vw, 34px);
+      font-weight: 700;
+      letter-spacing: -0.015em;
+      line-height: 1.18;
+      color: var(--text);
+    }
+
+    /* Section heading */
+    .section-heading {
+      font-family: 'Lora', Georgia, serif;
+      font-size: clamp(17px, 2vw, 20px);
+      font-weight: 700;
+      font-style: italic;
+      line-height: 1.3;
+      color: var(--text);
+      margin: 40px 0 16px;
+    }
+
+    /* Body paragraphs — justified, hyphenated, book-style indent */
+    .body-para {
+      text-align: justify;
+      hyphens: auto;
+      -webkit-hyphens: auto;
+      word-spacing: 0.02em;
+      margin-bottom: 0;
+      text-indent: 1.6em;
+    }
+    /* No indent after headings, callouts, or opener */
+    .section-heading + .body-para,
+    .chapter-opener + .body-para,
+    .takeaway + .body-para,
+    .bookmark-marker + .body-para {
+      text-indent: 0;
+    }
+
+    /* Highlights */
+    .hl-yellow { background: rgba(248,224,74,0.38); border-bottom: 2px solid #e8cb00; border-radius: 2px; padding: 0 1px; }
+    .hl-blue   { background: rgba(41,151,255,0.14); border-bottom: 2px solid rgba(41,151,255,0.5); border-radius: 2px; padding: 0 1px; }
+    .hl-pink   { background: rgba(242,189,214,0.45); border-bottom: 2px solid #e8a0c0; border-radius: 2px; padding: 0 1px; }
+
+    /* Key takeaway — card, soft background */
+    .takeaway {
+      background: #f0f4f9;
+      border-radius: 10px;
+      padding: 22px 26px;
+      margin: 32px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      transition: background 0.25s;
+    }
+    [data-theme="sepia"] .takeaway { background: #ede8de; }
+    [data-theme="dark"]  .takeaway { background: #252830; }
+    .takeaway-label {
+      font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--accent);
+      letter-spacing: 0.01em;
+    }
+    .takeaway-body {
+      font-family: 'Lora', Georgia, serif;
+      font-size: 16px;
+      line-height: 1.68;
+      color: var(--text);
+      font-style: italic;
+    }
+
+    /* Bookmark position marker */
+    .bookmark-marker {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 24px 0;
+    }
+    .bm-line {
+      flex: 1;
+      height: 1.5px;
+      background: linear-gradient(to right, transparent, var(--accent), transparent);
+      opacity: 0.25;
+    }
+    .bm-pill {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--accent);
+      background: var(--accent-bg);
+      border: 1px solid rgba(0,102,204,0.22);
+      border-radius: 999px;
+      padding: 4px 14px;
+      white-space: nowrap;
+      letter-spacing: 0.02em;
+    }
+    [data-theme="dark"] .bm-pill { border-color: rgba(41,151,255,0.25); }
+
+    /* ── Selection toolbar (floating) ── */
+    .sel-toolbar {
+      position: fixed;
+      background: #1d1d1f;
+      border-radius: 10px;
+      padding: 8px 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.22);
+      z-index: 500;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.12s;
+      white-space: nowrap;
+      transform: translateX(-50%);
+    }
+    .sel-toolbar.visible { opacity: 1; pointer-events: auto; }
+    .sel-dot {
+      width: 16px;
+      height: 16px;
+      border-radius: 999px;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: transform 0.1s;
+    }
+    .sel-dot:hover { transform: scale(1.25); }
+    .sel-sep { width: 1px; height: 16px; background: rgba(255,255,255,0.18); }
+    .sel-action {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.65);
+      cursor: pointer;
+      transition: color 0.1s;
+    }
+    .sel-action:hover { color: #fff; }
+
+    /* ── Post-it note panel ── */
+    .note-panel {
+      position: fixed;
+      background: #fef9c3;
+      border: none;
+      border-radius: 4px;
+      padding: 14px 16px 14px;
+      width: 260px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.15), 0 1px 4px rgba(0,0,0,0.08);
+      z-index: 600;
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+      transform: translateX(-50%);
+    }
+    .note-panel.visible { display: flex; }
+    /* Post-it fold corner */
+    .note-panel::after {
+      content: '';
+      position: absolute;
+      bottom: 0; right: 0;
+      width: 0; height: 0;
+      border-style: solid;
+      border-width: 0 0 18px 18px;
+      border-color: transparent transparent #e5d97a transparent;
+    }
+    .note-panel-label {
+      font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(0,0,0,0.35);
+    }
+    .note-textarea {
+      width: 100%;
+      min-height: 90px;
+      resize: none;
+      border: none;
+      border-bottom: 1px solid rgba(0,0,0,0.12);
+      border-radius: 0;
+      padding: 4px 0 8px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
+      font-size: 14px;
+      line-height: 1.6;
+      color: #2a2510;
+      background: transparent;
+      outline: none;
+    }
+    .note-panel-btns {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+    }
+    .note-btn {
+      height: 28px;
+      padding: 0 12px;
+      border-radius: 6px;
+      border: 1px solid rgba(0,0,0,0.18);
+      background: rgba(255,255,255,0.5);
+      color: #2a2510;
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      font-family: inherit;
+      transition: background 0.15s;
+    }
+    .note-btn:hover { background: rgba(255,255,255,0.75); }
+    .note-btn.save {
+      background: rgba(0,0,0,0.12);
+      color: #2a2510;
+      border-color: transparent;
+      font-weight: 600;
+    }
+    .note-btn.save:hover { background: rgba(0,0,0,0.2); }
+
+    /* Margin note marker */
+    .note-marker {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 18px;
+      height: 18px;
+      border-radius: 999px;
+      background: var(--accent);
+      color: #fff;
+      font-size: 10px;
+      font-weight: 700;
+      cursor: pointer;
+      vertical-align: super;
+      margin-left: 2px;
+      transition: opacity 0.15s;
+      font-style: normal;
+      line-height: 1;
+      font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
+    }
+    .note-marker:hover { opacity: 0.75; }
+
+    /* ── Bottom nav ── */
+    .bottom-nav {
+      width: 100%;
+      max-width: 640px;
+      border-top: 1px solid var(--border);
+      margin-top: 64px;
+      padding-top: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .btn {
+      height: 40px;
+      padding: 0 20px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+      color: var(--text);
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      font-family: inherit;
+      transition: background 0.15s;
+    }
+    .btn:hover { background: var(--bg); }
+    .btn:disabled { opacity: 0.45; cursor: default; }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+      border-color: transparent;
+    }
+    .btn-primary:hover { opacity: 0.88; background: var(--accent); }
+    .btn-primary:disabled { opacity: 0.45; }
+
+    /* Mark complete confirmation card */
+    .confirm-card {
+      width: 100%;
+      max-width: 640px;
+      margin-top: 16px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px 24px;
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.07);
+    }
+    .confirm-card.visible { display: flex; }
+    .confirm-copy { display: flex; flex-direction: column; gap: 3px; }
+    .confirm-title { font-size: 14px; font-weight: 600; color: var(--text); }
+    .confirm-sub   { font-size: 13px; color: var(--text-sec); }
+    .confirm-btns  { display: flex; gap: 8px; flex-shrink: 0; }
+    .btn-sm {
+      height: 36px;
+      padding: 0 16px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+      color: var(--text);
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      font-family: inherit;
+      transition: background 0.15s;
+    }
+    .btn-sm:hover { background: var(--bg); }
+    .btn-sm.primary {
+      background: var(--accent);
+      color: #fff;
+      border-color: transparent;
+    }
+    .btn-sm.primary:hover { opacity: 0.88; background: var(--accent); }
+
+    /* ── Focus mode ── */
+    body.focus-mode .toolbar { opacity: 0; }
+    body.focus-mode .reading-area { padding-top: 64px; }
+    body.focus-mode:hover .toolbar { opacity: 1; pointer-events: auto; }
+  </style>
+</head>
+<body data-theme="light">
+
+  <!-- Note panel — write mode (default) and read mode (when tapping a marker) -->
+  <div class="note-panel" id="notePanel" onmousedown="event.stopPropagation()">
+    <div class="note-panel-label" id="notePanelLabel">Add a note</div>
+    <!-- Write mode -->
+    <div id="noteWriteMode">
+      <textarea class="note-textarea" id="noteText" placeholder="Type your note…"></textarea>
+      <div class="note-panel-btns">
+        <button class="note-btn" onclick="cancelNote()">Cancel</button>
+        <button class="note-btn save" onclick="saveNote()">Save</button>
+      </div>
+    </div>
+    <!-- Read mode -->
+    <div id="noteReadMode" style="display:none;">
+      <div id="noteReadText" style="font-size:14px; line-height:1.6; color:#2a2510; white-space:pre-wrap;"></div>
+      <div class="note-panel-btns" style="margin-top:10px;">
+        <button class="note-btn save" onclick="closeNotePanel()">Done</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Floating text selection toolbar -->
+  <div class="sel-toolbar" id="selToolbar" onmousedown="event.preventDefault()">
+    <div class="sel-dot" style="background:#F8E04A;" onclick="applyHighlight('yellow')" title="Yellow"></div>
+    <div class="sel-dot" style="background:#9bd0e8;" onclick="applyHighlight('blue')"   title="Blue"></div>
+    <div class="sel-dot" style="background:#e8a0c0;" onclick="applyHighlight('pink')"   title="Pink"></div>
+    <div class="sel-sep"></div>
+    <span class="sel-action" onclick="addNote()">Note</span>
+  </div>
+
+  <!-- Reading area -->
+  <main class="reading-area">
+
+    <!-- Toolbar -->
+    <div class="toolbar" id="toolbar">
+
+      <div class="toolbar-right">
+
+        <!-- Font size -->
+        <div class="font-pair">
+          <button class="font-btn small" onclick="decreaseFont()" title="Smaller text">A−</button>
+          <button class="font-btn large" onclick="increaseFont()" title="Larger text">A+</button>
+        </div>
+
+        <!-- Theme -->
+        <div class="theme-group">
+          <button class="theme-btn theme-light-btn is-active" id="btnLight" onclick="setTheme('light')" title="Light">☀</button>
+          <button class="theme-btn theme-sepia-btn" id="btnSepia" onclick="setTheme('sepia')" title="Sepia">▨</button>
+          <button class="theme-btn theme-dark-btn"  id="btnDark"  onclick="setTheme('dark')"  title="Dark">☽</button>
+        </div>
+
+        <!-- Bookmark -->
+        <button class="bookmark-btn" id="bookmarkBtn" onclick="toggleBookmark()">
+          <span id="bookmarkLabel">Save my place</span>
+        </button>
+
+        <!-- Focus mode -->
+        <button class="focus-btn" id="focusBtn" onclick="toggleFocus()">Focus</button>
+
+      </div>
+    </div>
+
+    <!-- Reading content -->
+    <div class="reading-content" id="readingContent">
+
+      <div class="chapter-opener">
+        <h1 class="chapter-title">The most misused tool<br>in every school.</h1>
+      </div>
+
+      <p class="body-para">Tom eats lunch at the same spot every day. Same desk. Same chair. Same place next to the window where he lines up his sandwich, his apple, and his water bottle in the same order. One morning, the teacher rearranges the classroom for a group activity. The desks are pushed together in clusters. Tom walks in after the bell, sees his spot is gone, and stops in the doorway. His teacher aide tries to guide him to a new seat. He drops to the floor.</p>
+
+      <div class="takeaway">
+        <span class="takeaway-label">Key takeaway</span>
+        <p class="takeaway-body">Change can be very hard for kids like Tom. For example, if Tom comes to class and finds his desk has moved, he might not know what to do. He could get upset and sit on the floor.</p>
+      </div>
+
+      <p class="body-para">This happens because Tom wasn't told about the change. When things are different from what he expects, it can be confusing and scary for him. If Tom is given a warning about changes, he can feel more comfortable and know what to do next time.</p>
+
+      <p class="body-para">However, the issue may not be Tom's behaviour, but rather that he was not informed about the upcoming change.</p>
+
+      <div class="bookmark-marker" id="bookmarkMarker" style="display:none;">
+        <div class="bm-line"></div>
+        <div class="bm-pill">Saved position</div>
+        <div class="bm-line"></div>
+      </div>
+
+      <h2 class="section-heading">What most people get wrong about Social Stories</h2>
+
+      <p class="body-para"><strong>Treating them as behaviour management.</strong> Social Stories are not about getting a child to stop doing something. They are about helping a child understand something. The moment you write a story to fix a behaviour the adults find annoying, you have missed the point entirely.</p>
+
+      <p class="body-para"><strong>Setting goals that are too vague.</strong> "Help Tom with social skills" is not a goal. It is a wish. A Social Story needs one clear, specific moment to focus on.</p>
+
+      <p class="body-para"><strong>Reading the story once or twice and expecting results.</strong> One reading does not stick. Two readings do not stick. Children who heard the story at least six times did noticeably better than those who heard it fewer times.</p>
+
+      <p class="body-para"><strong>Writing the story for the adult, not the child.</strong> If Tom hums during quiet reading and it bothers the teacher but Tom is perfectly happy, a Social Story is not the answer. The child is not struggling. The adult is.</p>
+
+      <p class="body-para"><strong>Reading it at the wrong time.</strong> Five minutes before lunch is the worst possible moment. Tom is already bracing. A calm, settled moment earlier in the day is where the story needs to happen.</p>
+
+      <p class="body-para"><strong>Overselling it to parents.</strong> Social Stories help with one thing at a time. When you tell a parent it will improve their child's social skills overall, you are setting everyone up for disappointment.</p>
+
+      <h2 class="section-heading">What you need to know</h2>
+
+      <p class="body-para"><strong>They are a torch, not a floodlight.</strong> A story about "being a good friend" lights up nothing. A story about "what to do when someone sits in your usual seat" lights up exactly the moment Tom needs help with. He can picture it. He can prepare for it. The narrower the focus, the better it works.</p>
+
+      <p class="body-para"><strong>The goal-setting conversation is worth as much as the story.</strong> When the teacher, parent, and child sit down together and move past "Tom struggles socially" to "Tom doesn't know what to do when the class moves from the carpet to their desks, and he freezes every single time," the adults align. They stop guessing. They agree on what Tom actually needs.</p>
+
+      <p class="body-para"><strong>Repetition is not optional.</strong> Autistic children take in and remember information by hearing it repeatedly. A story read once will not be there when the real moment arrives. Tom needs to hear it enough times that the information is already in place when he walks into the classroom, and the desks have moved.</p>
+
+    </div>
+
+    <!-- Bottom navigation -->
+    <div class="bottom-nav">
+      <button class="btn">&larr; Previous</button>
+      <button class="btn btn-primary" id="completeBtn" onclick="showConfirm()">Mark complete</button>
+      <button class="btn">Next &rarr;</button>
+    </div>
+
+    <!-- Mark complete — confirmation prompt -->
+    <div class="confirm-card" id="confirmCard">
+      <div class="confirm-copy">
+        <div class="confirm-title">Mark this chapter as complete?</div>
+        <div class="confirm-sub">Your progress will be saved and updated.</div>
+      </div>
+      <div class="confirm-btns">
+        <button class="btn-sm" onclick="hideConfirm()">Cancel</button>
+        <button class="btn-sm primary" onclick="confirmComplete()">Confirm ✓</button>
+      </div>
+    </div>
+
+  </main>
+
+  <script>
+    // ── Font size ──
+    let fontSize = 19;
+    function increaseFont() {
+      fontSize = Math.min(22, fontSize + 1);
+      document.getElementById('readingContent').style.fontSize = fontSize + 'px';
+    }
+    function decreaseFont() {
+      fontSize = Math.max(14, fontSize - 1);
+      document.getElementById('readingContent').style.fontSize = fontSize + 'px';
+    }
+
+    // ── Theme ──
+    function setTheme(theme) {
+      document.body.setAttribute('data-theme', theme);
+      document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('is-active'));
+      const map = { light: 'btnLight', sepia: 'btnSepia', dark: 'btnDark' };
+      document.getElementById(map[theme]).classList.add('is-active');
+    }
+
+    // ── Bookmark ──
+    let bookmarked = false;
+    function toggleBookmark() {
+      bookmarked = !bookmarked;
+      const btn    = document.getElementById('bookmarkBtn');
+      const label  = document.getElementById('bookmarkLabel');
+      const marker = document.getElementById('bookmarkMarker');
+      if (bookmarked) {
+        btn.classList.add('saved');
+        label.textContent = 'My place';
+        marker.style.display = 'flex';
+      } else {
+        btn.classList.remove('saved');
+        label.textContent = 'Save my place';
+        marker.style.display = 'none';
+      }
+    }
+
+    // ── Focus mode ──
+    function toggleFocus() {
+      document.body.classList.toggle('focus-mode');
+      document.getElementById('focusBtn').classList.toggle('on');
+    }
+
+    // ── Text selection toolbar ──
+    const selToolbar = document.getElementById('selToolbar');
+    let savedRange = null;
+
+    document.addEventListener('mouseup', e => {
+      if (selToolbar.contains(e.target) || notePanel.contains(e.target)) return;
+      // Small delay lets the browser finish registering the selection
+      setTimeout(() => {
+        const sel = window.getSelection();
+        if (sel && sel.rangeCount > 0 && sel.toString().trim().length > 1) {
+          const range = sel.getRangeAt(0);
+          savedRange = range.cloneRange();
+          const rect = range.getBoundingClientRect();
+          // Keep toolbar on screen horizontally
+          const halfW = 130;
+          const leftPos = Math.min(
+            Math.max(rect.left + rect.width / 2, halfW + 8),
+            window.innerWidth - halfW - 8
+          );
+          selToolbar.style.top  = (rect.top - 52) + 'px';
+          selToolbar.style.left = leftPos + 'px';
+          selToolbar.classList.add('visible');
+        } else {
+          closeSelToolbar();
+        }
+      }, 10);
+    });
+
+    document.addEventListener('mousedown', e => {
+      if (!selToolbar.contains(e.target) && !notePanel.contains(e.target)) {
+        closeSelToolbar();
+      }
+    });
+
+    function closeSelToolbar() {
+      selToolbar.classList.remove('visible');
+      savedRange = null;
+    }
+
+    function applyHighlight(colour) {
+      if (!savedRange) return;
+      const span = document.createElement('span');
+      span.className = 'hl-' + colour;
+      try { savedRange.surroundContents(span); } catch(e) {}
+      window.getSelection().removeAllRanges();
+      closeSelToolbar();
+    }
+
+    // ── Note panel ──
+    const notePanel = document.getElementById('notePanel');
+    let noteRange = null;
+    let noteCount = 0;
+
+    function addNote() {
+      // Re-read the live selection in case savedRange wasn't set yet
+      const sel = window.getSelection();
+      if (sel && sel.rangeCount > 0 && sel.toString().trim().length > 0) {
+        noteRange = sel.getRangeAt(0).cloneRange();
+      } else if (savedRange) {
+        noteRange = savedRange;
+      } else {
+        return;
+      }
+
+      // Grab position BEFORE closing toolbar (which clears savedRange)
+      const rect = noteRange.getBoundingClientRect();
+
+      // Hide selection toolbar
+      selToolbar.classList.remove('visible');
+      savedRange = null;
+
+      // Position near selection — clamp so it stays on screen
+      const panelLeft = Math.min(Math.max(rect.left + rect.width / 2, 140), window.innerWidth - 140);
+      const panelTop  = Math.min(rect.bottom + 12, window.innerHeight - 220);
+      notePanel.style.top  = panelTop + 'px';
+      notePanel.style.left = panelLeft + 'px';
+      notePanel.classList.add('visible');
+      document.getElementById('noteText').value = '';
+      setTimeout(() => document.getElementById('noteText').focus(), 50);
+    }
+
+    function cancelNote() {
+      notePanel.classList.remove('visible');
+      noteRange = null;
+      window.getSelection().removeAllRanges();
+    }
+
+    function closeNotePanel() {
+      notePanel.classList.remove('visible');
+      // Reset back to write mode for next use
+      document.getElementById('noteWriteMode').style.display = '';
+      document.getElementById('noteReadMode').style.display = 'none';
+      document.getElementById('notePanelLabel').textContent = 'Add a note';
+    }
+
+    function openNoteMarker(markerEl, text) {
+      // Switch to read mode
+      document.getElementById('noteWriteMode').style.display = 'none';
+      document.getElementById('noteReadMode').style.display = '';
+      document.getElementById('notePanelLabel').textContent = 'Your note';
+      document.getElementById('noteReadText').textContent = text;
+
+      // Position near the marker — clamp so it stays on screen
+      const rect = markerEl.getBoundingClientRect();
+      const panelLeft = Math.min(Math.max(rect.left + rect.width / 2, 140), window.innerWidth - 140);
+      const panelTop  = Math.min(rect.bottom + 10, window.innerHeight - 180);
+      notePanel.style.top  = panelTop + 'px';
+      notePanel.style.left = panelLeft + 'px';
+      notePanel.classList.add('visible');
+    }
+
+    function saveNote() {
+      const text = document.getElementById('noteText').value.trim();
+      if (!text || !noteRange) { cancelNote(); return; }
+
+      // Wrap the selected text in a highlight + append a note marker
+      noteCount++;
+      const wrap = document.createElement('span');
+      wrap.className = 'hl-yellow';
+      try { noteRange.surroundContents(wrap); } catch(e) {}
+
+      // Insert marker after the wrapped span — click to re-open post-it
+      const marker = document.createElement('em');
+      marker.className = 'note-marker';
+      marker.textContent = noteCount;
+      marker.setAttribute('data-note', text);
+      marker.addEventListener('click', function(e) {
+        e.stopPropagation();
+        openNoteMarker(this, this.getAttribute('data-note'));
+      });
+      if (wrap.parentNode) wrap.parentNode.insertBefore(marker, wrap.nextSibling);
+
+      notePanel.classList.remove('visible');
+      noteRange = null;
+      window.getSelection().removeAllRanges();
+    }
+
+    // Close note panel on outside click
+    document.addEventListener('mousedown', e => {
+      if (!notePanel.contains(e.target) && notePanel.classList.contains('visible')) {
+        cancelNote();
+      }
+    });
+
+    // ── Mark complete ──
+    function showConfirm() {
+      document.getElementById('confirmCard').classList.add('visible');
+    }
+    function hideConfirm() {
+      document.getElementById('confirmCard').classList.remove('visible');
+    }
+    function confirmComplete() {
+      hideConfirm();
+      const btn = document.getElementById('completeBtn');
+      btn.textContent = '✓ Completed';
+      btn.disabled = true;
+    }
+  </script>
+
+</body>
+</html>

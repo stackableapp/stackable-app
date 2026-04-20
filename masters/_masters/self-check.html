@@ -1,0 +1,395 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Self-check rubric</title>
+<style>
+  /* ---------- design tokens ---------- */
+  :root {
+    --bg:        #f0ebe3;
+    --card:      #f8f8f6;
+    --accent:    #e8440a;
+    --text:      #1a1a1a;
+    --text-2:    #5a5550;
+    --radius:    12px;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+    font-size: 1rem;
+    line-height: 2;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3 {
+    font-family: Georgia, serif;
+    font-weight: 700;
+    line-height: 1.25;
+    margin: 0;
+    color: var(--text);
+  }
+
+  main.self-check {
+    max-width: 560px;
+    margin: 0 auto;
+    padding: 2rem 1.25rem;
+  }
+
+  /* ---------- buttons ---------- */
+  button {
+    font: inherit;
+    cursor: pointer;
+    border: none;
+    background: none;
+    color: inherit;
+  }
+
+  .btn-primary {
+    display: block;
+    width: 100%;
+    background: var(--accent);
+    color: #fff;
+    font-weight: 600;
+    padding: 1rem 1.25rem;
+    border-radius: var(--radius);
+    line-height: 1.3;
+    text-align: center;
+  }
+  .btn-primary:focus-visible {
+    outline: 3px solid var(--text);
+    outline-offset: 2px;
+  }
+
+  .btn-rating {
+    flex: 1;
+    background: #fff;
+    color: var(--text);
+    border: 2px solid var(--text);
+    padding: 0.85rem 1rem;
+    border-radius: var(--radius);
+    font-weight: 600;
+    line-height: 1.3;
+    text-align: center;
+    min-height: 56px;
+  }
+  .btn-rating:hover { background: var(--bg); }
+  .btn-rating:focus-visible {
+    outline: 3px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  .link-reset {
+    display: inline-block;
+    margin-top: 1rem;
+    color: var(--accent);
+    font-weight: 600;
+    text-decoration: underline;
+    background: none;
+    padding: 0.25rem 0;
+  }
+  .link-reset:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  /* ---------- card ---------- */
+  .card {
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 1.8rem 1.6rem;
+  }
+
+  .card-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .card-eyebrow {
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--accent);
+    line-height: 1.3;
+  }
+
+  .card-progress {
+    font-size: 0.875rem;
+    color: var(--text-2);
+    line-height: 1.3;
+  }
+
+  .criterion-question {
+    font-family: Georgia, serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    line-height: 1.35;
+    margin: 0 0 1.5rem 0;
+    color: var(--text);
+  }
+
+  .rating-group {
+    display: flex;
+    gap: 0.75rem;
+  }
+
+  /* ---------- revealed state ---------- */
+  .model-heading {
+    font-size: 1.25rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .model-body {
+    margin: 0 0 1.5rem 0;
+    line-height: 2;
+  }
+
+  .divider {
+    border: none;
+    border-top: 1px solid var(--text-2);
+    opacity: 0.25;
+    margin: 1.5rem 0;
+  }
+
+  .summary-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .summary-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid rgba(90,85,80,0.15);
+    line-height: 1.5;
+  }
+  .summary-list li:last-child { border-bottom: none; }
+
+  .summary-question {
+    color: var(--text);
+    flex: 1;
+  }
+  .summary-rating {
+    color: var(--accent);
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  /* ---------- mobile ---------- */
+  @media (max-width: 480px) {
+    main.self-check { padding: 1.25rem 1rem; }
+    .card { padding: 1.4rem 1.2rem; }
+    .rating-group { flex-direction: column; }
+    .criterion-question { font-size: 1.2rem; }
+  }
+</style>
+</head>
+<body>
+  <main class="self-check">
+    <div id="self-check-root"></div>
+  </main>
+
+  <script>
+  /* =====================================================================
+     SELF-CHECK RUBRIC — master template
+     Edit the `criteria` array and `MODEL_ANSWER` string below to author
+     a new lesson check. Everything else is component logic.
+     ===================================================================== */
+
+  // EDIT: criteria — add or remove items here. Each needs a unique id.
+  const criteria = [
+    { id: 'c1', question: 'Criteria question goes here' }, // EDIT: criterion 1
+    { id: 'c2', question: 'Criteria question goes here' }, // EDIT: criterion 2
+    { id: 'c3', question: 'Criteria question goes here' }, // EDIT: criterion 3
+    { id: 'c4', question: 'Criteria question goes here' }, // EDIT: criterion 4
+  ];
+
+  // EDIT: model answer text
+  const MODEL_ANSWER = 'Model answer text goes here';
+
+  // ---------- state ----------
+  const RATINGS = [
+    { value: 'yes',    label: 'Yes' },
+    { value: 'partly', label: 'Partly' },
+    { value: 'no',     label: 'No' },
+  ];
+
+  let phase = 'closed';      // 'closed' | 'rating' | 'revealed'
+  let ratings = {};          // { [criterionId]: 'yes' | 'partly' | 'no' }
+
+  const root = document.getElementById('self-check-root');
+
+  // ---------- helpers ----------
+  function nextUnratedIndex() {
+    for (let i = 0; i < criteria.length; i++) {
+      if (!ratings[criteria[i].id]) return i;
+    }
+    return -1;
+  }
+
+  function ratedCount() {
+    return criteria.filter(c => ratings[c.id]).length;
+  }
+
+  function ratingLabel(value) {
+    const r = RATINGS.find(r => r.value === value);
+    return r ? r.label : '';
+  }
+
+  function reset() {
+    phase = 'closed';
+    ratings = {};
+    render();
+  }
+
+  // ---------- render ----------
+  function render() {
+    root.innerHTML = '';
+
+    if (phase === 'closed') {
+      const btn = document.createElement('button');
+      btn.className = 'btn-primary';
+      btn.textContent = 'Check your work';
+      btn.addEventListener('click', () => {
+        phase = 'rating';
+        render();
+      });
+      root.appendChild(btn);
+      return;
+    }
+
+    if (phase === 'rating') {
+      const card = document.createElement('div');
+      card.className = 'card';
+
+      const idx = nextUnratedIndex();
+      const allRated = idx === -1;
+
+      // header: eyebrow + progress
+      const head = document.createElement('div');
+      head.className = 'card-head';
+      const eyebrow = document.createElement('div');
+      eyebrow.className = 'card-eyebrow';
+      eyebrow.textContent = 'Self-check';
+      const progress = document.createElement('div');
+      progress.className = 'card-progress';
+      progress.textContent = (allRated ? criteria.length : idx + 1) + ' of ' + criteria.length;
+      head.appendChild(eyebrow);
+      head.appendChild(progress);
+      card.appendChild(head);
+
+      if (!allRated) {
+        // current criterion question
+        const q = document.createElement('h2');
+        q.className = 'criterion-question';
+        q.textContent = criteria[idx].question;
+        card.appendChild(q);
+
+        // rating buttons
+        const group = document.createElement('div');
+        group.className = 'rating-group';
+        group.setAttribute('role', 'group');
+        group.setAttribute('aria-label', 'Rate yourself');
+        RATINGS.forEach((r, i) => {
+          const b = document.createElement('button');
+          b.className = 'btn-rating';
+          b.textContent = r.label;
+          b.dataset.firstRating = i === 0 ? 'true' : 'false';
+          b.addEventListener('click', () => {
+            ratings[criteria[idx].id] = r.value;
+            render();
+          });
+          group.appendChild(b);
+        });
+        card.appendChild(group);
+      } else {
+        // all rated → show reveal button
+        const revealBtn = document.createElement('button');
+        revealBtn.className = 'btn-primary';
+        revealBtn.textContent = 'See model answer';
+        revealBtn.addEventListener('click', () => {
+          phase = 'revealed';
+          render();
+        });
+        card.appendChild(revealBtn);
+      }
+
+      root.appendChild(card);
+
+      // focus management — move focus to first rating button on advance
+      if (!allRated) {
+        const first = card.querySelector('[data-first-rating="true"]');
+        if (first) first.focus();
+      } else {
+        const reveal = card.querySelector('.btn-primary');
+        if (reveal) reveal.focus();
+      }
+      return;
+    }
+
+    if (phase === 'revealed') {
+      const card = document.createElement('div');
+      card.className = 'card';
+
+      const modelH = document.createElement('h2');
+      modelH.className = 'model-heading';
+      modelH.textContent = 'Model answer';
+      card.appendChild(modelH);
+
+      const modelP = document.createElement('p');
+      modelP.className = 'model-body';
+      modelP.textContent = MODEL_ANSWER;
+      card.appendChild(modelP);
+
+      const hr = document.createElement('hr');
+      hr.className = 'divider';
+      card.appendChild(hr);
+
+      const checkH = document.createElement('h3');
+      checkH.className = 'model-heading';
+      checkH.textContent = 'Your self-check';
+      card.appendChild(checkH);
+
+      const list = document.createElement('ul');
+      list.className = 'summary-list';
+      criteria.forEach(c => {
+        const li = document.createElement('li');
+        const q = document.createElement('span');
+        q.className = 'summary-question';
+        q.textContent = c.question;
+        const r = document.createElement('span');
+        r.className = 'summary-rating';
+        r.textContent = ratingLabel(ratings[c.id]);
+        li.appendChild(q);
+        li.appendChild(r);
+        list.appendChild(li);
+      });
+      card.appendChild(list);
+
+      const resetLink = document.createElement('button');
+      resetLink.className = 'link-reset';
+      resetLink.textContent = 'Start over';
+      resetLink.addEventListener('click', reset);
+      card.appendChild(resetLink);
+
+      root.appendChild(card);
+      return;
+    }
+  }
+
+  render();
+  </script>
+</body>
+</html>
