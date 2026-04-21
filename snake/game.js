@@ -4,13 +4,13 @@
 
   const canvas = document.getElementById('board');
   const ctx = canvas.getContext('2d');
+  const hud = document.getElementById('hud');
   const scoreEl = document.getElementById('score');
   const bestEl = document.getElementById('best');
   const overlay = document.getElementById('overlay');
   const overlayTitle = document.getElementById('overlay-title');
   const overlayMsg = document.getElementById('overlay-msg');
   const startBtn = document.getElementById('start');
-  const pauseBtn = document.getElementById('pause');
   const resetBtn = document.getElementById('reset');
 
   const styles = getComputedStyle(document.documentElement);
@@ -22,7 +22,8 @@
   const COLOR_FOOD_RING = styles.getPropertyValue('--navy').trim() || '#120DA6';
 
   const BEST_KEY = 'snake.best';
-  let best = Number(localStorage.getItem(BEST_KEY) || 0);
+  let best = 0;
+  try { best = Number(localStorage.getItem(BEST_KEY) || 0); } catch (_) {}
   bestEl.textContent = best;
 
   let snake, dir, nextDir, food, score, tickTimer, state;
@@ -62,9 +63,9 @@
     if (state === 'running') return;
     if (state === 'over' || state === 'idle') reset();
     state = 'running';
+    hud.classList.add('visible');
+    overlay.dataset.state = 'running';
     overlay.classList.add('hidden');
-    pauseBtn.disabled = false;
-    pauseBtn.textContent = 'Pause';
     clearInterval(tickTimer);
     tickTimer = setInterval(tick, TICK_MS);
   }
@@ -74,26 +75,39 @@
     state = 'paused';
     clearInterval(tickTimer);
     overlayTitle.textContent = 'Paused';
-    overlayMsg.textContent = 'Press Space or tap Resume';
+    overlayMsg.textContent = '';
     startBtn.textContent = 'Resume';
+    overlay.dataset.state = 'paused';
     overlay.classList.remove('hidden');
   }
 
   function gameOver() {
     state = 'over';
     clearInterval(tickTimer);
-    pauseBtn.disabled = true;
     if (score > best) {
       best = score;
-      localStorage.setItem(BEST_KEY, String(best));
+      try { localStorage.setItem(BEST_KEY, String(best)); } catch (_) {}
       bestEl.textContent = best;
       overlayTitle.textContent = 'New best!';
     } else {
       overlayTitle.textContent = 'Game over';
     }
-    overlayMsg.textContent = `Score ${score}. Press Space to play again.`;
+    overlayMsg.textContent = `Score ${score}`;
     startBtn.textContent = 'Play again';
+    overlay.dataset.state = 'over';
     overlay.classList.remove('hidden');
+  }
+
+  function toIdle() {
+    clearInterval(tickTimer);
+    state = 'idle';
+    hud.classList.remove('visible');
+    overlayTitle.textContent = '';
+    overlayMsg.textContent = '';
+    startBtn.textContent = 'Start';
+    overlay.dataset.state = 'idle';
+    overlay.classList.remove('hidden');
+    reset();
   }
 
   function tick() {
@@ -197,6 +211,8 @@
     else if (k === 'ArrowRight' || k === 'd' || k === 'D') setDir(1, 0);
   });
 
+  canvas.addEventListener('click', () => { if (state === 'running') pause(); });
+
   let touchStart = null;
   canvas.addEventListener('touchstart', (e) => {
     if (e.touches.length !== 1) return;
@@ -217,20 +233,7 @@
   }, { passive: true });
 
   startBtn.addEventListener('click', start);
-  pauseBtn.addEventListener('click', () => {
-    if (state === 'running') pause();
-    else if (state === 'paused') start();
-  });
-  resetBtn.addEventListener('click', () => {
-    clearInterval(tickTimer);
-    state = 'idle';
-    pauseBtn.disabled = true;
-    reset();
-    overlayTitle.textContent = 'Ready?';
-    overlayMsg.textContent = 'Press Space or tap Start';
-    startBtn.textContent = 'Start';
-    overlay.classList.remove('hidden');
-  });
+  resetBtn.addEventListener('click', toIdle);
 
   window.addEventListener('resize', resizeCanvas);
 
