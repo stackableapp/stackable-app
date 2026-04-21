@@ -163,10 +163,12 @@ html, body {
 .overlay:not([data-state="idle"]) .overlay-hint { display: none; }
 
 .controls {
-  display: flex;
+  display: none;
   gap: 12px;
   justify-content: center;
 }
+
+.hud.visible ~ .controls { display: flex; }
 
 .btn-primary, .btn-secondary {
   font-family: 'Inter', sans-serif;
