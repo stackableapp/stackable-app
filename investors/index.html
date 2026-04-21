@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Investor Updates — Stackable</title>
+<meta name="description" content="Weekly, monthly, quarterly and yearly updates from Stackable.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Plus+Jakarta+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f0ebe3;
+    --card: #f7f3ec;
+    --ink: #1a1a1a;
+    --muted: #8a8278;
+    --line: #e2dcd0;
+    --orange: #e8440a;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    min-height: 100vh;
+    padding: clamp(2rem, 5vw, 4rem) clamp(1.25rem, 5vw, 3rem) 4rem;
+  }
+
+  .wrap {
+    max-width: 760px;
+    margin: 0 auto;
+  }
+
+  /* ── Header ── */
+  header.page {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2.5rem;
+    margin-bottom: 3rem;
+  }
+
+  .logo {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+    color: var(--ink);
+    text-decoration: none;
+    letter-spacing: 0.02em;
+  }
+
+  h1.page-title {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-weight: 300;
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+  }
+
+  h1.page-title em {
+    font-style: italic;
+    color: var(--orange);
+  }
+
+  .lede {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 300;
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--muted);
+    max-width: 56ch;
+  }
+
+  /* ── Filters ── */
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 2.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .filter-btn {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 400;
+    font-size: 13px;
+    letter-spacing: 0.01em;
+    padding: 7px 14px;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+
+  .filter-btn:hover {
+    color: var(--ink);
+    border-color: var(--ink);
+  }
+
+  .filter-btn.active {
+    background: var(--ink);
+    color: var(--bg);
+    border-color: var(--ink);
+  }
+
+  /* ── Updates list ── */
+  .updates {
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+  }
+
+  article.update {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+    padding-bottom: 2.5rem;
+    border-bottom: 1px solid var(--line);
+  }
+
+  article.update:last-child {
+    border-bottom: none;
+  }
+
+  article.update.hidden {
+    display: none;
+  }
+
+  .meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .tag {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 999px;
+    background: var(--card);
+    border: 1px solid var(--line);
+    color: var(--ink);
+    font-weight: 500;
+    letter-spacing: 0.03em;
+  }
+
+  .tag[data-cadence="weekly"]    { color: var(--ink); }
+  .tag[data-cadence="monthly"]   { color: var(--ink); }
+  .tag[data-cadence="quarterly"] { color: var(--ink); }
+  .tag[data-cadence="yearly"]    { color: var(--orange); border-color: var(--orange); }
+
+  .update h2 {
+    font-family: 'DM Serif Display', Georgia, serif;
+    font-weight: 400;
+    font-size: clamp(1.4rem, 2.5vw, 1.9rem);
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+  }
+
+  .update .body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 300;
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--ink);
+  }
+
+  .update .body p + p { margin-top: 1rem; }
+  .update .body p    { max-width: 65ch; }
+
+  .update .body h3 {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 500;
+    font-size: 1rem;
+    margin-top: 1.5rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .update .body ul {
+    padding-left: 1.25rem;
+    margin-top: 0.25rem;
+  }
+
+  .update .body ul li {
+    margin-bottom: 0.35rem;
+  }
+
+  .update .body a {
+    color: var(--orange);
+    text-decoration: none;
+    border-bottom: 1px solid currentColor;
+  }
+
+  /* ── Empty state ── */
+  .empty {
+    display: none;
+    padding: 3rem 0;
+    text-align: center;
+    color: var(--muted);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 0.95rem;
+  }
+
+  .empty.visible { display: block; }
+
+  /* ── Footer ── */
+  footer.page {
+    margin-top: 5rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--line);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <header class="page">
+    <a href="/" class="logo">Stackable</a>
+    <h1 class="page-title">
+      Investor <em>updates.</em>
+    </h1>
+    <p class="lede">
+      Weekly signal, monthly shape, quarterly direction, yearly story. Newest on top.
+    </p>
+  </header>
+
+  <nav class="filters" role="tablist" aria-label="Filter updates by cadence">
+    <button class="filter-btn active" data-filter="all">All</button>
+    <button class="filter-btn" data-filter="weekly">Weekly</button>
+    <button class="filter-btn" data-filter="monthly">Monthly</button>
+    <button class="filter-btn" data-filter="quarterly">Quarterly</button>
+    <button class="filter-btn" data-filter="yearly">Yearly</button>
+  </nav>
+
+  <!--
+    ──────────────────────────────────────────────────────────────
+    HOW TO ADD A NEW UPDATE
+    ──────────────────────────────────────────────────────────────
+    Copy the template below, paste it at the TOP of <main class="updates">,
+    and fill it in. Set data-cadence to one of: weekly, monthly, quarterly, yearly.
+    Date format: YYYY-MM-DD. Keep newest at the top.
+
+    <article class="update" data-cadence="weekly" id="YYYY-MM-DD-weekly">
+      <div class="meta">
+        <span class="tag" data-cadence="weekly">Weekly</span>
+        <time datetime="YYYY-MM-DD">Month D, YYYY</time>
+      </div>
+      <h2>Headline for the update</h2>
+      <div class="body">
+        <p>First paragraph.</p>
+        <p>Second paragraph.</p>
+        <h3>Optional subheading</h3>
+        <ul>
+          <li>Bullet point</li>
+        </ul>
+      </div>
+    </article>
+    ──────────────────────────────────────────────────────────────
+  -->
+
+  <main class="updates" id="updates">
+
+    <article class="update" data-cadence="weekly" id="2026-04-21-weekly">
+      <div class="meta">
+        <span class="tag" data-cadence="weekly">Weekly</span>
+        <time datetime="2026-04-21">April 21, 2026</time>
+      </div>
+      <h2>Week in review — placeholder</h2>
+      <div class="body">
+        <p>Replace this with your first weekly update. Keep it short — what shipped, what moved, what's blocked, what's next.</p>
+      </div>
+    </article>
+
+    <article class="update" data-cadence="monthly" id="2026-04-monthly">
+      <div class="meta">
+        <span class="tag" data-cadence="monthly">Monthly</span>
+        <time datetime="2026-04-01">April 2026</time>
+      </div>
+      <h2>Month in review — placeholder</h2>
+      <div class="body">
+        <p>Replace this with your first monthly update. Shape: what changed this month, headline numbers, one thing you learned.</p>
+      </div>
+    </article>
+
+    <article class="update" data-cadence="quarterly" id="2026-q1-quarterly">
+      <div class="meta">
+        <span class="tag" data-cadence="quarterly">Quarterly</span>
+        <time datetime="2026-01-01">Q1 2026</time>
+      </div>
+      <h2>Quarter in review — placeholder</h2>
+      <div class="body">
+        <p>Replace this with your first quarterly update. Direction: goals set vs. met, strategy shifts, the next quarter's bet.</p>
+      </div>
+    </article>
+
+    <article class="update" data-cadence="yearly" id="2025-yearly">
+      <div class="meta">
+        <span class="tag" data-cadence="yearly">Yearly</span>
+        <time datetime="2025-12-31">2025</time>
+      </div>
+      <h2>Year in review — placeholder</h2>
+      <div class="body">
+        <p>Replace this with your first yearly update. Story: the through-line of the year, what you'd do again, what you'd change.</p>
+      </div>
+    </article>
+
+  </main>
+
+  <div class="empty" id="empty">No updates in this cadence yet.</div>
+
+  <footer class="page">
+    stackable.app · Melbourne, Australia
+  </footer>
+
+</div>
+
+<script>
+  (function () {
+    var buttons = document.querySelectorAll('.filter-btn');
+    var updates = document.querySelectorAll('article.update');
+    var empty   = document.getElementById('empty');
+
+    function apply(filter) {
+      var shown = 0;
+      updates.forEach(function (el) {
+        var match = filter === 'all' || el.dataset.cadence === filter;
+        el.classList.toggle('hidden', !match);
+        if (match) shown++;
+      });
+      empty.classList.toggle('visible', shown === 0);
+    }
+
+    buttons.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        buttons.forEach(function (b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+        apply(btn.dataset.filter);
+        history.replaceState(null, '', btn.dataset.filter === 'all' ? '#' : '#' + btn.dataset.filter);
+      });
+    });
+
+    // Deep link via hash (e.g. /investors/#weekly)
+    var hash = (location.hash || '').replace('#', '');
+    if (['weekly','monthly','quarterly','yearly'].indexOf(hash) !== -1) {
+      var match = document.querySelector('.filter-btn[data-filter="' + hash + '"]');
+      if (match) match.click();
+    }
+  })();
+</script>
+
+</body>
+</html>
